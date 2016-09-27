@@ -2,8 +2,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.webservice.test</groupId>
-  <artifactId>WebserviceTest</artifactId>
+  <groupId>com.sfly.missioncontrol.test</groupId>
+  <artifactId>MissionControlTest</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -60,6 +60,16 @@
       <artifactId>maven-surefire-plugin</artifactId>
       <version>2.19.1</version>
       <type>maven-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>3.10-FINAL</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.8-beta4</version>
     </dependency>
   </dependencies>
   <build>

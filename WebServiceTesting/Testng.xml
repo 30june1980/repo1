@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name="Suite" parallel="false">
-    <!-- <listeners>
+<suite name="SFLY-MC-Test" parallel="false">
+     <!--listeners>
          <listener class-name="org.uncommons.reportng.HTMLReporter"/>
          <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
      </listeners>-->
-    <test name="Alert and Pop-Up Handling">
-        <classes>
-            <class name="org.webservice.test.RequestTest"/>
-        </classes>
+    <test name="Asserting WebService response">
+        <!--<classes>
+            <class name="SOAPRequestTest"/>
+            <class name="RESTRequestTest"/>
+        </classes>-->
+        <packages>
+            <package name="com.shutterfly.fulfillmenthub.missioncontrol.test" />
+        </packages>
     </test>
 </suite> <!-- Suite -->
