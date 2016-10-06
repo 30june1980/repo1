@@ -1,0 +1,20 @@
+Selenium Grid Startup Setup
+1. Download Selenium Standalone Server JAR and cope on machine that will be used in the GRID.
+    We used selenium-server-standalone-2.53.1.jar
+    Once the server is started it will show a url like this "http://192.168.1.2:4444/grid/register/"
+
+2. Run the above JAR from the location it has been saved through command prompt with following command
+    java -jar (path)selenium-server-standalone-2.53.1.jar -role hub
+    *path : Location actual path where JAR is copied
+    role - define this while starting HUB/Node
+    HUB - Grid HUB
+    NODE- Grid NODE
+3. TO start node use following command
+    java –jar selenium-server-standalone-2.43.1.jar –role node
+    –hub http://(Hub Machine IP and corresponding port number):4444/grid/register
+    optional parameters given after register
+    -port 5566
+    -browser browserName = nameofbrowser
+    -version = version of browser
+4. After registering the node check selenium HUB console for successfully registered hub message.
+5. Successful completion of above steps means you are ready to start you execution with test grid
