@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Selenium Grid Suite" thread-count="4" parallel="tests" verbose="1" >
+    <listeners>
+        <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+    </listeners>
+    <test name="Grid Test Firefox" >
+        <parameter name="browserName" value="firefox"/>
+        <parameter name="platform" value="WIN10"/>
+        <parameter name="remoteurl" value="http://localhost:4444/wd/hub"/>
+        <classes>
+            <!--<class name="com.shutterfly.mc.fulfillmenthub.sgrid.AppTest"/>-->
+            <class name="com.shutterfly.mc.fulfillmenthub.sgrid.test.GridTest"/>
+        </classes>
+    </test>
+    <test name="Grid Test Chrome" >
+        <parameter name="browserName" value="chrome"/>
+        <parameter name="platform" value="WIN10"/>
+        <parameter name="remoteurl" value="http://localhost:4444/wd/hub" />
+        <classes>
+            <!--<class name="com.shutterfly.mc.fulfillmenthub.sgrid.AppTest"/>-->
+            <class name="com.shutterfly.mc.fulfillmenthub.sgrid.test.GridTest"/>
+        </classes>
+    </test>
+    <!--<test name="Grid Test IE" >
+        <parameter name="browserName" value="iexplore"/>
+        <parameter name="platform" value="WIN10"/>
+        <parameter name="remoteurl" value="http://192.168.1.101:4444/wd/hub" />
+        <classes>
+            &lt;!&ndash;<class name="com.shutterfly.mc.fulfillmenthub.sgrid.AppTest"/>&ndash;&gt;
+            <class name="com.shutterfly.mc.fulfillmenthub.sgrid.test.GridTest"/>
+        </classes>
+    </test>-->
+</suite>
