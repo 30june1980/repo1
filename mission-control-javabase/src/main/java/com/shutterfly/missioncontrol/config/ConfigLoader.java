@@ -23,7 +23,7 @@ public class ConfigLoader {
 	public static WebElement element = null;
 
 	// To get basic configurations from property files
-	public void basicConfigWebTest() {
+	public void basicConfigWeb() {
 		if (driver == null) {
 			config = new Properties();
 			try {
@@ -40,18 +40,18 @@ public class ConfigLoader {
 			}
 		}
 
-		if (config.getProperty("browser").equalsIgnoreCase("chrome")) {
+		if (config.getProperty("Browser").equalsIgnoreCase("chrome")) {
 			System.setProperty("webdriver.chrome.driver", "D:/Drivers/ChromeDriver");
 			driver = new ChromeDriver();
 
-		} else if (config.getProperty("browser").equalsIgnoreCase("firefox")) {
+		} else if (config.getProperty("Browser").equalsIgnoreCase("firefox")) {
 			System.setProperty("webdriver.gecko.driver", "D:/Drivers/FirefoxDriver/geckodriver.exe");
 			driver = new FirefoxDriver();
 		}
 	}
 
-	public void basicConfigNonWebTest() {
-		if (driver == null) {
+	public void basicConfigNonWeb() {
+		{
 			config = new Properties();
 			try {
 				config.load(ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties"));

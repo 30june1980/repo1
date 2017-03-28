@@ -10,28 +10,29 @@ import org.testng.annotations.Test;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.ConnectToDatabase;
 
 /**
  * @author Diptman Gupta
  *
  */
-public class SampleDatabaseTest {
+public class SampleDatabaseTest extends ConfigLoader {
 
-	ConnectToDatabase con = new ConnectToDatabase();
+	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
 	@Test
 	public void databaseQueryTest() {
-		client = con.getMongoConnection();
-
+		client = connectToDatabase.getMongoConnection();
+		basicConfigNonWeb();
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> collection = database.getCollection("participant");
 
 		// Reference
 		// http://mongodb.github.io/mongo-java-driver/3.4/driver/tutorials/perform-read-operations/
 		Document myDoc = collection.find(eq("participantId", "participant_001")).first();
-		System.out.println("Document printing :: " + myDoc.toJson());
-		con.closeMongoConnection();
+		// System.out.println("Document printing :: " + myDoc.toJson());
+		connectToDatabase.closeMongoConnection();
 	}
 }
