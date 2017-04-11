@@ -17,12 +17,12 @@ import com.shutterfly.missioncontrol.config.CsvReaderWriter;
  *
  */
 
-public class ProcessFulfillmentRequestTest extends BuildAndValidateSoapRequest {
+public class ProcessFulfillmentRequestBulkTest extends BuildAndValidateSoapRequest {
 
 	@Test
-	@Parameters({ "BS", "MS", "EOB" })
+	@Parameters({ "BS", "MS", "FulfillmentType" })
 
-	public void validateSoapResponseTest(String BS, String MS, String EOB) throws Exception {
+	public void validateSoapResponseTest(String BS, String MS, String FulfillmentType ) throws Exception {
 
 		basicConfigNonWeb();
 		String strEndpoint = config.getProperty("Endpoint");
@@ -34,12 +34,13 @@ public class ProcessFulfillmentRequestTest extends BuildAndValidateSoapRequest {
 		updateMap.put("sch:requestID", requestId);
 		updateMap.put("sch:businessSegmentID", BS);
 		updateMap.put("sch:marketSegmentCd", MS);
-		updateMap.put("sch:fulfillmentType", EOB);
+		updateMap.put("sch:fulfillmentType", FulfillmentType);
 		Map<String, String> validateMap = new HashMap<>();
+		validateMap.put("ns2:transactionStatus", "Accepted");
 		validateMap.put("ns2:ackReportingLevel", "Transaction");
-		validateSoapResponse(getSOAPResponse(readXml(config.getProperty("SoapProcessFulfillmentRequestXml"), updateMap),
-				strEndpoint), validateMap);
 
+		validateSoapResponse(getSOAPResponse(readXml(config.getProperty("SoapProcessFulfillmentRequestBulkXml"), updateMap),
+				strEndpoint), validateMap);
 	}
 
 }

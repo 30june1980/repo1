@@ -6,11 +6,11 @@
         <sch:processFulfillmentRequest>
             <sch:fulfillmentRequest>
                 <sch:requestHeader>
-                    <sch:requestID>Test_qa_030</sch:requestID>
+                    <sch:requestID>REQUEST_101</sch:requestID>
                     <!--Optional:-->
                     <sch:sourceID>POST_STATUS_ROUTING_2345</sch:sourceID>
                     <!--Optional:-->
-                    <sch:destinationID>DEST_NOT_WORKING_000</sch:destinationID>
+                    <sch:destinationID>PRINT_SUPPLIER_2345</sch:destinationID>
                     <!--Optional:-->
                     <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
                     <!--Optional:-->
@@ -43,11 +43,11 @@
                         <sch:recipient>
                             <sch:recipientId>111223333</sch:recipientId>
                             <!--Optional:-->
-                            <sch:idQualifier>SocialSecIDType</sch:idQualifier>
+                            <sch:idQualifier>MemberIDType</sch:idQualifier>
                             <!--Optional:-->
                             <sch:deliveryMethod1>Mailed</sch:deliveryMethod1>
                             <!--Optional:-->
-                            <sch:deliveryMethod2>String</sch:deliveryMethod2>
+                            <sch:deliveryMethod2>Fax</sch:deliveryMethod2>
                             <!--Optional:-->
                             <sch:recipientType>MemberType</sch:recipientType>
                             <sch:person>

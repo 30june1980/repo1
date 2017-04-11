@@ -11,6 +11,7 @@
 		<selenium.version>3.3.1</selenium.version>
 		<maven.surfire>2.19.1</maven.surfire>
 		<testng.version>6.11</testng.version>
+		<mongo.version>3.4.2</mongo.version>
 	</properties>
 	<modules>
 		<module>mission-control-javabase</module>
@@ -47,7 +48,7 @@
 			<dependency>
 				<groupId>org.mongodb</groupId>
 				<artifactId>mongo-java-driver</artifactId>
-				<version>3.4.2</version>
+				<version>${mongo.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

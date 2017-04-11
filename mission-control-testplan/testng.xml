@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" preserve-order="true">
+<suite name="ProcessFulfillment" preserve-order="true">
 	<test name="ProcessfulfillmentRequest_BS1_MS1_EOB">
 		<parameter name="BS" value="BS1"></parameter>
 		<parameter name="MS" value="MS1"></parameter>
@@ -10,7 +10,7 @@
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
 		</classes>
 	</test> <!-- Test -->
-		<test name="ProcessfulfillmentRequest_BS2_MS2_EOB2">
+	<test name="ProcessfulfillmentRequest_BS2_MS2_EOB2">
 		<parameter name="BS" value="BS2"></parameter>
 		<parameter name="MS" value="MS2"></parameter>
 		<parameter name="EOB" value="EOB2"></parameter>
@@ -33,6 +33,22 @@
 		<classes>
 			<class
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestDbTest" />
+		</classes>
+	</test>
+	<test name="ProcessfulfillmentRequestBulk_BS1_MS1_BillingInvoice">
+		<parameter name="BS" value="BS1"></parameter>
+		<parameter name="MS" value="MS1"></parameter>
+		<parameter name="FulfillmentType" value="BillingInvoice"></parameter>
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestBulkTest" />
+		</classes>
+	</test> <!-- Test -->
+	
+	<test name="ProcessfulfillmentRequestBulk_Created_In_Mongo">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestBulkDbTest" />
 		</classes>
 	</test>
 </suite> <!-- Suite -->
