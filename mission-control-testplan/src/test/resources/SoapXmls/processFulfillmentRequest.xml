@@ -1,6 +1,6 @@
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
-               xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema"
-               xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
+  xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema"
+  xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
     <soap:Header/>
     <soap:Body>
         <sch:processFulfillmentRequest>
@@ -8,19 +8,19 @@
                 <sch:requestHeader>
                     <sch:requestID>REQUEST_101</sch:requestID>
                     <!--Optional:-->
-                    <sch:sourceID>POST_STATUS_ROUTING_2345</sch:sourceID>
+                    <sch:sourceID>Cirrus</sch:sourceID>
                     <!--Optional:-->
-                    <sch:destinationID>PRINT_SUPPLIER_2345</sch:destinationID>
+                    <sch:destinationID>SBS</sch:destinationID>
                     <!--Optional:-->
                     <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
                     <!--Optional:-->
                     <sch:requestType>Process</sch:requestType>
                     <!--Optional:-->
-                    <sch:businessSegmentID>BS1</sch:businessSegmentID>
+                    <sch:businessSegmentID>E&amp;I</sch:businessSegmentID>
                     <!--Optional:-->
-                    <sch:marketSegmentCd>MS1</sch:marketSegmentCd>
+                    <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>EOB</sch:fulfillmentType>
+                    <sch:fulfillmentType>10000</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>TransactionalExternalDataOnly</sch:requestCategory>
                     <!--Optional:-->
@@ -43,11 +43,11 @@
                         <sch:recipient>
                             <sch:recipientId>111223333</sch:recipientId>
                             <!--Optional:-->
-                            <sch:idQualifier>MemberIDType</sch:idQualifier>
+                            <sch:idQualifier>SocialSecIDType</sch:idQualifier>
                             <!--Optional:-->
                             <sch:deliveryMethod1>Mailed</sch:deliveryMethod1>
                             <!--Optional:-->
-                            <sch:deliveryMethod2>Fax</sch:deliveryMethod2>
+                            <sch:deliveryMethod2>Emailed</sch:deliveryMethod2>
                             <!--Optional:-->
                             <sch:recipientType>MemberType</sch:recipientType>
                             <sch:person>

@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ProcessFulfillment" preserve-order="true">
-	<test name="ProcessfulfillmentRequest_BS1_MS1_EOB">
-		<parameter name="BS" value="BS1"></parameter>
-		<parameter name="MS" value="MS1"></parameter>
-		<parameter name="EOB" value="EOB"></parameter>
+	<test name="ProcessfulfillmentRequest_transactional_batched">
+		<parameter name="BS" value="E&amp;I"></parameter>
+		<parameter name="MS" value="OXF"></parameter>
+		<parameter name="EOB" value="10000"></parameter>
 		<classes>
 			<class
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
 		</classes>
 	</test> <!-- Test -->
-	<test name="ProcessfulfillmentRequest_BS2_MS2_EOB2">
-		<parameter name="BS" value="BS2"></parameter>
-		<parameter name="MS" value="MS2"></parameter>
-		<parameter name="EOB" value="EOB2"></parameter>
+	<test name="ProcessfulfillmentRequest_transactional_non_batched">
+		<parameter name="BS" value="E&amp;I"></parameter>
+		<parameter name="MS" value="SMB"></parameter>
+		<parameter name="EOB" value="10200"></parameter>
 		<classes>
 			<class
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
 		</classes>
 	</test>
 	<!-- Test -->
-	<test name="ProcessfulfillmentRequest_BS3_MS3_EOB3">
-		<parameter name="BS" value="BS3"></parameter>
-		<parameter name="MS" value="MS3"></parameter>
-		<parameter name="EOB" value="EOB3"></parameter>
+	<test name="ProcessfulfillmentRequest_transaction_batched_II">
+		<parameter name="BS" value="E&amp;I"></parameter>
+		<parameter name="MS" value="TBD"></parameter>
+		<parameter name="EOB" value="10300"></parameter>
 		<classes>
 			<class
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
@@ -35,10 +35,10 @@
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestDbTest" />
 		</classes>
 	</test>
-	<test name="ProcessfulfillmentRequestBulk_BS1_MS1_BillingInvoice">
-		<parameter name="BS" value="BS1"></parameter>
-		<parameter name="MS" value="MS1"></parameter>
-		<parameter name="FulfillmentType" value="BillingInvoice"></parameter>
+	<test name="ProcessfulfillmentRequestBulk_bulkfile_all_valid">
+		<parameter name="BS" value="E&amp;I"></parameter>
+		<parameter name="MS" value="OXF"></parameter>
+		<parameter name="FulfillmentType" value="10000"></parameter>
 		<classes>
 			<class
 				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestBulkTest" />
