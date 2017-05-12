@@ -10,6 +10,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * @author Diptman Gupta
@@ -41,12 +43,17 @@ public class ConfigLoader {
 		}
 
 		if (config.getProperty("Browser").equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", "D:/Drivers/ChromeDriver");
+			System.setProperty("webdriver.chrome.driver", "C:/Users/dgupta/Desktop/Mission Control/Drivers/ChromeDriver/chromedriver.exe");
 			driver = new ChromeDriver();
 
 		} else if (config.getProperty("Browser").equalsIgnoreCase("firefox")) {
-			System.setProperty("webdriver.gecko.driver", "D:/Drivers/FirefoxDriver/geckodriver.exe");
+			System.setProperty("webdriver.gecko.driver", "C:/Users/dgupta/Desktop/Mission Control/Drivers/FirefoxDriver/geckodriver.exe");
 			driver = new FirefoxDriver();
+		} else if (config.getProperty("Browser").equalsIgnoreCase("ie")) {
+			DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
+			caps.setCapability("ignoreZoomSetting", true);
+			System.setProperty("webdriver.ie.driver", "C:/Users/dgupta/Desktop/Mission Control/Drivers/InternetExplorer/IEDriverServer.exe");
+			driver = new InternetExplorerDriver(caps);
 		}
 	}
 

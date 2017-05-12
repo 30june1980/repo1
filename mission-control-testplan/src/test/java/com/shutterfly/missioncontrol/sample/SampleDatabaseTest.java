@@ -31,8 +31,7 @@ public class SampleDatabaseTest extends ConfigLoader {
 
 		// Reference
 		// http://mongodb.github.io/mongo-java-driver/3.4/driver/tutorials/perform-read-operations/
-		Document myDoc = collection.find(eq("participantId", "participant_001")).first();
-
+		Document myDoc = collection.find(eq("participantId", "SBS")).first();
 		System.out.println("Document printing :: " + myDoc.toJson());
 		connectToDatabase.closeMongoConnection();
 	}

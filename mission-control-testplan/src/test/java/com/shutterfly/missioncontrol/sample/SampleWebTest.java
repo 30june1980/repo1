@@ -14,7 +14,7 @@ public class SampleWebTest extends ConfigLoader {
 	public void getApplicationUrlTest() {
 
 		basicConfigWeb();
-		driver.get("http://www.google.com");
+		driver.get(config.getProperty("ApplicationUrl"));
 		driver.quit();
 
 	}

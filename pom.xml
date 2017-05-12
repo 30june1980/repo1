@@ -12,6 +12,7 @@
 		<maven.surfire>2.19.1</maven.surfire>
 		<testng.version>6.11</testng.version>
 		<mongo.version>3.4.2</mongo.version>
+		<rest.assured.version>2.9.0</rest.assured.version>
 	</properties>
 	<modules>
 		<module>mission-control-javabase</module>
@@ -50,6 +51,12 @@
 				<artifactId>mongo-java-driver</artifactId>
 				<version>${mongo.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.jayway.restassured</groupId>
+				<artifactId>rest-assured</artifactId>
+				<version>${rest.assured.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>
