@@ -52,9 +52,9 @@
 				<version>${mongo.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.jayway.restassured</groupId>
+				<groupId>io.rest-assured</groupId>
 				<artifactId>rest-assured</artifactId>
-				<version>${rest.assured.version}</version>
+				<version>3.0.3</version>
 			</dependency>
 
 		</dependencies>

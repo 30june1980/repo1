@@ -7,11 +7,16 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+import org.testng.annotations.Test;
 
 /**
  * @author Diptman Gupta
@@ -37,8 +42,7 @@ public class CsvReaderWriter extends ConfigLoader {
 		String line = "";
 		String cvsSplitBy = ",";
 		String[] records = null;
-		try (BufferedReader br = new BufferedReader(
-				new FileReader(config.getProperty("RequestIdCsvPath")))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(config.getProperty("RequestIdCsvPath")))) {
 			while ((line = br.readLine()) != null) {
 				// use comma as separator
 				records = line.split(cvsSplitBy);
@@ -46,6 +50,19 @@ public class CsvReaderWriter extends ConfigLoader {
 		}
 		return records;
 
+	}
+
+	// public static void main(String[] args) {
+	@Test
+	public void csvIterator() throws IOException {
+		basicConfigNonWeb();
+		Reader in = new FileReader(config.getProperty("RequestIdCsvPath"));
+		Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+		for (CSVRecord record : records) {
+			if (record.get(0).equalsIgnoreCase("Done")) {
+				System.out.println(record.get(1));
+			}
+		}
 	}
 
 }

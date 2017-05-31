@@ -4,6 +4,7 @@
 package com.shutterfly.missioncontrol.soap;
 
 import static com.mongodb.client.model.Filters.eq;
+import static org.testng.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,7 +62,7 @@ public class ProcessFulfillmentRequestDbTest extends ConfigLoader {
 			requestTrackingDoc.forEach(documentRequestTrackingCollection -> {
 				if (documentRequestTrackingCollection.getString("status").equals("PutToDeadLetterTopic")) {
 					System.out.println("Request is moved to Dead Letter Topic");
-					Assert.assertEquals(true, false);
+					assertEquals(true, false);
 
 				}
 				;

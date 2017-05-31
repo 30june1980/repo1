@@ -1,54 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="ProcessFulfillment" preserve-order="true">
-	<test name="ProcessfulfillmentRequest_transactional_batched">
-		<parameter name="BS" value="E&amp;I"></parameter>
-		<parameter name="MS" value="OXF"></parameter>
-		<parameter name="EOB" value="10000"></parameter>
-		<classes>
-			<class
-				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
-		</classes>
-	</test> <!-- Test -->
-	<test name="ProcessfulfillmentRequest_transactional_non_batched">
-		<parameter name="BS" value="E&amp;I"></parameter>
-		<parameter name="MS" value="SMB"></parameter>
-		<parameter name="EOB" value="10200"></parameter>
-		<classes>
-			<class
-				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
-		</classes>
-	</test>
-	<!-- Test -->
-	<test name="ProcessfulfillmentRequest_transaction_batched_II">
-		<parameter name="BS" value="E&amp;I"></parameter>
-		<parameter name="MS" value="TBD"></parameter>
-		<parameter name="EOB" value="10300"></parameter>
-		<classes>
-			<class
-				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestTest" />
-		</classes>
-	</test> <!-- Test -->
-	<test name="ProcessfulfillmentRequest_Created_In_Mongo">
-		<classes>
-			<class
-				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestDbTest" />
-		</classes>
-	</test>
-	<test name="ProcessfulfillmentRequestBulk_bulkfile_all_valid">
-		<parameter name="BS" value="E&amp;I"></parameter>
-		<parameter name="MS" value="OXF"></parameter>
-		<parameter name="FulfillmentType" value="10000"></parameter>
-		<classes>
-			<class
-				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestBulkTest" />
-		</classes>
-	</test> <!-- Test -->
-	
 	<test name="ProcessfulfillmentRequestBulk_Created_In_Mongo">
 		<classes>
 			<class
-				name="com.shutterfly.missioncontrol.soap.ProcessFulfillmentRequestBulkDbTest" />
+				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalExternalDataOnly" />
+				<class
+				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalExternalPrintReady" />
+				<class
+				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalInlineDataOnly" />
+				<class
+				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalInlinePrintReady" />
+				
+				
+				
 		</classes>
 	</test>
 </suite> <!-- Suite -->
