@@ -46,8 +46,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 		return uri;
 	}
 
-	private String buildJson() throws IOException {
-		URL file = Resources.getResource("XmlPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
+	private String buildPayload() throws IOException {
+		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
 		myJson = Resources.toString(file, StandardCharsets.UTF_8);
 
 		return myJson = myJson.replaceAll("REQUEST_101", record);
@@ -60,7 +60,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").body(this.buildJson()).when().post(this.getProperties());
+				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",

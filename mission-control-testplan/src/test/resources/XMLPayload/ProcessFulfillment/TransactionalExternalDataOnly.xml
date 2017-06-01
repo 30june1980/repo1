@@ -19,8 +19,7 @@
 			<!--Optional: -->
 			<sch:fulfillmentType>10000</sch:fulfillmentType>
 			<!--Optional: -->
-			<sch:requestCategory>TransactionalExternalDataOnly
-			</sch:requestCategory>
+			<sch:requestCategory>TransactionalExternalPrintReadyDataOnly</sch:requestCategory>
 			<!--Optional: -->
 			<sch:serviceLevelCategory>String</sch:serviceLevelCategory>
 			<!--Optional: -->

@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.bson.Document;
 import org.testng.Assert;
@@ -32,7 +31,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class TransactionalExternalDataOnly extends ConfigLoader {
+public class TransactionalExternalPrintReady extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -48,7 +47,7 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalExternalDataOnly.xml");
+		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalExternalPrintReady.xml");
 		myJson = Resources.toString(file, StandardCharsets.UTF_8);
 
 		return myJson = myJson.replaceAll("REQUEST_101", record);
@@ -57,8 +56,8 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TEDO_XML")
-	private void getResponse() throws IOException, InterruptedException {
+	@Test(groups = "Test_TEPR_XML")
+	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
 				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -73,10 +72,10 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(groups = "database", dependsOnGroups = { "Test_TEDO_XML" })
+	@Test(dependsOnGroups = { "Test_TEPR_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
-		client = connectToDatabase.getMongoConnection();
 		Thread.sleep(20000);
+		client = connectToDatabase.getMongoConnection();
 		basicConfigNonWeb();
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");
@@ -90,21 +89,13 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 		 */
 		Document fulfillment_tracking_record_doc = fulfillment_tracking_record.find(eq("requestId", record)).first();
 		fulfillment_tracking_record_doc.containsKey("requestId");
+
 		Assert.assertEquals(record, fulfillment_tracking_record_doc.getString("requestId"));
 
 		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();
 
-		/*
-		 * if(fulfillment_status_tracking_doc.get("requestTracking") instanceof
-		 * List<?>){ Object class1 =
-		 * fulfillment_status_tracking_doc.get("requestTracking").getClass();
-		 * if(class1 instanceof Document){
-		 * 
-		 * } }
-		 */
-
 		@SuppressWarnings("unchecked")
-		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
+		ArrayList<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
 				.get("requestTracking");
 		requestTrackingDoc.forEach(documentRequestTrackingCollection -> {
 			if (documentRequestTrackingCollection.getString("status").equals("PutToDeadLetterTopic")) {
