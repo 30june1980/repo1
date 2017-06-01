@@ -94,6 +94,7 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 
 		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();
 
+		@SuppressWarnings("unchecked")
 		ArrayList<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
 				.get("requestTracking");
 		requestTrackingDoc.forEach(documentRequestTrackingCollection -> {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.restful;
+package com.shutterfly.missioncontrol.processfulfillment;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.hamcrest.Matchers.equalTo;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bson.Document;
 import org.testng.Assert;
@@ -31,7 +32,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends ConfigLoader {
+public class TransactionalExternalDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -47,7 +48,7 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 	}
 
 	private String buildJson() throws IOException {
-		URL file = Resources.getResource("payload/TransactionalInlineDataOnly.json");
+		URL file = Resources.getResource("XmlPayload/ProcessFulfillment/TransactionalExternalDataOnly.xml");
 		myJson = Resources.toString(file, StandardCharsets.UTF_8);
 
 		return myJson = myJson.replaceAll("REQUEST_101", record);
@@ -56,11 +57,11 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TIDO")
+	@Test(groups = "Test_TEDO_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
-				.contentType("application/json").body(this.buildJson()).when().post(this.getProperties());
+				.contentType("application/xml").body(this.buildJson()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -72,7 +73,7 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(groups = "database", dependsOnGroups = { "Test_TIDO" })
+	@Test(groups = "database", dependsOnGroups = { "Test_TEDO_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
 		Thread.sleep(20000);
@@ -93,8 +94,15 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 
 		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();
 
+		/*if(fulfillment_status_tracking_doc.get("requestTracking") instanceof List<?>){
+			 Object class1 = fulfillment_status_tracking_doc.get("requestTracking").getClass();
+			 if(class1 instanceof Document){
+				 
+			 }
+		}*/
+		
 		@SuppressWarnings("unchecked")
-		ArrayList<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
+		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
 				.get("requestTracking");
 		requestTrackingDoc.forEach(documentRequestTrackingCollection -> {
 			if (documentRequestTrackingCollection.getString("status").equals("PutToDeadLetterTopic")) {

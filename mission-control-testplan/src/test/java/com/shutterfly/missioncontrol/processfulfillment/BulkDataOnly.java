@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.restful;
+package com.shutterfly.missioncontrol.processfulfillment;
 
-import static com.mongodb.client.model.Filters.eq;
 import static org.hamcrest.Matchers.equalTo;
+import static com.mongodb.client.model.Filters.eq;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends ConfigLoader {
+public class BulkDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -47,7 +47,7 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 	}
 
 	private String buildJson() throws IOException {
-		URL file = Resources.getResource("payload/TransactionalInlineDataOnly.json");
+		URL file = Resources.getResource("payload/BulkDataOnly.json");
 		myJson = Resources.toString(file, StandardCharsets.UTF_8);
 
 		return myJson = myJson.replaceAll("REQUEST_101", record);
@@ -56,7 +56,7 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TIDO")
+	@Test(groups = "Test_BDO")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
@@ -72,11 +72,11 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(groups = "database", dependsOnGroups = { "Test_TIDO" })
+	@Test(groups = "database", dependsOnGroups = { "Test_BDO" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
-		Thread.sleep(20000);
 		basicConfigNonWeb();
+		Thread.sleep(20000);
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");
 		MongoCollection<Document> fulfillment_status_tracking = database.getCollection("fulfillment_status_tracking");
