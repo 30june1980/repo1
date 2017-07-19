@@ -9,8 +9,7 @@
 				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalExternalPrintReady" />
 				<class
 				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalInlineDataOnly" />
-				<class
-				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalInlinePrintReady" />
+				
 				
 				
 				
