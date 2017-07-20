@@ -65,7 +65,7 @@ public class ProcessFulfillmentRequestBulkPrintReady extends ConfigLoader {
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv(record);
+		cwr.writeToCsv("BPR_JSON",record);
 
 	}
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.restful;
+package com.shutterfly.missioncontrol.postfulfillment;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.hamcrest.Matchers.equalTo;
@@ -31,51 +31,51 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends ConfigLoader {
+public class PostTransactionalInlineDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = null;
-	String myJson = null;
-	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	String uri = "";
+	String payload = "";
+	String record = "";
 
 	private String getProperties() {
 		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
 		return uri;
+
 	}
 
-	private String buildJson() throws IOException {
-		URL file = Resources.getResource("payload/TransactionalExternalPrintReady.json");
-		myJson = Resources.toString(file, StandardCharsets.UTF_8);
+	private String buildPayload() throws IOException {
+		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
+		payload = Resources.toString(file, StandardCharsets.UTF_8);
+		record = cwr.getRequestIdByKeys("TIDO");
 
-		return myJson = myJson.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record);
 
 	}
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TEPR")
+	@Test(groups = "Test_PTIDO_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
-		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
-				.contentType("application/json").body(this.buildJson()).when().post(this.getProperties());
+		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
+				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv("TEPR_JSON",record);
 
 	}
 
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(dependsOnGroups = { "Test_TEPR" })
+	@Test(groups = "database", dependsOnGroups = { "Test_PTIDO_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
-		Thread.sleep(20000);
 		client = connectToDatabase.getMongoConnection();
+		Thread.sleep(20000);
 		basicConfigNonWeb();
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");
@@ -89,7 +89,6 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 		 */
 		Document fulfillment_tracking_record_doc = fulfillment_tracking_record.find(eq("requestId", record)).first();
 		fulfillment_tracking_record_doc.containsKey("requestId");
-
 		Assert.assertEquals(record, fulfillment_tracking_record_doc.getString("requestId"));
 
 		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();
@@ -97,6 +96,7 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 		@SuppressWarnings("unchecked")
 		ArrayList<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
 				.get("requestTracking");
+
 		requestTrackingDoc.forEach(documentRequestTrackingCollection -> {
 			if (documentRequestTrackingCollection.getString("status").equals("PutToDeadLetterTopic")) {
 				System.out.println("Request is moved to Dead Letter Topic");

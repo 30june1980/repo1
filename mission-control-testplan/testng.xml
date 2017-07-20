@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ProcessFulfillment" preserve-order="true">
-	<test name="ProcessfulfillmentRequestBulk_Created_In_Mongo">
+<suite thread-count="1" name="Suite">
+	<test name="Process">
 		<classes>
 			<class
-				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalExternalDataOnly" />
-				<class
-				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalExternalPrintReady" />
-				<class
-				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalInlineDataOnly" />
-				<class
-				name="com.shutterfly.missioncontrol.restful.ProcessFulfillmentRequestTransactionalInlinePrintReady" />
-				
-				
-				
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadyMultItem" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadySingleItem" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlineDataOnly" />
+
 		</classes>
 	</test>
+	
 </suite> <!-- Suite -->

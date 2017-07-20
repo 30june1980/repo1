@@ -36,11 +36,12 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = null;
-	String myJson = null;
+	String uri = "";
+	String payload = "";
 	long millis = System.currentTimeMillis();
 	String record = "Test_qa_" + millis;
 
+	
 	private String getProperties() {
 		basicConfigNonWeb();
 		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
@@ -48,32 +49,32 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalExternalDataOnly.xml");
-		myJson = Resources.toString(file, StandardCharsets.UTF_8);
+		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlinePrintReadyMultItem.xml");
+		payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-		return myJson = myJson.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record);
 
 	}
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TEDO_XML")
+	@Test(groups = "Test_TIPRM_XML")
 	private void getResponse() throws IOException, InterruptedException {
 		basicConfigNonWeb();
-		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
+		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
 				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv(record);
+		cwr.writeToCsv("TEDO" ,record);
 
 	}
 
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(groups = "database", dependsOnGroups = { "Test_TEDO_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_TIPRM_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
 		Thread.sleep(20000);
@@ -93,16 +94,6 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 		Assert.assertEquals(record, fulfillment_tracking_record_doc.getString("requestId"));
 
 		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();
-
-		/*
-		 * if(fulfillment_status_tracking_doc.get("requestTracking") instanceof
-		 * List<?>){ Object class1 =
-		 * fulfillment_status_tracking_doc.get("requestTracking").getClass();
-		 * if(class1 instanceof Document){
-		 * 
-		 * } }
-		 */
-
 		@SuppressWarnings("unchecked")
 		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
 				.get("requestTracking");

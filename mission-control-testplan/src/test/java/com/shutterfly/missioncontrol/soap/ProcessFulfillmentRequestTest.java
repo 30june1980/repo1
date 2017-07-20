@@ -30,7 +30,7 @@ public class ProcessFulfillmentRequestTest extends BuildAndValidateSoapRequest {
 		long millis = System.currentTimeMillis();
 		String requestId = "Test_qa_automation_" + millis;
 		CsvReaderWriter wr = new CsvReaderWriter();
-		wr.writeToCsv(requestId);
+		wr.writeToCsv("TIR_SOAP",requestId);
 		updateMap.put("sch:requestID", requestId);
 		updateMap.put("sch:businessSegmentID", BS);
 		updateMap.put("sch:marketSegmentCd", MS);

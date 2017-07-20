@@ -65,7 +65,7 @@ public class ProcessFulfillmentRequestBulkDataOnly extends ConfigLoader {
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv(record);
+		cwr.writeToCsv("BDO_JSON", record);
 
 	}
 

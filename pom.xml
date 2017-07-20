@@ -12,7 +12,8 @@
 		<maven.surfire>2.19.1</maven.surfire>
 		<testng.version>6.11</testng.version>
 		<mongo.version>3.4.2</mongo.version>
-		<rest.assured.version>2.9.0</rest.assured.version>
+		<rest.assured>3.0.3</rest.assured>
+		<apache.poi>3.16</apache.poi>
 	</properties>
 	<modules>
 		<module>mission-control-javabase</module>
@@ -54,7 +55,17 @@
 			<dependency>
 				<groupId>io.rest-assured</groupId>
 				<artifactId>rest-assured</artifactId>
-				<version>3.0.3</version>
+				<version>${rest.assured}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${apache.poi}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>${apache.poi}</version>
 			</dependency>
 
 		</dependencies>

@@ -65,7 +65,7 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv(record);
+		cwr.writeToCsv("TIDO_JSON",record);
 
 	}
 

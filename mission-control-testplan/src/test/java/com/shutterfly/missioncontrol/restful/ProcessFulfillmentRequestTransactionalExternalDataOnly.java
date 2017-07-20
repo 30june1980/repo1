@@ -65,7 +65,7 @@ public class ProcessFulfillmentRequestTransactionalExternalDataOnly extends Conf
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv(record);
+		cwr.writeToCsv("TEDO_JSON",record);
 
 	}
 

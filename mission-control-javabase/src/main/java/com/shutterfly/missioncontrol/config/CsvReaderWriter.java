@@ -24,13 +24,13 @@ import org.testng.annotations.Test;
  */
 public class CsvReaderWriter extends ConfigLoader {
 
-	public void writeToCsv(String parameter) {
+	public void writeToCsv(String name,String parameter) {
 
 		Path FILE_PATH = Paths.get(config.getProperty("RequestIdCsvPath"));
 
 		try (BufferedWriter writer = Files.newBufferedWriter(FILE_PATH, StandardCharsets.UTF_8,
 				StandardOpenOption.APPEND)) {
-			writer.write(parameter + ",");
+			writer.write(name +":"+ parameter + ","  );
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -64,5 +64,24 @@ public class CsvReaderWriter extends ConfigLoader {
 			}
 		}
 	}
+	
+	
+	public String  getRequestIdByKeys(String key) throws IOException {
+		basicConfigNonWeb();
+	   String[] requestId = readCsv();
+		String record = "";
+		for (String id : requestId) {
+			String arrKeyValue[] = id.split(":");
+			if (arrKeyValue.length == 2) {
+				if (arrKeyValue[0].equalsIgnoreCase(key)) {
+					record = arrKeyValue[1];
+				}
+			}
+		}
+
+		return record;
+
+	}
+
 
 }

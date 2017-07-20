@@ -35,8 +35,8 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = null;
-	String myJson = null;
+	String uri = "";
+	String payload = "";
 	long millis = System.currentTimeMillis();
 	String record = "Test_qa_" + millis;
 
@@ -48,9 +48,9 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalExternalPrintReady.xml");
-		myJson = Resources.toString(file, StandardCharsets.UTF_8);
+		payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-		return myJson = myJson.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record);
 
 	}
 
@@ -59,13 +59,13 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 	@Test(groups = "Test_TEPR_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
-		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
+		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
 				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv(record);
+		cwr.writeToCsv("TEPR", record);
 
 	}
 

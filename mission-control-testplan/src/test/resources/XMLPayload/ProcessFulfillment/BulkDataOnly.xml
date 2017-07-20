@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sch:processFulfillmentRequest xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ 
+      <sch:fulfillmentRequest>
+ 
+        <sch:requestHeader>
+ 
+          <sch:requestID>REQUEST_101</sch:requestID>
+ 
+          <!--Optional:-->
+ 
+          <sch:sourceID>ACET</sch:sourceID>
+ 
+          <!--Optional:-->
+ 
+          <sch:destinationID>RRD</sch:destinationID>
+ 
+          <!--Optional:-->
+ 
+          <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
+ 
+          <!--Optional:-->
+ 
+          <sch:requestType>Process</sch:requestType>
+ 
+          <!--Optional:-->
+ 
+          <sch:businessSegmentID>EI</sch:businessSegmentID>
+ 
+          <!--Optional:-->
+ 
+          <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+ 
+          <!--Optional:-->
+ 
+          <sch:fulfillmentType>10700</sch:fulfillmentType>
+ 
+          <!--Optional:-->
+ 
+          <sch:requestCategory>BulkDataOnly</sch:requestCategory>
+ 
+          <!--Optional:-->
+ 
+          <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
+ 
+          <!--Optional:-->
+ 
+          <sch:dataFormat>XML</sch:dataFormat>
+ 
+          <!--Optional:-->
+ 
+          <sch:requestorRefNo>REQ_REFNO_9876</sch:requestorRefNo>
+ 
+          <!--Optional:-->
+ 
+          <sch:supplierRefNo>String</sch:supplierRefNo>
+ 
+          <!--Optional:-->
+ 
+          <sch:bulkRequestHeaderID>String</sch:bulkRequestHeaderID>
+ 
+          <!--Optional:-->
+ 
+          <sch:docCompositionEngineID></sch:docCompositionEngineID>
+ 
+        </sch:requestHeader>
+ 
+        <sch:requestDetail>
+ 
+          <!--1 to 10 repetitions:-->
+ 
+          <sch:bulkRequestDetail>
+ 
+            <!--Optional:-->
+ 
+            <sch:filePath>/MissionControl/ACET</sch:filePath>
+ 
+            <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
+ 
+            <sch:fileSize>4096</sch:fileSize>
+ 
+            <!--Optional:-->
+ 
+            <sch:ecgDetail>text</sch:ecgDetail>
+ 
+            <!--Optional:-->
+ 
+            <sch:sourceDetail>text</sch:sourceDetail>
+ 
+          </sch:bulkRequestDetail>
+ 
+        </sch:requestDetail>
+ 
+        <!--Optional:-->
+ 
+        <sch:requestTrailer>
+ 
+          <sch:requestItemCount>10000</sch:requestItemCount>
+ 
+        </sch:requestTrailer>
+ 
+      </sch:fulfillmentRequest>
+ 
+    </sch:processFulfillmentRequest>

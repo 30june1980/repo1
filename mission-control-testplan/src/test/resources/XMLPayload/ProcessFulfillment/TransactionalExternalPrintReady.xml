@@ -7,14 +7,14 @@
 		<sch:requestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>Cirrus</sch:sourceID>
+			<sch:sourceID>CIRRUS</sch:sourceID>
 			<!--Optional: -->
 			<sch:destinationID>SBS</sch:destinationID>
 			<!--Optional: -->
 			<sch:requestDate>2017-05-17T09:30:47Z</sch:requestDate>
 			<!--Optional: -->
 			<sch:requestType>Process</sch:requestType>
-			<sch:businessSegmentID>E&amp;I</sch:businessSegmentID>
+			<sch:businessSegmentID>EI</sch:businessSegmentID>
 			<sch:marketSegmentCd>OXF</sch:marketSegmentCd>
 			<!--Optional: -->
 			<sch:fulfillmentType>10000</sch:fulfillmentType>
@@ -42,9 +42,9 @@
 					<sch:recipientId>111223333</sch:recipientId>
 					<sch:idQualifier>SocialSecIDType</sch:idQualifier>
 					<!--Optional: -->
-					<sch:deliveryMethod1>Email</sch:deliveryMethod1>
+					<sch:deliveryMethod1>Emailed</sch:deliveryMethod1>
 					<!--Optional: -->
-					<sch:deliveryMethod2>Fax</sch:deliveryMethod2>
+					<sch:deliveryMethod2></sch:deliveryMethod2>
 					<sch:recipientType>MemberType</sch:recipientType>
 					<!--You have a CHOICE of the next 2 items at this level -->
 					<!--Optional: -->
@@ -112,7 +112,7 @@
 					<!--Optional: -->
 					<sch:externalFileType>
 						<!--Optional: -->
-						<sch:filePath>/MissionControl</sch:filePath>
+						<sch:filePath>/MissionControl/CIRRUS</sch:filePath>
 						<sch:fileName>bulkfile_all_valid.xml</sch:fileName>
 						<sch:fileSize>9999</sch:fileSize>
 					</sch:externalFileType>
