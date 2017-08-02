@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sch:postFulfillmentRequestStatus
+	xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema"
+	xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<sch:fulfillmentRequestStatus>
+		<sch:requestHeader>
+			<sch:requestID>REQUEST_101</sch:requestID>
+			<!--Optional: -->
+			<sch:sourceID>CIRRUS</sch:sourceID>
+			<!--Optional: -->
+			<sch:destinationID>SBS</sch:destinationID>
+			<!--Optional: -->
+			<sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
+			<!--Optional: -->
+			<sch:requestType>PostStatus</sch:requestType>
+			<!--Optional: -->
+			<sch:businessSegmentID>EI</sch:businessSegmentID>
+			<!--Optional: -->
+			<sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+			<!--Optional: -->
+			<sch:fulfillmentType>10000</sch:fulfillmentType>
+			<!--Optional: -->
+			<sch:requestCategory>BulkPrintReady</sch:requestCategory>
+			<!--Optional: -->
+			<sch:serviceLevelCategory>String</sch:serviceLevelCategory>
+			<!--Optional: -->
+			<sch:dataFormat>XML</sch:dataFormat>
+			<!--Optional: -->
+			<sch:requestorRefNo>UHG_EOB_112233</sch:requestorRefNo>
+			<!--Optional: -->
+			<sch:supplierRefNo>PS_REF_2016010112345</sch:supplierRefNo>
+			<!--Optional: -->
+			<sch:bulkRequestHeaderID>String</sch:bulkRequestHeaderID>
+			<!--Optional: -->
+			<sch:docCompositionEngineID>DC_COMP_ENGINE_001
+			</sch:docCompositionEngineID>
+		</sch:requestHeader>
+		<!--1 to 7 repetitions: -->
+		<sch:requestHistory>
+			<sch:processor>PRINT_SUPPLIER_2345</sch:processor>
+			<sch:eventType>Cancelled</sch:eventType>
+			<sch:receivedDate>2001-12-17T09:31:47Z</sch:receivedDate>
+			<!--Optional: -->
+			<sch:dispatchedDate>2001-12-17T09:32:47Z</sch:dispatchedDate>
+			<sch:statusCode>Accepted</sch:statusCode>
+			<sch:successCount>1</sch:successCount>
+			<sch:exceptionCount>0</sch:exceptionCount>
+			<!--0 to 50 repetitions: -->
+			<sch:exceptionDetail>
+				<sch:errorCode>String</sch:errorCode>
+				<sch:message>String</sch:message>
+			</sch:exceptionDetail>
+			<sch:exceptionDetail>
+				<sch:errorCode>String</sch:errorCode>
+				<sch:message>String</sch:message>
+			</sch:exceptionDetail>
+			<sch:exceptionDetail>
+				<sch:errorCode>String</sch:errorCode>
+				<sch:message>String</sch:message>
+			</sch:exceptionDetail>
+			<!--0 to 20 repetitions: -->
+			<sch:postFeedback>
+				<!--Optional: -->
+				<v7:name>String</v7:name>
+				<!--Optional: -->
+				<v7:value>String</v7:value>
+			</sch:postFeedback>
+			<sch:postFeedback>
+				<!--Optional: -->
+				<v7:name>String</v7:name>
+				<!--Optional: -->
+				<v7:value>String</v7:value>
+			</sch:postFeedback>
+			<sch:postFeedback>
+				<!--Optional: -->
+				<v7:name>String</v7:name>
+				<!--Optional: -->
+				<v7:value>String</v7:value>
+			</sch:postFeedback>
+		</sch:requestHistory>
+		<!--Optional: -->
+		<sch:postItemStatusBulkDetail>
+			<!--Optional: -->
+			<sch:filePath>/MissionControl/RRD</sch:filePath>
+			<sch:fileName>bulkfile_all_valid.xml</sch:fileName>
+			<sch:fileSize>100</sch:fileSize>
+			<!--Optional: -->
+			<sch:ecgDetail>text</sch:ecgDetail>
+			<!--Optional: -->
+			<sch:sourceDetail>text</sch:sourceDetail>
+		</sch:postItemStatusBulkDetail>
+		<sch:requestTrailer>
+			<sch:requestItemCount>1</sch:requestItemCount>
+		</sch:requestTrailer>
+	</sch:fulfillmentRequestStatus>
+</sch:postFulfillmentRequestStatus>

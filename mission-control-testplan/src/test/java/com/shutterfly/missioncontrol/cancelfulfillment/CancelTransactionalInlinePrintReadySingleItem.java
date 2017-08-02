@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.processfulfillment;
+package com.shutterfly.missioncontrol.cancelfulfillment;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.hamcrest.Matchers.equalTo;
@@ -31,24 +31,25 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
+public class CancelTransactionalInlinePrintReadySingleItem extends ConfigLoader {
 	/**
 	 * 
 	 */
 	String uri = "";
 	String payload = "";
-	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	String record = "";
 
 	private String getProperties() {
 		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
 		return uri;
+
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlinePrintReadyMultItem.xml");
+		URL file = Resources.getResource("XMLPayload/PostFulfillment/CancelTransactionalInlinePrintReadySingleItem.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
+		record = cwr.getRequestIdByKeys("TIPRSI");
 
 		return payload = payload.replaceAll("REQUEST_101", record);
 
@@ -56,23 +57,22 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TIPRMI_XML")
+	@Test(groups = "Test_CTIPRSI_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").accept("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv("TIPRMI",record);
 
 	}
 
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(groups = "database", dependsOnGroups = { "Test_TIPRMI_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_CTIPRSI_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
 		Thread.sleep(20000);
