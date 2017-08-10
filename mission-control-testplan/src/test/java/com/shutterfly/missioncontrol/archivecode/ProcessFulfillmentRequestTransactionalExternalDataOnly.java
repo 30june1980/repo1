@@ -1,10 +1,10 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.restful;
+package com.shutterfly.missioncontrol.archivecode;
 
-import static com.mongodb.client.model.Filters.eq;
 import static org.hamcrest.Matchers.equalTo;
+import static com.mongodb.client.model.Filters.eq;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends ConfigLoader {
+public class ProcessFulfillmentRequestTransactionalExternalDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -47,7 +47,7 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 	}
 
 	private String buildJson() throws IOException {
-		URL file = Resources.getResource("payload/TransactionalExternalPrintReady.json");
+		URL file = Resources.getResource("payload/TransactionalExternalDataOnly.json");
 		myJson = Resources.toString(file, StandardCharsets.UTF_8);
 
 		return myJson = myJson.replaceAll("REQUEST_101", record);
@@ -56,7 +56,7 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_TEPR")
+	@Test(groups = "Test_TEDO")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("samlValue", config.getProperty("SamlValue")).log().all()
@@ -65,18 +65,18 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
-		cwr.writeToCsv("TEPR_JSON",record);
+		cwr.writeToCsv("TEDO_JSON",record);
 
 	}
 
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(dependsOnGroups = { "Test_TEPR" })
+	@Test(groups = "database", dependsOnGroups = { "Test_TEDO" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
-		Thread.sleep(20000);
 		client = connectToDatabase.getMongoConnection();
 		basicConfigNonWeb();
+		Thread.sleep(20000);
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");
 		MongoCollection<Document> fulfillment_status_tracking = database.getCollection("fulfillment_status_tracking");
@@ -89,7 +89,6 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 		 */
 		Document fulfillment_tracking_record_doc = fulfillment_tracking_record.find(eq("requestId", record)).first();
 		fulfillment_tracking_record_doc.containsKey("requestId");
-
 		Assert.assertEquals(record, fulfillment_tracking_record_doc.getString("requestId"));
 
 		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();

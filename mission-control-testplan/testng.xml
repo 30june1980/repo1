@@ -73,4 +73,24 @@
 				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostTransactionalInlinePrintReadySingleItem" />
 		</classes>
 	</test>
+
+	<test name="ProcessArchive">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadyMultItem" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadySingleItem" />
+
+		</classes>
+	</test>
 </suite> <!-- Suite -->

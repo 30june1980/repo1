@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.sample;
+package com.shutterfly.missioncontrol.archivecode;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

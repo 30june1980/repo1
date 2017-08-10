@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.crudoperations;
+package com.shutterfly.missioncontrol.archivecode;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

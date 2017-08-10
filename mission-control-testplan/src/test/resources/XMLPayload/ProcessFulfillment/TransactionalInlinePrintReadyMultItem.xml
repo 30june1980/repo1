@@ -11,7 +11,7 @@
 			<requestType>Process</requestType>
 			<businessSegmentID>EI</businessSegmentID>
 			<marketSegmentCd>OXF</marketSegmentCd>
-			<fulfillmentType>10700</fulfillmentType>
+			<fulfillmentType>10200</fulfillmentType>
 			<requestCategory>TransactionalInlinePrintReadyMultItem</requestCategory>
 			<serviceLevelCategory></serviceLevelCategory>
 			<dataFormat>XML</dataFormat>

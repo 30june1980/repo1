@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.sample;
+package com.shutterfly.missioncontrol.archivecode;
 
 import static com.mongodb.client.model.Filters.*;
 import org.bson.Document;

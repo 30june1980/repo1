@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <sch:processArchiveRequest xmlns:xs="http://www.w3.org/2003/05/soap-envelope" xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
+            <sch:archiveRequest>
+                <sch:archiveRequestHeader>
+                    <sch:requestID>REQUEST_101</sch:requestID>
+                    <!--Optional:-->
+                    <sch:sourceID>CIRRUS</sch:sourceID>
+                    <!--Optional:-->
+                    <sch:destinationID>SBS</sch:destinationID>
+                    <!--Optional:-->
+                    <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
+                    <!--Optional:-->
+                    <sch:requestType>Archive</sch:requestType>
+                    <!--Optional:-->
+                    <sch:businessSegmentID>EI</sch:businessSegmentID>
+                    <!--Optional:-->
+                    <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+                    <!--Optional:-->
+                    <sch:fulfillmentType>10700</sch:fulfillmentType>
+                    <!--Optional:-->
+                    <sch:requestCategory>ProcessArchiveTransactionalInlinePrintReadyMultItem</sch:requestCategory>
+                    <!--Optional:-->
+                    <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
+                    <!--Optional:-->
+                    <sch:dataFormat>XML</sch:dataFormat>
+                    <!--Optional:-->
+                    <sch:requestorRefNo>REQ_MNB12</sch:requestorRefNo>
+                    <!--Optional:-->
+                    <sch:supplierRefNo>SUP_900098</sch:supplierRefNo>
+                    <!--Optional:-->
+                    <sch:bulkRequestHeaderID>String</sch:bulkRequestHeaderID>
+                    <!--Optional:-->
+                    <sch:docCompositionEngineID></sch:docCompositionEngineID>
+                </sch:archiveRequestHeader>
+                <sch:archiveRequestDetail>
+                    <!--You have a CHOICE of the next 2 items at this level-->
+                    <sch:archiveTransactionalDetail>
+                        <sch:data>
+                            <!--Optional:-->
+                            <sch:contentFormatType>
+                                <!--Optional:-->
+                                <sch:contentStream>Binary content stream of document</sch:contentStream>
+                                <!--Optional:-->
+                                <sch:documentType>DOC_CLASS_123</sch:documentType>
+                                <!--Optional:-->
+                                <sch:mimeType>String</sch:mimeType>
+                                <!--0 to 20 repetitions:-->
+                                <sch:documentMetadata>
+                                    <!--Optional:-->
+                                    <v7:name>postingDate</v7:name>
+                                    <!--Optional:-->
+                                    <v7:value>mm/dd/yyyy</v7:value>
+                                </sch:documentMetadata>
+                                <sch:documentMetadata>
+                                    <!--Optional:-->
+                                    <v7:name>memberID</v7:name>
+                                    <!--Optional:-->
+                                    <v7:value>Some member ID value</v7:value>
+                                </sch:documentMetadata>
+                            </sch:contentFormatType>
+                        </sch:data>
+                    </sch:archiveTransactionalDetail>
+                </sch:archiveRequestDetail>
+                <!--Optional:-->
+                <sch:requestTrailer>
+                    <sch:requestItemCount>1</sch:requestItemCount>
+                </sch:requestTrailer>
+            </sch:archiveRequest>
+        </sch:processArchiveRequest>

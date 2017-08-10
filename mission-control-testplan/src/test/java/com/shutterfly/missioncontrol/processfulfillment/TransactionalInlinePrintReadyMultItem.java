@@ -35,8 +35,9 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = "";
-	String payload = "";
+	private String uri = "";
+	private String payload = "";
+	
 	long millis = System.currentTimeMillis();
 	String record = "Test_qa_" + millis;
 
@@ -60,7 +61,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").accept("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",

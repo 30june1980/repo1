@@ -35,10 +35,10 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = "";
-	String payload = "";
-	String record = "";
-
+	private String uri = "";
+	private String payload = "";
+	 private String record = "";
+	 
 	private String getProperties() {
 		basicConfigNonWeb();
 		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");

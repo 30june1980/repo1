@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.soap;
+package com.shutterfly.missioncontrol.archivecode;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.testng.Assert.assertEquals;

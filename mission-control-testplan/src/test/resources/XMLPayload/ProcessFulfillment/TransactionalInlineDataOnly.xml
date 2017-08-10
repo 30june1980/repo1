@@ -14,7 +14,7 @@
          <sch:businessSegmentID>EI</sch:businessSegmentID>
          <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
          <!--Optional:-->
-         <sch:fulfillmentType>10000</sch:fulfillmentType>
+         <sch:fulfillmentType>10200</sch:fulfillmentType>
          <!--Optional:-->
          <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
          <!--Optional:-->

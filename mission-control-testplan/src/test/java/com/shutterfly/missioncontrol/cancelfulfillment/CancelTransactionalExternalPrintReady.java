@@ -35,9 +35,9 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = "";
-	String payload = "";
-	String record = "";
+	private String uri = "";
+	private String payload = "";
+	private String record = "";
 
 	private String getProperties() {
 		basicConfigNonWeb();

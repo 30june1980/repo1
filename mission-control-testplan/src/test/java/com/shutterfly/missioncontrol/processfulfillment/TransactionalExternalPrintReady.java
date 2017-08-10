@@ -35,8 +35,9 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = "";
-	String payload = "";
+	private String uri = "";
+	private String payload = "";
+	
 	long millis = System.currentTimeMillis();
 	String record = "Test_qa_" + millis;
 

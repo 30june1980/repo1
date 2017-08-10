@@ -35,9 +35,9 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 	/**
 	 * 
 	 */
-	String uri = "";
-	String payload = "";
-	String record = "";
+	private String uri = "";
+	private String payload = "";
+	private String record = "";
 
 	private String getProperties() {
 		basicConfigNonWeb();
@@ -47,7 +47,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
+		URL file = Resources.getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("TIDO");
 

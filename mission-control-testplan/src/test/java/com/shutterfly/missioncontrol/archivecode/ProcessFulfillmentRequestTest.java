@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.soap;
+package com.shutterfly.missioncontrol.archivecode;
 
 import java.util.HashMap;
 import java.util.Map;

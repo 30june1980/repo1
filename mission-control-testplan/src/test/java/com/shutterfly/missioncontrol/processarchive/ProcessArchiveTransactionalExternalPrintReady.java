@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.cancelpostfulfillment;
+package com.shutterfly.missioncontrol.processarchive;
 
 import static com.mongodb.client.model.Filters.eq;
 import static org.hamcrest.Matchers.equalTo;
@@ -31,25 +31,23 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class CancelPostBulkPrintReady extends ConfigLoader {
-	/**
-	 * 
-	 */
+public class ProcessArchiveTransactionalExternalPrintReady extends ConfigLoader {
+
 	private String uri = "";
 	private String payload = "";
 	private String record = "";
 
 	private String getProperties() {
 		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
+		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessArchive");
 		return uri;
 
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostBulkPrintReadyOnly.xml");
+		URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveTransactionalExternalPrintReady.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
-		record = cwr.getRequestIdByKeys("BPRO");
+		record = cwr.getRequestIdByKeys("TEPR");
 
 		return payload = payload.replaceAll("REQUEST_101", record);
 
@@ -57,7 +55,7 @@ public class CancelPostBulkPrintReady extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_CPBPR_XML")
+	@Test(groups = "Test_PATEPR_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
@@ -72,7 +70,7 @@ public class CancelPostBulkPrintReady extends ConfigLoader {
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	@Test(groups = "database", dependsOnGroups = { "Test_CPBPR_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_PATEPR_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
 		Thread.sleep(20000);
