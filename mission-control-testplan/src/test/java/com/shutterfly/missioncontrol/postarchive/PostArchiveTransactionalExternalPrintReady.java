@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.postfulfillment;
+package com.shutterfly.missioncontrol.postarchive;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
@@ -24,7 +24,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class PostTransactionalExternalDataOnly extends ConfigLoader {
+public class PostArchiveTransactionalExternalPrintReady extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -40,9 +40,9 @@ public class PostTransactionalExternalDataOnly extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostTransactionalExternalDataOnly.xml");
+		URL file = Resources.getResource("XMLPayload/PostArchive/PostArchiveTransactionalExternalPrintReady.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
-		record = cwr.getRequestIdByKeys("TEDO");
+		record = cwr.getRequestIdByKeys("TEPR");
 
 		return payload = payload.replaceAll("REQUEST_101", record);
 
@@ -50,7 +50,7 @@ public class PostTransactionalExternalDataOnly extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PTEDO_XML")
+	@Test(groups = "Test_PATEPR_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
@@ -62,8 +62,7 @@ public class PostTransactionalExternalDataOnly extends ConfigLoader {
 
 	}
 
-
-	@Test(groups = "database", dependsOnGroups = { "Test_PTEDO_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_PATEPR_XML" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);

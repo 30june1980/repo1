@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="1" name="Suite">
-	<test name="Process">
+	<test name="ProcessFulfillment">
 		<classes>
 			<class
 				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalPrintReady" />
@@ -17,8 +17,6 @@
 				name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly" />
 			<class
 				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadySingleItem" />
-
-
 		</classes>
 	</test>
 	<test name="PostFulfillment">
@@ -91,6 +89,31 @@
 			<class
 				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadySingleItem" />
 
+		</classes>
+	</test>
+
+	<test name="PostArchive">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalInlinePrintReadySingleItem" />
+		</classes>
+	</test>
+	<test name="StatusAcknowledgement">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkDataOnly" />
 		</classes>
 	</test>
 </suite> <!-- Suite -->

@@ -8,9 +8,9 @@
 		<sch:requestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>ACET</sch:sourceID>
+			<sch:sourceID>RRD</sch:sourceID>
 			<!--Optional: -->
-			<sch:destinationID>RRD</sch:destinationID>
+			<sch:destinationID>ACET</sch:destinationID>
 			<!--Optional: -->
 			<sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
 			<!--Optional: -->
