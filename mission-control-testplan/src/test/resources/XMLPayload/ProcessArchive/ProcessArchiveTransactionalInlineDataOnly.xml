@@ -2,11 +2,11 @@
  <sch:processArchiveRequest xmlns:xs="http://www.w3.org/2003/05/soap-envelope" xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
             <sch:archiveRequest>
                 <sch:archiveRequestHeader>
-                    <sch:requestID>REQUEST_101</sch:requestID>
+                    <sch:requestID>rn1110027</sch:requestID>
                     <!--Optional:-->
                     <sch:sourceID>CIRRUS</sch:sourceID>
                     <!--Optional:-->
-                    <sch:destinationID>SBS</sch:destinationID>
+                    <sch:destinationID>EDMS</sch:destinationID>
                     <!--Optional:-->
                     <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
                     <!--Optional:-->
@@ -16,7 +16,7 @@
                     <!--Optional:-->
                     <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>10700</sch:fulfillmentType>
+                    <sch:fulfillmentType>10200</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
                     <!--Optional:-->
@@ -35,6 +35,67 @@
                 <sch:archiveRequestDetail>
                     <!--You have a CHOICE of the next 2 items at this level-->
                     <sch:archiveTransactionalDetail>
+                        <sch:recipient>
+                            <sch:recipientId>111223333</sch:recipientId>
+                            <!--Optional:-->
+                            <sch:idQualifier>SocialSecIDType</sch:idQualifier>
+                            <!--Optional:-->
+                            <sch:deliveryMethod1>Mailed</sch:deliveryMethod1>
+                            <!--Optional:-->
+                            <sch:deliveryMethod2>Emailed</sch:deliveryMethod2>
+                            <!--Optional:-->
+                            <sch:recipientType>MemberType</sch:recipientType>
+                            <sch:person>
+                                <!--Optional:-->
+                                <sch:prefix>Mr.</sch:prefix>
+                                <!--Optional:-->
+                                <sch:firstName>SampleFirstName</sch:firstName>
+                                <!--Optional:-->
+                                <sch:middleName>String</sch:middleName>
+                                <!--Optional:-->
+                                <sch:lastName>SampleLastName</sch:lastName>
+                                <!--Optional:-->
+                                <sch:suffix>Jr</sch:suffix>
+                            </sch:person>
+                            <!--You have a CHOICE of the next 2 items at this level-->
+                            <!--Optional:-->
+                            <sch:MailToAddress>
+                                <!--Optional:-->
+                                <sch:Address1>1001 Main Street</sch:Address1>
+                                <!--Optional:-->
+                                <sch:Address2>String</sch:Address2>
+                                <!--Optional:-->
+                                <sch:Address3>String</sch:Address3>
+                                <!--Optional:-->
+                                <sch:City>Main City</sch:City>
+                                <!--Optional:-->
+                                <sch:State>CA</sch:State>
+                                <!--Optional:-->
+                                <sch:Zip>999999</sch:Zip>
+                            </sch:MailToAddress>
+                            <sch:ReturnToAddressInternational>
+                                <!--Optional:-->
+                                <sch:Address1>1A Some Street Name</sch:Address1>
+                                <!--Optional:-->
+                                <sch:Address2>String</sch:Address2>
+                                <!--Optional:-->
+                                <sch:Address3>String</sch:Address3>
+                                <!--Optional:-->
+                                <sch:City>String?</sch:City>
+                                <!--Optional:-->
+                                <sch:Province>SomeProvinceName</sch:Province>
+                                <!--Optional:-->
+                                <sch:PostalCD>String</sch:PostalCD>
+                                <!--Optional:-->
+                                <sch:Country>999</sch:Country>
+                            </sch:ReturnToAddressInternational>
+                            <!--Optional:-->
+                            <sch:faxNumber>String</sch:faxNumber>
+                            <!--Optional:-->
+                            <sch:emailAddress>SomeEmailAddress.com</sch:emailAddress>
+                            <!--Optional:-->
+                            <sch:carbonCopyInd>false</sch:carbonCopyInd>
+                        </sch:recipient>
                         <sch:data>
                             <!--Optional:-->
                             <sch:contentFormatType>
