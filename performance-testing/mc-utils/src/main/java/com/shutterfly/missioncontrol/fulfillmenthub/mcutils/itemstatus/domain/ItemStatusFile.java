@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus;
+package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

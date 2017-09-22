@@ -1,6 +1,5 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config;
 
-import java.io.File;
 import lombok.Getter;
 import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +15,11 @@ import org.springframework.integration.file.remote.session.CachingSessionFactory
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.integration.ftp.session.DefaultFtpsSessionFactory;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.util.Base64Utils;
 
 @Configuration
 public class FtpConfiguration {
-
-  @Value("${mc.ftp.remote.dir}")
-  private String remoteDirectory;
 
   @Value("${mc.ftp.username}")
   private String username;
@@ -35,10 +32,6 @@ public class FtpConfiguration {
 
   @Value("${mc.ftp.port}")
   private int port;
-
-  @Value("${mc.local.file.to.upload}")
-  @Getter
-  private String localFilePathToUpload;
 
   @Bean
   public SessionFactory<FTPFile> ftpSessionFactory() {
@@ -56,17 +49,16 @@ public class FtpConfiguration {
         .handle(Ftp.outboundAdapter(ftpSessionFactory(), FileExistsMode.REPLACE)
             .useTemporaryFileName(true)
             .autoCreateDirectory(true)
-            .fileNameExpression("headers['" + FileHeaders.FILENAME + "']")
-            .remoteDirectory(remoteDirectory)).get();
+            .remoteDirectory("/")
+            .fileNameExpression("headers['" + FileHeaders.FILENAME + "']")).get();
   }
 
   @MessagingGateway
   public interface FtpGateway {
 
     @Gateway(requestChannel = "toMcFtpChannel")
-    void sendToFtp(File file);
+    void send(byte[] data, @Header(name = FileHeaders.FILENAME) String filePath);
+
   }
-
-
 
 }

@@ -1,0 +1,99 @@
+package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.dto.ItemStatusFileLocationDto;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc.STATUS;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileLocationDoc;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusFileLocationRepo;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusGenerationRequestTrackingRepo;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.service.ItemStatusFileService;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.UUID;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Slf4j
+public class ItemStatusController {
+
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+  private ItemStatusFileService itemStatusFileService;
+
+  private ItemStatusGenerationRequestTrackingRepo itemStatusGenerationRequestTrackingRepo;
+
+  private ItemStatusFileLocationRepo itemStatusFileLocationRepo;
+
+  @Autowired
+  public ItemStatusController(ItemStatusFileService itemStatusFileService,
+      ItemStatusGenerationRequestTrackingRepo itemStatusGenerationRequestTrackingRepo,
+      ItemStatusFileLocationRepo itemStatusFileLocationRepo) {
+    this.itemStatusFileService = itemStatusFileService;
+    this.itemStatusGenerationRequestTrackingRepo = itemStatusGenerationRequestTrackingRepo;
+    this.itemStatusFileLocationRepo = itemStatusFileLocationRepo;
+  }
+
+  @PostMapping("/item-status-file/generate")
+  public String generate(
+      @RequestBody ItemStatusFileGenerationRequest itemStatusFileGenerationRequest) {
+    ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc = new ItemStatusFileGenerationRequestTrackingDoc();
+    String uuid = UUID.randomUUID().toString();
+    itemStatusGenerationRequestTrackingDoc.setId(uuid);
+    itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.NEW);
+    itemStatusGenerationRequestTrackingDoc
+        .setItemStatusFileGenerationRequest(itemStatusFileGenerationRequest);
+    itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
+    log.info("Request for generating item status files is accepted. Request id is: {}", uuid);
+    itemStatusFileService.generateItemStatusFile(itemStatusGenerationRequestTrackingDoc);
+    return uuid;
+  }
+
+  @GetMapping(value = "/item-status-file/status/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<StatusQueryResponse> getStatus(@PathVariable String id) {
+    ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc = itemStatusGenerationRequestTrackingRepo
+        .findOne(id);
+    if (Objects.isNull(itemStatusGenerationRequestTrackingDoc)) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity
+        .ok(new StatusQueryResponse(itemStatusGenerationRequestTrackingDoc.getStatus()));
+  }
+
+  @GetMapping(value = "/item-status-file/file-locations/{id}")
+  public void getItemStatusFileLocations(
+      @PathVariable String id, HttpServletResponse response) throws IOException {
+    ItemStatusFileLocationDoc doc = itemStatusFileLocationRepo
+        .findOne(id);
+    if (Objects.nonNull(doc)) {
+      response.setHeader("Content-Disposition", "attachment; filename=\"" + id + ".json\"");
+      response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+      ServletOutputStream outputStream = response.getOutputStream();
+      StringWriter stringWriter = new StringWriter();
+      OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValue(stringWriter, doc.toDto());
+      InputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes(
+          StandardCharsets.UTF_8.name()));
+      IOUtils.copy(inputStream, outputStream);
+      outputStream.close();
+      inputStream.close();
+    }
+  }
+
+
+}
