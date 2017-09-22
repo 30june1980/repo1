@@ -16,4 +16,6 @@ public class StatusQueryResponse {
 
   private STATUS status;
 
+  private String statusDetail;
+
 }

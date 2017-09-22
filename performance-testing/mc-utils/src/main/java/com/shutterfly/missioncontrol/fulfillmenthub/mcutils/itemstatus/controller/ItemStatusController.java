@@ -1,7 +1,6 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.dto.ItemStatusFileLocationDto;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc.STATUS;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileLocationDoc;
@@ -11,7 +10,6 @@ import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.service.I
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -61,8 +59,18 @@ public class ItemStatusController {
         .setItemStatusFileGenerationRequest(itemStatusFileGenerationRequest);
     itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
     log.info("Request for generating item status files is accepted. Request id is: {}", uuid);
-    itemStatusFileService.generateItemStatusFile(itemStatusGenerationRequestTrackingDoc);
+    itemStatusFileService.generateItemStatusFile(itemStatusFileGenerationRequest.getRequests(),
+        itemStatusGenerationRequestTrackingDoc);
     return uuid;
+  }
+
+  @PostMapping("/item-status-file/generate/retry/{id}")
+  public void retry(String id) {
+    ItemStatusFileGenerationRequestTrackingDoc itemStatusFileGenerationRequestTrackingDoc = itemStatusGenerationRequestTrackingRepo
+        .findOne(id);
+    itemStatusFileService.generateItemStatusFile(
+        itemStatusFileGenerationRequestTrackingDoc.getItemStatusFileGenerationRequest()
+            .getRequests(), itemStatusFileGenerationRequestTrackingDoc);
   }
 
   @GetMapping(value = "/item-status-file/status/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,7 +81,8 @@ public class ItemStatusController {
       return ResponseEntity.notFound().build();
     }
     return ResponseEntity
-        .ok(new StatusQueryResponse(itemStatusGenerationRequestTrackingDoc.getStatus()));
+        .ok(new StatusQueryResponse(itemStatusGenerationRequestTrackingDoc.getStatus(),
+            itemStatusGenerationRequestTrackingDoc.getStatusDetail()));
   }
 
   @GetMapping(value = "/item-status-file/file-locations/{id}")

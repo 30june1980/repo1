@@ -29,6 +29,8 @@ public class ItemStatusFileGenerationRequestTrackingDoc {
 
   private STATUS status;
 
+  private String statusDetail;
+
   private ItemStatusFileGenerationRequest itemStatusFileGenerationRequest;
 
 }
