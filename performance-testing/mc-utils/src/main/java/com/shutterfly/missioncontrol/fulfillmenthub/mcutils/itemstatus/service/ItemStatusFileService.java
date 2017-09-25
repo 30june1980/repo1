@@ -1,6 +1,8 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.service;
 
+import com.rits.cloning.Cloner;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.doc.FulfillmentTrackingRecordDoc;
+import com.shutterfly.missioncontrol.fulfillmenthub.core.dto.FulfillmentTrackingDetailsDto;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.FulfillmentRequest;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.Recipient;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.RequestHeader;
@@ -8,6 +10,9 @@ import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.RequestTrailer;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.date.DateUtil;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.EventType;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.FulfillmentStatus;
+import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.ParticipantType;
+import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.RequestCategory;
+import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.RequestType;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.StatusCodeType;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.FtpGateway;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.ItemStatusFile;
@@ -23,6 +28,7 @@ import com.uhc.dms_fsl.fulfillment.schema.v2.BatchStatus;
 import com.uhc.dms_fsl.fulfillment.schema.v2.BatchStatus.BatchStatusItems;
 import com.uhc.dms_fsl.fulfillment.schema.v2.BatchStatus.BatchStatusItems.BatchItemStatusDetail;
 import com.uhc.dms_fsl.fulfillment.schema.v2.ObjectFactory;
+import com.uhc.dms_fsl.fulfillment.schema.v2.RecipientType;
 import com.uhc.dms_fsl.fulfillment.schema.v2.RequestHistoryType;
 import java.io.StringWriter;
 import java.math.BigInteger;
@@ -37,6 +43,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +62,8 @@ public class ItemStatusFileService {
   private final FulfillmentTrackingRecordRepo fulfillmentTrackingRecordRepo;
 
   private static final ObjectFactory OBJECT_FACTORY = new ObjectFactory();
+
+  private static final Cloner CLONER = new Cloner();
 
   private FtpGateway gateway;
 
@@ -92,10 +102,14 @@ public class ItemStatusFileService {
       if (areRequestIdsValid) {
         boolean areNotAllRequestsTaggedWithBulkId = fulfillmentTrackingRecordDao
             .existsRequestNotTaggedWithBulkRequestId(requestIds);
-        if (!areNotAllRequestsTaggedWithBulkId) {
+        if (areNotAllRequestsTaggedWithBulkId) {
           handleError(itemStatusGenerationRequestTrackingDoc,
               "Not all request ids are tagged with bulk request ids.");
         } else {
+          itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.PROCESSING);
+          itemStatusGenerationRequestTrackingDoc
+              .setStatusDetail("Item status file generated successfully.");
+          itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
           List<FulfillmentTrackingRecordDoc> fulfillmentTrackingRecordDocs = fulfillmentTrackingRecordDao
               .getFulfillmentTrackingRecordDocs(requestIds);
           Set<String> bulkRequestIds = new HashSet<>();
@@ -109,6 +123,10 @@ public class ItemStatusFileService {
           itemStatusFileLocationRepo.save(itemStatusFileLocationDoc);
           log.info("Successfully processed request for item status files generation with id: {}",
               uuid);
+          itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.COMPLETE);
+          itemStatusGenerationRequestTrackingDoc
+              .setStatusDetail("Item status file generated successfully.");
+          itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
         }
       } else {
         handleError(itemStatusGenerationRequestTrackingDoc, "Not all requests ids are valid.");
@@ -135,7 +153,8 @@ public class ItemStatusFileService {
     try {
       FulfillmentTrackingRecordDoc bulkRequestDoc = fulfillmentTrackingRecordRepo
           .findByRequestId(bulkRequestId);
-      if (FulfillmentStatus.SENT_TO_SUPPLIER.equals(bulkRequestDoc.getCurrentFulfillmentStatus())) {
+      if (FulfillmentStatus.SENT_TO_SUPPLIER.getValue()
+          .equals(bulkRequestDoc.getCurrentFulfillmentStatus())) {
         ItemStatusFile itemStatusFile = new ItemStatusFile();
         itemStatusFile.setBulkRequestId(bulkRequestId);
         log.info("Generating item status file for bulk request with id: {}", bulkRequestId);
@@ -149,24 +168,34 @@ public class ItemStatusFileService {
             .getFulfillmentRequest();
         batchStatus.setBatchStatusHeader(
             RequestHeader.from(bulkRequestDocFulfillmentRequest.getRequestHeader()));
+        batchStatus.getBatchStatusHeader().setBulkRequestHeaderID(StringUtils.EMPTY);
+        batchStatus.getBatchStatusHeader().setRequestType(RequestType.POSTSTATUS.getValue());
+        batchStatus.getBatchStatusHeader()
+            .setSourceID(FulfillmentTrackingDetailsDto.getVendor(bulkRequestDoc));
+        batchStatus.getBatchStatusHeader()
+            .setDestinationID(ParticipantType.getHub().getName());
+        batchStatus.setBatchStatusItems(getBatchStatusItems(matchingIndividualRequestDocs));
         batchStatus.setBatchStatusTrailer(
             RequestTrailer.from(bulkRequestDocFulfillmentRequest.getRequestTrailer()));
-        batchStatus.setBatchStatusItems(getBatchStatusItems(matchingIndividualRequestDocs));
+        batchStatus.getBatchStatusTrailer().setRequestItemCount(
+            batchStatus.getBatchStatusItems().getBatchItemStatusDetail().size());
         Marshaller marshaller = JAXBContext.newInstance(BatchStatus.class).createMarshaller();
         StringWriter stringWriter = new StringWriter();
         marshaller.marshal(batchStatus, stringWriter);
         log.info("Successfully generated item status file for bulk request with id: {}",
             bulkRequestId);
-        String filePath = remoteDirectory + UUID.randomUUID().toString() + ".xml";
+        String fileName = UUID.randomUUID().toString() + ".xml";
+        String filePath = remoteDirectory + fileName;
         gateway.send(stringWriter.toString().getBytes(), filePath);
         log.info("Successfully generated item status file for bulk request with id: {}",
             bulkRequestId);
-        itemStatusFile.setItemStatusFilePath(filePath);
+        itemStatusFile.setFolder(remoteDirectory);
+        itemStatusFile.setItemStatusFileName(fileName);
         return itemStatusFile;
       } else {
         log.error("Bulk request with id {} not sent to supplier.", bulkRequestId);
         throw new RuntimeException(
-            "Bulk request with id " + bulkRequestId + "not sent to supplier.");
+            "Bulk request with id " + bulkRequestId + " not sent to supplier.");
       }
     } catch (JAXBException exception) {
       throw new RuntimeException(exception);
@@ -189,25 +218,46 @@ public class ItemStatusFileService {
     FulfillmentRequest fulfillmentRequest = fulfillmentTrackingRecordDoc.getFulfillmentRequest();
     batchItemStatusDetail.setBatchItemRequest(
         FulfillmentRequest.from(fulfillmentRequest));
+    List<RecipientType> recipients = batchItemStatusDetail.getBatchItemRequest().getRequestDetail()
+        .getTransactionalRequestDetail().getRecipient();
+    List<RecipientType> recipientsToBeAdded = new ArrayList<>();
+    recipients.forEach(recipient -> {
+          recipientsToBeAdded.add(cloneRecipient(recipient));
+        }
+    );
+    recipients.addAll(recipientsToBeAdded);
     fulfillmentRequest.getRequestDetail().getTransactionalRequestDetail().getRecipientList()
         .forEach(recipient -> {
           batchItemStatusDetail.getBatchItemEventLog()
-              .add(getBatchItemEventLog(recipient));
+              .add(
+                  getBatchItemEventLog(recipient.getRecipientId(), recipient.getDeliveryMethod1()));
+          batchItemStatusDetail.getBatchItemEventLog()
+              .add(
+                  getBatchItemEventLog(recipient.getRecipientId(), recipient.getDeliveryMethod2()));
         });
     return batchItemStatusDetail;
   }
 
-  private RequestHistoryType getBatchItemEventLog(Recipient recipient) {
+  private RecipientType cloneRecipient(RecipientType recipient) {
+    RecipientType recipientWithDeliveryMethodCode2 = CLONER.deepClone(recipient);
+    recipientWithDeliveryMethodCode2.setDeliveryMethod1(recipient.getDeliveryMethod2());
+    recipient.setDeliveryMethod2(null);
+    recipientWithDeliveryMethodCode2.setDeliveryMethod2(null);
+    return recipientWithDeliveryMethodCode2;
+  }
+
+  private RequestHistoryType getBatchItemEventLog(String recipientId, String deliveryMethodCode) {
     RequestHistoryType requestHistory = OBJECT_FACTORY.createRequestHistoryType();
     requestHistory.setProcessor("PRINT_SUPPLIER");
-    requestHistory.setEventType(EventType.RECEIVED.getValue());
-    requestHistory.setDeliveryMethodCd(recipient.getDeliveryMethod1());
+    requestHistory.setEventType(EventType.FULFILLED.getValue());
     requestHistory.setDispatchedDate(DateUtil.getISODateTime(new Date()));
     requestHistory.setExceptionCount(BigInteger.ZERO);
     requestHistory.setSuccessCount(BigInteger.ONE);
     requestHistory.setStatusCode(StatusCodeType.ACCEPTED.getCode());
-    requestHistory.setRecipientId(recipient.getRecipientId());
-    requestHistory.setReceivedDate(DateUtil.getISODateTime(DateTime.now().minusDays(1).toDate()));
+    requestHistory.setReceivedDate(DateUtil.getISODateTime(
+        DateTime.now().minusDays(1).toDate()));
+    requestHistory.setRecipientId(recipientId);
+    requestHistory.setDeliveryMethodCd(deliveryMethodCode);
     return requestHistory;
   }
 

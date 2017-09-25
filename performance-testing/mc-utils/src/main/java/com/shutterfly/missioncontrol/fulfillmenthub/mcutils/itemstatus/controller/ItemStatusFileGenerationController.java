@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-public class ItemStatusController {
+public class ItemStatusFileGenerationController {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -40,7 +40,7 @@ public class ItemStatusController {
   private ItemStatusFileLocationRepo itemStatusFileLocationRepo;
 
   @Autowired
-  public ItemStatusController(ItemStatusFileService itemStatusFileService,
+  public ItemStatusFileGenerationController(ItemStatusFileService itemStatusFileService,
       ItemStatusGenerationRequestTrackingRepo itemStatusGenerationRequestTrackingRepo,
       ItemStatusFileLocationRepo itemStatusFileLocationRepo) {
     this.itemStatusFileService = itemStatusFileService;
@@ -65,7 +65,7 @@ public class ItemStatusController {
   }
 
   @PostMapping("/item-status-file/generate/retry/{id}")
-  public void retry(String id) {
+  public void retry(@PathVariable String id) {
     ItemStatusFileGenerationRequestTrackingDoc itemStatusFileGenerationRequestTrackingDoc = itemStatusGenerationRequestTrackingRepo
         .findOne(id);
     itemStatusFileService.generateItemStatusFile(

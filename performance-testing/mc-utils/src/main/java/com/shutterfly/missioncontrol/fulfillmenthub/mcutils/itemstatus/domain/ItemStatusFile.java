@@ -15,6 +15,8 @@ public class ItemStatusFile {
 
   private String bulkRequestId;
 
-  private String itemStatusFilePath;
+  private String folder;
+
+  private String itemStatusFileName;
 
 }
