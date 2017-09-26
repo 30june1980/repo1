@@ -123,9 +123,9 @@ public class ItemStatusFileService {
       handleError(itemStatusGenerationRequestTrackingDoc,
           exception.getMessage());
     }
-    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",")).getBytes(),
+    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
         remoteDirectory + "BulkRequestIds.csv");
-    gateway.send(requestIds.stream().collect(Collectors.joining(",")).getBytes(),
+    gateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
         remoteDirectory + "/" + "ProcessRequestIds.csv");
     return bulkRequestIds;
   }
@@ -289,9 +289,9 @@ public class ItemStatusFileService {
     });
     log.info("Number of bulk requests: {}", countOfBulkRequests);
     log.info("Number of process requests: {}", processRequestIds.size());
-    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",")).getBytes(),
+    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
         remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
-    gateway.send(processRequestIds.stream().collect(Collectors.joining(",")).getBytes(),
+    gateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
         remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
   }
 
