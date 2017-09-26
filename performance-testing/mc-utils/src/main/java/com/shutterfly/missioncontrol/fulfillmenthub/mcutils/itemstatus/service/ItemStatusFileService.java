@@ -273,9 +273,9 @@ public class ItemStatusFileService {
   }
 
   @Async
-  public void runBatch() {
+  public void runBatch(int pastMinutesToConsiderBulkRequestsFrom) {
     List<String> processRequestIds = new ArrayList<>();
-    List<String> bulkRequestIds = fulfillmentTrackingRecordDao.getBulkRequestIdsSentToSupplier();
+    List<String> bulkRequestIds = fulfillmentTrackingRecordDao.getBulkRequestIdsSentToSupplier(pastMinutesToConsiderBulkRequestsFrom);
     int countOfBulkRequests = bulkRequestIds.size();
     log.info("Generating item status file for {} bulk requests.", countOfBulkRequests);
     bulkRequestIds.forEach(bulkRequestId -> {

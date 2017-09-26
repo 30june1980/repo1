@@ -11,7 +11,7 @@ public interface FulfillmentTrackingRecordDao {
 
   List<FulfillmentTrackingRecordDoc> getFulfillmentTrackingRecordDocs(List<String> requestIds);
 
-  List<String> getBulkRequestIdsSentToSupplier();
+  List<String> getBulkRequestIdsSentToSupplier(int pastMinutesToConsiderBulkRequestsFrom);
 
   List<FulfillmentTrackingRecordDoc> getProcessFulfillmentTrackingRecordDocsForBulkRequestId(String bulkRequestId);
 }

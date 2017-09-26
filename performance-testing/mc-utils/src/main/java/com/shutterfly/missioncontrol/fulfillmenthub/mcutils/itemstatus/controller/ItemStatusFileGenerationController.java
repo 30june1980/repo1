@@ -108,8 +108,8 @@ public class ItemStatusFileGenerationController {
   }
 
   @PostMapping("/item-status-file/generate/batch")
-  public void runAsBatch() {
-    itemStatusFileService.runBatch();
+  public void runAsBatch(@RequestBody int pastMinutesToConsiderBulkRequestsFrom) {
+    itemStatusFileService.runBatch(pastMinutesToConsiderBulkRequestsFrom);
   }
 
 

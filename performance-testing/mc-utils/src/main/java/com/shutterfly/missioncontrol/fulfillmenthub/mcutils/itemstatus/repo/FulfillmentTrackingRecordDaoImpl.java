@@ -45,11 +45,13 @@ public class FulfillmentTrackingRecordDaoImpl implements FulfillmentTrackingReco
   }
 
   @Override
-  public List<String> getBulkRequestIdsSentToSupplier() {
+  public List<String> getBulkRequestIdsSentToSupplier(int pastMinutesToConsiderBulkRequestsFrom) {
     Criteria criteriaDefinition = Criteria.where("fulfillmentRequest.requestHeader.sourceID")
         .is(ParticipantType.getHub().getName());
     criteriaDefinition = criteriaDefinition.and("auditHistory.createdDate")
-        .gte(DateTime.now().minusMinutes(pastMinutesToConsiderBulkRequests).toDate());
+        .gte(DateTime.now().minusMinutes(
+            pastMinutesToConsiderBulkRequestsFrom <= 0 ? pastMinutesToConsiderBulkRequests
+                : pastMinutesToConsiderBulkRequestsFrom).toDate());
     criteriaDefinition = criteriaDefinition.and("currentFulfillmentStatus")
         .is(FulfillmentStatus.SENT_TO_SUPPLIER.getValue());
     Query query = new Query(
