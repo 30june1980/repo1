@@ -15,6 +15,7 @@ import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constan
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.RequestType;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.StatusCodeType;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.FtpGateway;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller.ItemStatusFileGenerationRequest;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.ItemStatusFile;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.RequestDetail;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc;
@@ -89,53 +90,68 @@ public class ItemStatusFileService {
   }
 
   @Async
-  public void generateItemStatusFile(List<RequestDetail> requests,
+  public Set<String> generateItemStatusFile(List<RequestDetail> requests,
       ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc) {
+    final Set<String> bulkRequestIds = new HashSet<>();
+    final List<String> requestIds = new ArrayList<>();
     try {
       ItemStatusFileLocationDoc itemStatusFileLocationDoc = new ItemStatusFileLocationDoc();
       String uuid = itemStatusGenerationRequestTrackingDoc.getId();
       log.info("Generating item status files for request received with id: {}", uuid);
       itemStatusFileLocationDoc.setId(uuid);
-      List<String> requestIds = new ArrayList<>();
       requests.forEach(requestDetail -> requestIds.add(requestDetail.getRequestId()));
-      boolean areRequestIdsValid = fulfillmentTrackingRecordDao.areRequestIdsValid(requestIds);
-      if (areRequestIdsValid) {
-        boolean areNotAllRequestsTaggedWithBulkId = fulfillmentTrackingRecordDao
-            .existsRequestNotTaggedWithBulkRequestId(requestIds);
-        if (areNotAllRequestsTaggedWithBulkId) {
-          handleError(itemStatusGenerationRequestTrackingDoc,
-              "Not all request ids are tagged with bulk request ids.");
-        } else {
-          itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.PROCESSING);
-          itemStatusGenerationRequestTrackingDoc
-              .setStatusDetail("Item status file generated successfully.");
-          itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
-          List<FulfillmentTrackingRecordDoc> fulfillmentTrackingRecordDocs = fulfillmentTrackingRecordDao
-              .getFulfillmentTrackingRecordDocs(requestIds);
-          Set<String> bulkRequestIds = new HashSet<>();
-          fulfillmentTrackingRecordDocs.forEach(fulfillmentTrackingRecordDoc -> bulkRequestIds
-              .add(fulfillmentTrackingRecordDoc.getBulkRequestId()));
-          bulkRequestIds.forEach(bulkRequestId -> {
-            ItemStatusFile itemStatusFile = generateItemStatusFile(bulkRequestId,
-                fulfillmentTrackingRecordDocs);
-            itemStatusFileLocationDoc.getItemStatusFiles().add(itemStatusFile);
-          });
-          itemStatusFileLocationRepo.save(itemStatusFileLocationDoc);
-          log.info("Successfully processed request for item status files generation with id: {}",
-              uuid);
-          itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.COMPLETE);
-          itemStatusGenerationRequestTrackingDoc
-              .setStatusDetail("Item status file generated successfully.");
-          itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
-        }
+      boolean areNotAllRequestsTaggedWithBulkId = fulfillmentTrackingRecordDao
+          .existsRequestNotTaggedWithBulkRequestId(requestIds);
+      if (areNotAllRequestsTaggedWithBulkId) {
+        handleError(itemStatusGenerationRequestTrackingDoc,
+            "Not all request ids are tagged with bulk request ids.");
       } else {
-        handleError(itemStatusGenerationRequestTrackingDoc, "Not all requests ids are valid.");
+        itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.PROCESSING);
+        itemStatusGenerationRequestTrackingDoc
+            .setStatusDetail("Item status file generated successfully.");
+        itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
+        List<FulfillmentTrackingRecordDoc> fulfillmentTrackingRecordDocs = fulfillmentTrackingRecordDao
+            .getFulfillmentTrackingRecordDocs(requestIds);
+        fulfillmentTrackingRecordDocs.forEach(fulfillmentTrackingRecordDoc -> bulkRequestIds
+            .add(fulfillmentTrackingRecordDoc.getBulkRequestId()));
+        generateItemStatusFile(itemStatusGenerationRequestTrackingDoc, itemStatusFileLocationDoc,
+            uuid,
+            fulfillmentTrackingRecordDocs, bulkRequestIds);
       }
     } catch (Exception exception) {
       log.error("Error occurred while generating item status files.", exception);
       handleError(itemStatusGenerationRequestTrackingDoc,
           exception.getMessage());
     }
+    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",")).getBytes(),
+        remoteDirectory + "BulkRequestIds.csv");
+    gateway.send(requestIds.stream().collect(Collectors.joining(",")).getBytes(),
+        remoteDirectory + "/" + "ProcessRequestIds.csv");
+    return bulkRequestIds;
+  }
+
+  private void generateItemStatusFile(
+      ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc,
+      ItemStatusFileLocationDoc itemStatusFileLocationDoc, String uuid,
+      List<FulfillmentTrackingRecordDoc> fulfillmentTrackingRecordDocs,
+      Set<String> bulkRequestIds) {
+    bulkRequestIds.forEach(bulkRequestId -> {
+      List<FulfillmentTrackingRecordDoc> matchingIndividualRequestDocs = fulfillmentTrackingRecordDocs
+          .stream()
+          .filter(fulfillmentTrackingRecordDoc -> bulkRequestId
+              .equals(fulfillmentTrackingRecordDoc.getBulkRequestId()))
+          .collect(Collectors.toList());
+      ItemStatusFile itemStatusFile = generateItemStatusFile(bulkRequestId,
+          matchingIndividualRequestDocs);
+      itemStatusFileLocationDoc.getItemStatusFiles().add(itemStatusFile);
+    });
+    itemStatusFileLocationRepo.save(itemStatusFileLocationDoc);
+    log.info("Successfully processed request for item status files generation with id: {}",
+        uuid);
+    itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.COMPLETE);
+    itemStatusGenerationRequestTrackingDoc
+        .setStatusDetail("Item status file generated successfully.");
+    itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
   }
 
   private void handleError(
@@ -149,7 +165,7 @@ public class ItemStatusFileService {
   }
 
   private ItemStatusFile generateItemStatusFile(String bulkRequestId,
-      List<FulfillmentTrackingRecordDoc> fulfillmentTrackingRecordDocs) {
+      List<FulfillmentTrackingRecordDoc> processRequestDocs) {
     try {
       FulfillmentTrackingRecordDoc bulkRequestDoc = fulfillmentTrackingRecordRepo
           .findByRequestId(bulkRequestId);
@@ -158,11 +174,6 @@ public class ItemStatusFileService {
         ItemStatusFile itemStatusFile = new ItemStatusFile();
         itemStatusFile.setBulkRequestId(bulkRequestId);
         log.info("Generating item status file for bulk request with id: {}", bulkRequestId);
-        List<FulfillmentTrackingRecordDoc> matchingIndividualRequestDocs = fulfillmentTrackingRecordDocs
-            .stream()
-            .filter(fulfillmentTrackingRecordDoc -> bulkRequestId
-                .equals(fulfillmentTrackingRecordDoc.getBulkRequestId()))
-            .collect(Collectors.toList());
         BatchStatus batchStatus = new BatchStatus();
         FulfillmentRequest bulkRequestDocFulfillmentRequest = bulkRequestDoc
             .getFulfillmentRequest();
@@ -174,7 +185,7 @@ public class ItemStatusFileService {
             .setSourceID(FulfillmentTrackingDetailsDto.getVendor(bulkRequestDoc));
         batchStatus.getBatchStatusHeader()
             .setDestinationID(ParticipantType.getHub().getName());
-        batchStatus.setBatchStatusItems(getBatchStatusItems(matchingIndividualRequestDocs));
+        batchStatus.setBatchStatusItems(getBatchStatusItems(processRequestDocs));
         batchStatus.setBatchStatusTrailer(
             RequestTrailer.from(bulkRequestDocFulfillmentRequest.getRequestTrailer()));
         batchStatus.getBatchStatusTrailer().setRequestItemCount(
@@ -184,7 +195,7 @@ public class ItemStatusFileService {
         marshaller.marshal(batchStatus, stringWriter);
         log.info("Successfully generated item status file for bulk request with id: {}",
             bulkRequestId);
-        String fileName = UUID.randomUUID().toString() + ".xml";
+        String fileName = bulkRequestId + ".xml";
         String filePath = remoteDirectory + fileName;
         gateway.send(stringWriter.toString().getBytes(), filePath);
         log.info("Successfully generated item status file for bulk request with id: {}",
@@ -261,4 +272,39 @@ public class ItemStatusFileService {
     return requestHistory;
   }
 
+  @Async
+  public void runBatch() {
+    List<String> processRequestIds = new ArrayList<>();
+    List<String> bulkRequestIds = fulfillmentTrackingRecordDao.getBulkRequestIdsSentToSupplier();
+    int countOfBulkRequests = bulkRequestIds.size();
+    log.info("Generating item status file for {} bulk requests.", countOfBulkRequests);
+    bulkRequestIds.forEach(bulkRequestId -> {
+      List<FulfillmentTrackingRecordDoc> processFulfillmentRequestDocs = fulfillmentTrackingRecordDao
+          .getProcessFulfillmentTrackingRecordDocsForBulkRequestId(bulkRequestId);
+      processFulfillmentRequestDocs.forEach(doc -> processRequestIds.add(doc.getRequestId()));
+      generateItemStatusFile(bulkRequestId, processFulfillmentRequestDocs);
+      log.info(
+          "Item status file generated successfully for bulk request id: {}, Number of process requests: {}",
+          new Object[]{bulkRequestId, processFulfillmentRequestDocs.size()});
+    });
+    log.info("Number of bulk requests: {}", countOfBulkRequests);
+    log.info("Number of process requests: {}", processRequestIds.size());
+    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",")).getBytes(),
+        remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
+    gateway.send(processRequestIds.stream().collect(Collectors.joining(",")).getBytes(),
+        remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
+  }
+
+  public ItemStatusFileGenerationRequestTrackingDoc newItemStatusFileGenerationRequestTrackingDoc(
+      ItemStatusFileGenerationRequest itemStatusFileGenerationRequest) {
+    ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc = new ItemStatusFileGenerationRequestTrackingDoc();
+    String uuid = UUID.randomUUID().toString();
+    itemStatusGenerationRequestTrackingDoc.setId(uuid);
+    itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.NEW);
+    itemStatusGenerationRequestTrackingDoc
+        .setItemStatusFileGenerationRequest(
+            itemStatusFileGenerationRequest);
+    itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
+    return itemStatusGenerationRequestTrackingDoc;
+  }
 }

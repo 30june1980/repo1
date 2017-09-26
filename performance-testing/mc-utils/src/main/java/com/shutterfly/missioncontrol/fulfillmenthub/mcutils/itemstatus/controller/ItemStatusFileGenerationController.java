@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,9 @@ public class ItemStatusFileGenerationController {
 
   private ItemStatusFileLocationRepo itemStatusFileLocationRepo;
 
+  @Value("${request.ids.delimiter}")
+  private String requestIdsDelimiter;
+
   @Autowired
   public ItemStatusFileGenerationController(ItemStatusFileService itemStatusFileService,
       ItemStatusGenerationRequestTrackingRepo itemStatusGenerationRequestTrackingRepo,
@@ -50,18 +54,17 @@ public class ItemStatusFileGenerationController {
 
   @PostMapping("/item-status-file/generate")
   public String generate(
-      @RequestBody ItemStatusFileGenerationRequest itemStatusFileGenerationRequest) {
-    ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc = new ItemStatusFileGenerationRequestTrackingDoc();
-    String uuid = UUID.randomUUID().toString();
-    itemStatusGenerationRequestTrackingDoc.setId(uuid);
-    itemStatusGenerationRequestTrackingDoc.setStatus(STATUS.NEW);
-    itemStatusGenerationRequestTrackingDoc
-        .setItemStatusFileGenerationRequest(itemStatusFileGenerationRequest);
-    itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
-    log.info("Request for generating item status files is accepted. Request id is: {}", uuid);
+      @RequestBody String body) {
+    ItemStatusFileGenerationRequest itemStatusFileGenerationRequest = ItemStatusFileGenerationRequest
+        .from(body, requestIdsDelimiter);
+    ItemStatusFileGenerationRequestTrackingDoc itemStatusGenerationRequestTrackingDoc = itemStatusFileService
+        .newItemStatusFileGenerationRequestTrackingDoc(
+            itemStatusFileGenerationRequest);
+    String id = itemStatusGenerationRequestTrackingDoc.getId();
+    log.info("Request for generating item status files is accepted. Request id is: {}", id);
     itemStatusFileService.generateItemStatusFile(itemStatusFileGenerationRequest.getRequests(),
         itemStatusGenerationRequestTrackingDoc);
-    return uuid;
+    return id;
   }
 
   @PostMapping("/item-status-file/generate/retry/{id}")
@@ -102,6 +105,11 @@ public class ItemStatusFileGenerationController {
       outputStream.close();
       inputStream.close();
     }
+  }
+
+  @PostMapping("/item-status-file/generate/batch")
+  public void runAsBatch() {
+    itemStatusFileService.runBatch();
   }
 
 
