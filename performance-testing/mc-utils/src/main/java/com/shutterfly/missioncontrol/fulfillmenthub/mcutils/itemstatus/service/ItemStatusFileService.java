@@ -15,6 +15,7 @@ import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constan
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.RequestType;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.StatusCodeType;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.FtpGateway;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.SftpGateway;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller.ItemStatusFileGenerationRequest;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.ItemStatusFile;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.RequestDetail;
@@ -68,21 +69,25 @@ public class ItemStatusFileService {
 
   private FtpGateway gateway;
 
+  private SftpGateway sftpGateway;
+
   @Value("${mc.ftp.remote.dir}")
   private String remoteDirectory;
 
-  @Value("${mc.local.file.to.upload}")
-  private String localFilePathToUpload;
+  @Value("${mc.use.sftp.protocol}")
+  private boolean useSftp;
 
   private FulfillmentTrackingRecordDao fulfillmentTrackingRecordDao;
 
   @Autowired
   public ItemStatusFileService(FtpGateway gateway,
+      SftpGateway sftpGateway,
       ItemStatusFileLocationRepo itemStatusFileLocationRepo,
       FulfillmentTrackingRecordDao fulfillmentTrackingRecordDao,
       ItemStatusGenerationRequestTrackingRepo itemStatusGenerationRequestTrackingRepo,
       FulfillmentTrackingRecordRepo fulfillmentTrackingRecordRepo) {
     this.gateway = gateway;
+    this.sftpGateway = sftpGateway;
     this.itemStatusFileLocationRepo = itemStatusFileLocationRepo;
     this.fulfillmentTrackingRecordDao = fulfillmentTrackingRecordDao;
     this.itemStatusGenerationRequestTrackingRepo = itemStatusGenerationRequestTrackingRepo;
@@ -123,10 +128,17 @@ public class ItemStatusFileService {
       handleError(itemStatusGenerationRequestTrackingDoc,
           exception.getMessage());
     }
-    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-        remoteDirectory + "BulkRequestIds.csv");
-    gateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-        remoteDirectory + "/" + "ProcessRequestIds.csv");
+    if (useSftp) {
+      sftpGateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "BulkRequestIds.csv");
+      sftpGateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "/" + "ProcessRequestIds.csv");
+    } else {
+      gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "BulkRequestIds.csv");
+      gateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "/" + "ProcessRequestIds.csv");
+    }
     return bulkRequestIds;
   }
 
@@ -197,7 +209,11 @@ public class ItemStatusFileService {
             bulkRequestId);
         String fileName = bulkRequestId + ".xml";
         String filePath = remoteDirectory + fileName;
-        gateway.send(stringWriter.toString().getBytes(), filePath);
+        if (useSftp) {
+          sftpGateway.send(stringWriter.toString().getBytes(), filePath);
+        } else {
+          gateway.send(stringWriter.toString().getBytes(), filePath);
+        }
         log.info("Successfully generated item status file for bulk request with id: {}",
             bulkRequestId);
         itemStatusFile.setFolder(remoteDirectory);
@@ -272,12 +288,14 @@ public class ItemStatusFileService {
     return requestHistory;
   }
 
+
   @Async
   public void runBatch(int pastMinutesToConsiderBulkRequestsFrom) {
     List<String> processRequestIds = new ArrayList<>();
-    List<String> bulkRequestIds = fulfillmentTrackingRecordDao.getBulkRequestIdsSentToSupplier(pastMinutesToConsiderBulkRequestsFrom);
+    List<String> bulkRequestIds = fulfillmentTrackingRecordDao
+        .getBulkRequestIdsSentToSupplier(pastMinutesToConsiderBulkRequestsFrom);
     int countOfBulkRequests = bulkRequestIds.size();
-    log.info("Generating item status file for {} bulk requests.", countOfBulkRequests);
+    log.info("Generating item status file for {} bulk reques  ts.", countOfBulkRequests);
     bulkRequestIds.forEach(bulkRequestId -> {
       List<FulfillmentTrackingRecordDoc> processFulfillmentRequestDocs = fulfillmentTrackingRecordDao
           .getProcessFulfillmentTrackingRecordDocsForBulkRequestId(bulkRequestId);
@@ -289,10 +307,17 @@ public class ItemStatusFileService {
     });
     log.info("Number of bulk requests: {}", countOfBulkRequests);
     log.info("Number of process requests: {}", processRequestIds.size());
-    gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-        remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
-    gateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-        remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
+    if (useSftp) {
+      sftpGateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
+      sftpGateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
+    } else {
+      gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
+      gateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+          remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
+    }
   }
 
   public ItemStatusFileGenerationRequestTrackingDoc newItemStatusFileGenerationRequestTrackingDoc(
