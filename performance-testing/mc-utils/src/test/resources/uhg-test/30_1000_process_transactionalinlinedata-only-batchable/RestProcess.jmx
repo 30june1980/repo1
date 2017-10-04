@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.9" jmeter="3.0 r1743807">
+  <hashTree>
+    <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ProcessRequestTransactionalInlineDataOnly" enabled="true">
+      <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+      <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+        <boolProp name="LoopController.continue_forever">false</boolProp>
+        <stringProp name="LoopController.loops">1000</stringProp>
+      </elementProp>
+      <stringProp name="ThreadGroup.num_threads">30</stringProp>
+      <stringProp name="ThreadGroup.ramp_time">0</stringProp>
+      <longProp name="ThreadGroup.start_time">1506495220000</longProp>
+      <longProp name="ThreadGroup.end_time">1506495220000</longProp>
+      <boolProp name="ThreadGroup.scheduler">false</boolProp>
+      <stringProp name="ThreadGroup.duration"></stringProp>
+      <stringProp name="ThreadGroup.delay"></stringProp>
+    </ThreadGroup>
+    <hashTree>
+      <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request process" enabled="true">
+        <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+        <elementProp name="HTTPsampler.Arguments" elementType="Arguments">
+          <collectionProp name="Arguments.arguments">
+            <elementProp name="" elementType="HTTPArgument">
+              <boolProp name="HTTPArgument.always_encode">false</boolProp>
+              <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
+&lt;sch:processFulfillmentRequest xmlns:sch=&quot;http://dms-fsl.uhc.com/fulfillment/schema&quot; xmlns:v7=&quot;http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#xd;
+   &lt;sch:fulfillmentRequest&gt;&#xd;
+      &lt;sch:requestHeader&gt;&#xd;
+         &lt;sch:requestID&gt;pt-pr-tid-b${__BeanShell(UUID.randomUUID().toString(),RequestId)}&lt;/sch:requestID&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:sourceID&gt;CIRRUS&lt;/sch:sourceID&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:destinationID&gt;SBS&lt;/sch:destinationID&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:requestDate&gt;2016-12-17T09:30:47Z&lt;/sch:requestDate&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:requestType&gt;Process&lt;/sch:requestType&gt;&#xd;
+         &lt;sch:businessSegmentID&gt;EI&lt;/sch:businessSegmentID&gt;&#xd;
+         &lt;sch:marketSegmentCd&gt;OXF&lt;/sch:marketSegmentCd&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:fulfillmentType&gt;10000&lt;/sch:fulfillmentType&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:requestCategory&gt;TransactionalInlineDataOnly&lt;/sch:requestCategory&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:serviceLevelCategory&gt;String&lt;/sch:serviceLevelCategory&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:dataFormat&gt;XML&lt;/sch:dataFormat&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:requestorRefNo&gt;UHG_EOB_112233&lt;/sch:requestorRefNo&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:supplierRefNo&gt;String&lt;/sch:supplierRefNo&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:bulkRequestHeaderID /&gt;&#xd;
+         &lt;!--Optional:--&gt;&#xd;
+         &lt;sch:docCompositionEngineID&gt;DC_COMP_ENGINE_001&lt;/sch:docCompositionEngineID&gt;&#xd;
+      &lt;/sch:requestHeader&gt;&#xd;
+      &lt;sch:requestDetail&gt;&#xd;
+         &lt;!--You have a CHOICE of the next 2 items at this level--&gt;&#xd;
+         &lt;sch:transactionalRequestDetail&gt;&#xd;
+            &lt;!--0 to 20 repetitions:--&gt;&#xd;
+            &lt;sch:recipient&gt;&#xd;
+               &lt;sch:recipientId&gt;111223333&lt;/sch:recipientId&gt;&#xd;
+               &lt;sch:idQualifier&gt;SocialSecIDType&lt;/sch:idQualifier&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:deliveryMethod1&gt;Emailed&lt;/sch:deliveryMethod1&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:deliveryMethod2&gt;&lt;/sch:deliveryMethod2&gt;&#xd;
+               &lt;sch:recipientType&gt;MemberType&lt;/sch:recipientType&gt;&#xd;
+               &lt;!--You have a CHOICE of the next 2 items at this level--&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:person&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:prefix&gt;Mr.&lt;/sch:prefix&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:firstName&gt;SampleFirstName&lt;/sch:firstName&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:middleName&gt;String&lt;/sch:middleName&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:lastName&gt;SampleLastName&lt;/sch:lastName&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:suffix&gt;Jr&lt;/sch:suffix&gt;&#xd;
+               &lt;/sch:person&gt;&#xd;
+               &lt;!--You have a CHOICE of the next 2 items at this level--&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:MailToAddress&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Address1&gt;1001 Main Street&lt;/sch:Address1&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Address2&gt;String&lt;/sch:Address2&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Address3&gt;String&lt;/sch:Address3&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:City&gt;Main City&lt;/sch:City&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:State&gt;CA&lt;/sch:State&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Zip&gt;999999&lt;/sch:Zip&gt;&#xd;
+               &lt;/sch:MailToAddress&gt;&#xd;
+               &lt;!--You have a CHOICE of the next 2 items at this level--&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:ReturnToAddress&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Address1&gt;String&lt;/sch:Address1&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Address2&gt;String&lt;/sch:Address2&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Address3&gt;String&lt;/sch:Address3&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:City&gt;String&lt;/sch:City&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:State&gt;String&lt;/sch:State&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:Zip&gt;String&lt;/sch:Zip&gt;&#xd;
+               &lt;/sch:ReturnToAddress&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:faxNumber&gt;String&lt;/sch:faxNumber&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:emailAddress&gt;SomeEmailAddress.com&lt;/sch:emailAddress&gt;&#xd;
+               &lt;sch:carbonCopyInd&gt;false&lt;/sch:carbonCopyInd&gt;&#xd;
+            &lt;/sch:recipient&gt;&#xd;
+            &lt;!--Optional:--&gt;&#xd;
+            &lt;sch:template&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:templateID&gt;EOBTemplateC12HD&lt;/sch:templateID&gt;&#xd;
+              &#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:templateName&gt;EOBTemplateC12HD&lt;/sch:templateName&gt;&#xd;
+            &lt;/sch:template&gt;&#xd;
+            &lt;sch:data&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:externalFileType&gt;&#xd;
+                  &lt;filePath/&gt;&#xd;
+                  &lt;fileName/&gt;&#xd;
+                  &lt;fileSize/&gt;&#xd;
+               &lt;/sch:externalFileType&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:embeddedDataType&gt;&lt;/sch:embeddedDataType&gt;&#xd;
+               &lt;!--Optional:--&gt;&#xd;
+               &lt;sch:contentFormatType&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:contentStream /&gt;&#xd;
+                  &lt;sch:documentType/&gt;&#xd;
+                  &lt;!--Optional:--&gt;&#xd;
+                  &lt;sch:mimeType /&gt;&#xd;
+                  &lt;!--0 to 20 repetitions:--&gt;&#xd;
+                  &lt;sch:documentMetadata&gt;&#xd;
+                     &lt;!--Optional:--&gt;&#xd;
+                     &lt;v7:name /&gt;&#xd;
+                     &lt;!--Optional:--&gt;&#xd;
+                     &lt;v7:value /&gt;&#xd;
+                  &lt;/sch:documentMetadata&gt;&#xd;
+               &lt;/sch:contentFormatType&gt;&#xd;
+            &lt;/sch:data&gt;&#xd;
+         &lt;/sch:transactionalRequestDetail&gt;&#xd;
+      &lt;/sch:requestDetail&gt;&#xd;
+      &lt;!--Optional:--&gt;&#xd;
+      &lt;sch:requestTrailer&gt;&#xd;
+         &lt;sch:requestItemCount&gt;1&lt;/sch:requestItemCount&gt;&#xd;
+      &lt;/sch:requestTrailer&gt;&#xd;
+   &lt;/sch:fulfillmentRequest&gt;&#xd;
+&lt;/sch:processFulfillmentRequest&gt;</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+          </collectionProp>
+        </elementProp>
+        <stringProp name="HTTPSampler.domain"></stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
+        <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+        <stringProp name="HTTPSampler.response_timeout"></stringProp>
+        <stringProp name="HTTPSampler.protocol"></stringProp>
+        <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+        <stringProp name="HTTPSampler.path">/api/services/supplier/v2/processFulfillment</stringProp>
+        <stringProp name="HTTPSampler.method">POST</stringProp>
+        <boolProp name="HTTPSampler.follow_redirects">false</boolProp>
+        <boolProp name="HTTPSampler.auto_redirects">true</boolProp>
+        <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+        <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+        <boolProp name="HTTPSampler.BROWSER_COMPATIBLE_MULTIPART">true</boolProp>
+        <boolProp name="HTTPSampler.monitor">false</boolProp>
+        <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+      </HTTPSamplerProxy>
+      <hashTree/>
+      <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+        <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+        <stringProp name="RegexExtractor.refname">msgIdentifier</stringProp>
+        <stringProp name="RegexExtractor.regex">&lt;msgIdentifier&gt;(.+?)&lt;/msgIdentifier&gt;</stringProp>
+        <stringProp name="RegexExtractor.template">$1$</stringProp>
+        <stringProp name="RegexExtractor.default"></stringProp>
+        <stringProp name="RegexExtractor.match_number">1</stringProp>
+      </RegexExtractor>
+      <hashTree/>
+      <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="true">
+        <boolProp name="resetInterpreter">false</boolProp>
+        <stringProp name="parameters"></stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="script">msgIdentifier = vars.get(&quot;msgIdentifier&quot;);// Pass true if you want to append to existing file
+// If you want to overwrite, then don&apos;t pass the second argument
+f = new FileOutputStream(&quot;../../performance-tests/process-transactional-inline-data-request-id.csv&quot;, true);
+p = new PrintStream(f); 
+this.interpreter.setOut(p); 
+print(msgIdentifier);
+f.close();</stringProp>
+      </BeanShellPostProcessor>
+      <hashTree/>
+      <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+        <collectionProp name="Asserion.test_strings">
+          <stringProp name="49586">200</stringProp>
+        </collectionProp>
+        <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+        <boolProp name="Assertion.assume_success">false</boolProp>
+        <intProp name="Assertion.test_type">2</intProp>
+        <stringProp name="Scope.variable"></stringProp>
+      </ResponseAssertion>
+      <hashTree/>
+      <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="StatusAccepted" enabled="true">
+        <boolProp name="XPath.negate">false</boolProp>
+        <stringProp name="XPath.xpath">/acknowledgeMsg/acknowledge/validationResults/transactionLevelAck/transaction/transactionStatus/text()=&apos;Accepted&apos;</stringProp>
+        <boolProp name="XPath.validate">false</boolProp>
+        <boolProp name="XPath.whitespace">false</boolProp>
+        <boolProp name="XPath.tolerant">false</boolProp>
+        <boolProp name="XPath.namespace">false</boolProp>
+      </XPathAssertion>
+      <hashTree/>
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+        <boolProp name="ResultCollector.error_logging">true</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="ProcessRequestsSummaryReport" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <url>true</url>
+            <hostname>true</hostname>
+            <threadCounts>true</threadCounts>
+            <sampleCount>true</sampleCount>
+            <idleTime>true</idleTime>
+            <connectTime>true</connectTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">/home/nitin/NitinK/projects/missionc/git/mc-fulfillmenthub-test/performance-testing/mc-utils/src/test/resources/ProcessRequestsAggregateReport.csv</stringProp>
+        <boolProp name="useGroupName">true</boolProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="ProcessRequestsAggregateReport.csv" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename">/home/nitin/NitinK/projects/missionc/git/mc-fulfillmenthub-test/performance-testing/mc-utils/src/test/resources/ProcessRequestsAggregateReport.csv</stringProp>
+        <boolProp name="useGroupName">true</boolProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="RespTimeGraphVisualizer" testclass="ResultCollector" testname="Response Time Graph" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="StatGraphVisualizer" testclass="ResultCollector" testname="Aggregate Graph" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+      <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
+        <boolProp name="ResultCollector.error_logging">false</boolProp>
+        <objProp>
+          <name>saveConfig</name>
+          <value class="SampleSaveConfiguration">
+            <time>true</time>
+            <latency>true</latency>
+            <timestamp>true</timestamp>
+            <success>true</success>
+            <label>true</label>
+            <code>true</code>
+            <message>true</message>
+            <threadName>true</threadName>
+            <dataType>true</dataType>
+            <encoding>false</encoding>
+            <assertions>true</assertions>
+            <subresults>true</subresults>
+            <responseData>false</responseData>
+            <samplerData>false</samplerData>
+            <xml>false</xml>
+            <fieldNames>true</fieldNames>
+            <responseHeaders>false</responseHeaders>
+            <requestHeaders>false</requestHeaders>
+            <responseDataOnError>false</responseDataOnError>
+            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
+            <assertionsResultsToSave>0</assertionsResultsToSave>
+            <bytes>true</bytes>
+            <threadCounts>true</threadCounts>
+            <idleTime>true</idleTime>
+          </value>
+        </objProp>
+        <stringProp name="filename"></stringProp>
+      </ResultCollector>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
