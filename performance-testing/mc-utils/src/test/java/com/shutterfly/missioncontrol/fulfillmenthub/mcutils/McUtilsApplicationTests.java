@@ -1,7 +1,9 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils;
 
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.SftpGateway;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -9,8 +11,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class McUtilsApplicationTests {
 
+	@Autowired
+	private SftpGateway sftpGateway;
+
 	@Test
-	public void contextLoads() {
+	public void contextLoads() throws InterruptedException {
+		Thread.sleep(50000);
 	}
 
 }

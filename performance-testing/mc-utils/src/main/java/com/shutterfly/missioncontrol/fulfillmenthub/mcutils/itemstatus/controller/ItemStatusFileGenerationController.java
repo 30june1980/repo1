@@ -2,7 +2,6 @@ package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controll
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc.STATUS;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileLocationDoc;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusFileLocationRepo;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusGenerationRequestTrackingRepo;
@@ -13,7 +12,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -112,5 +110,9 @@ public class ItemStatusFileGenerationController {
     itemStatusFileService.runBatch(pastMinutesToConsiderBulkRequestsFrom);
   }
 
+  @PostMapping("/make-copies-of-file/")
+  public void makeCopiesOfFile(@RequestBody FileCopierRequest request) throws IOException {
+    itemStatusFileService.makeCopiesOfFile(request);
+  }
 
 }

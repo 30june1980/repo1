@@ -4,18 +4,16 @@ import com.rits.cloning.Cloner;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.doc.FulfillmentTrackingRecordDoc;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.dto.FulfillmentTrackingDetailsDto;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.FulfillmentRequest;
-import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.Recipient;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.RequestHeader;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.subdoc.RequestTrailer;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.date.DateUtil;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.EventType;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.FulfillmentStatus;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.ParticipantType;
-import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.RequestCategory;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.RequestType;
 import com.shutterfly.missioncontrol.fulfillmenthub.core.util.validation.constant.StatusCodeType;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.FtpGateway;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.SftpGateway;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller.FileCopierRequest;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller.ItemStatusFileGenerationRequest;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.ItemStatusFile;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.RequestDetail;
@@ -32,6 +30,8 @@ import com.uhc.dms_fsl.fulfillment.schema.v2.BatchStatus.BatchStatusItems.BatchI
 import com.uhc.dms_fsl.fulfillment.schema.v2.ObjectFactory;
 import com.uhc.dms_fsl.fulfillment.schema.v2.RecipientType;
 import com.uhc.dms_fsl.fulfillment.schema.v2.RequestHistoryType;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,26 +67,22 @@ public class ItemStatusFileService {
 
   private static final Cloner CLONER = new Cloner();
 
-  private FtpGateway gateway;
-
   private SftpGateway sftpGateway;
 
   @Value("${mc.ftp.remote.dir}")
   private String remoteDirectory;
 
-  @Value("${mc.use.sftp.protocol}")
-  private boolean useSftp;
+  @Value("${mc.local.download.dir}")
+  private String localDownloadFolder;
 
   private FulfillmentTrackingRecordDao fulfillmentTrackingRecordDao;
 
   @Autowired
-  public ItemStatusFileService(FtpGateway gateway,
-      SftpGateway sftpGateway,
+  public ItemStatusFileService(SftpGateway sftpGateway,
       ItemStatusFileLocationRepo itemStatusFileLocationRepo,
       FulfillmentTrackingRecordDao fulfillmentTrackingRecordDao,
       ItemStatusGenerationRequestTrackingRepo itemStatusGenerationRequestTrackingRepo,
       FulfillmentTrackingRecordRepo fulfillmentTrackingRecordRepo) {
-    this.gateway = gateway;
     this.sftpGateway = sftpGateway;
     this.itemStatusFileLocationRepo = itemStatusFileLocationRepo;
     this.fulfillmentTrackingRecordDao = fulfillmentTrackingRecordDao;
@@ -128,17 +124,10 @@ public class ItemStatusFileService {
       handleError(itemStatusGenerationRequestTrackingDoc,
           exception.getMessage());
     }
-    if (useSftp) {
-      sftpGateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "BulkRequestIds.csv");
-      sftpGateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "/" + "ProcessRequestIds.csv");
-    } else {
-      gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "BulkRequestIds.csv");
-      gateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "/" + "ProcessRequestIds.csv");
-    }
+    sftpGateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+        remoteDirectory + "BulkRequestIds.csv");
+    sftpGateway.send(requestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+        remoteDirectory + "/" + "ProcessRequestIds.csv");
     return bulkRequestIds;
   }
 
@@ -209,11 +198,7 @@ public class ItemStatusFileService {
             bulkRequestId);
         String fileName = bulkRequestId + ".xml";
         String filePath = remoteDirectory + fileName;
-        if (useSftp) {
-          sftpGateway.send(stringWriter.toString().getBytes(), filePath);
-        } else {
-          gateway.send(stringWriter.toString().getBytes(), filePath);
-        }
+        sftpGateway.send(stringWriter.toString().getBytes(), filePath);
         log.info("Successfully generated item status file for bulk request with id: {}",
             bulkRequestId);
         itemStatusFile.setFolder(remoteDirectory);
@@ -307,17 +292,10 @@ public class ItemStatusFileService {
     });
     log.info("Number of bulk requests: {}", countOfBulkRequests);
     log.info("Number of process requests: {}", processRequestIds.size());
-    if (useSftp) {
-      sftpGateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
-      sftpGateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
-    } else {
-      gateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
-      gateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
-          remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
-    }
+    sftpGateway.send(bulkRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+        remoteDirectory + "/" + "BulkRequestIdsBatch.csv");
+    sftpGateway.send(processRequestIds.stream().collect(Collectors.joining(",\n")).getBytes(),
+        remoteDirectory + "/" + "ProcessRequestIdsBatch.csv");
   }
 
   public ItemStatusFileGenerationRequestTrackingDoc newItemStatusFileGenerationRequestTrackingDoc(
@@ -331,5 +309,17 @@ public class ItemStatusFileService {
             itemStatusFileGenerationRequest);
     itemStatusGenerationRequestTrackingRepo.save(itemStatusGenerationRequestTrackingDoc);
     return itemStatusGenerationRequestTrackingDoc;
+  }
+
+  @Async
+  public void makeCopiesOfFile(FileCopierRequest request) throws IOException {
+    log.info("Making copies of file: {}", request.getFileName());
+    String fileName = request.getFileName();
+    byte[] bytes = FileUtils.readFileToByteArray(new File(localDownloadFolder + "/" + fileName));
+    for (int i = 0; i < request.getNumberOfCopies(); i++) {
+      sftpGateway.send(bytes, request.getDestinationPath() + "/" + fileName + "_" + i);
+    }
+    log.info("successfully made {} copies of file: {}",
+        new Object[]{request.getNumberOfCopies(), request.getFileName()});
   }
 }
