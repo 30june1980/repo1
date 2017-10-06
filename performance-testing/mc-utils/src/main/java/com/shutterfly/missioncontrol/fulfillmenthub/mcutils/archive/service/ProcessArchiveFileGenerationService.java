@@ -1,12 +1,11 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.service;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.dto.ArchiveFileDto;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto.FileDto;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.SFTPService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,20 +21,20 @@ private SFTPService sftpService;
 public ProcessArchiveFileGenerationService(SFTPService sftpService) {
   this.sftpService=sftpService;
 }
-
-public void generateFilesForArchive(ArchiveFileDto archiveFileDto){
-  String sourceFilePathAndName=archiveFileDto.getSourceFilePathAndName();
+@Async
+public void generateFilesForArchive(FileDto fileDto){
+  String sourceFilePathAndName= fileDto.getSourceFilePathAndName();
   String[] listOfStrings=sourceFilePathAndName.split("/");
   String sourceFileName=listOfStrings[listOfStrings.length-1];
-  String destinationFilePath=archiveFileDto.getDestinationFilePath();
-  int noOfFiles=archiveFileDto.getNoOfFiles();
+  String destinationFilePath= fileDto.getDestinationFilePath();
+  int noOfFiles= fileDto.getNoOfCopies();
   String localFileName=sourceFileName;
   //download file
   sftpService.downloadFile(sourceFilePathAndName,localFileName);
   String remoteFileName;
   //upload multiple files to sftp
   for (int i = 1; i <= noOfFiles; i++) {
-    remoteFileName = FilenameUtils.removeExtension(localFileName)+"_"+ i + ".xml";
+    remoteFileName = FilenameUtils.removeExtension(localFileName)+"_"+ i + "."+FilenameUtils.getExtension(localFileName);
     sftpService.uploadFile(localFileName,destinationFilePath+remoteFileName);
   }
 

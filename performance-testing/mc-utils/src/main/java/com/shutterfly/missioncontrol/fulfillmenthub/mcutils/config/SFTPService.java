@@ -83,7 +83,7 @@ public class SFTPService {
         remoteFileHandleObject = sftpHelper.resolveFile(sftpUri, getFileSystemOptions());
 
         // Upload file to server
-        log.info("Uploading file to server: {}", localFile.getName());
+        log.info("Uploading file to server: {}", remoteFileHandleObject.getName());
         remoteFileHandleObject.copyFrom(localFileObject, Selectors.SELECT_SELF);
         log.info("File upload successful");
 

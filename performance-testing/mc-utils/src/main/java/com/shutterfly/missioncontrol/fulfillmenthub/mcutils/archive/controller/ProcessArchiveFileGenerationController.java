@@ -1,6 +1,6 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.controller;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.dto.ArchiveFileDto;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto.FileDto;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.service.ProcessArchiveFileGenerationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ public class ProcessArchiveFileGenerationController {
     this.processArchiveFileGenerationService = processArchiveFileGenerationService;
   }
 
-  @PostMapping("/archive-file/generate")
-  public void generateFilesForArchiveRequest(@RequestBody ArchiveFileDto archiveFileDto) {
+  @PostMapping("/filecopies")
+  public void generateFilesForArchiveRequest(@RequestBody FileDto fileDto) {
       log.info("Request for generating multiple files for archive request");
-      processArchiveFileGenerationService.generateFilesForArchive(archiveFileDto);
+      processArchiveFileGenerationService.generateFilesForArchive(fileDto);
   }
 }
