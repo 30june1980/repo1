@@ -1,7 +1,7 @@
 package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.service;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto.FileDto;
 import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.SFTPService;
+import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto.FileDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,8 @@ public void generateFilesForArchive(FileDto fileDto){
     remoteFileName = FilenameUtils.removeExtension(localFileName)+"_"+ i + "."+FilenameUtils.getExtension(localFileName);
     sftpService.uploadFile(localFileName,destinationFilePath+remoteFileName);
   }
-
+  //delete local file
+  sftpService.deleteLocalFile(localFileName);
 }
 }
 

@@ -142,4 +142,13 @@ public class SFTPService {
     return uriStr;
   }
 
+  public void deleteLocalFile(String localFileName) {
+    try {
+      File localFile = new File(localFileName);
+      FileObject localFileObject = sftpHelper.resolveFile(localFile.getAbsolutePath());
+      localFileObject.delete();
+    }catch(Exception e){
+      log.error("Failed while deleting local file");
+    }
+  }
 }
