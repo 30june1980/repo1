@@ -15,7 +15,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="runUuid" elementType="Argument">
             <stringProp name="Argument.name">runUuid</stringProp>
-            <stringProp name="Argument.value">test_06102017_10</stringProp>
+            <stringProp name="Argument.value">Batch_10000_11102017_1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="requestorId" elementType="Argument">
@@ -30,11 +30,11 @@
         <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments"/>
         </elementProp>
-        <stringProp name="HTTPSampler.domain">tsbsapp31-lv.internal.shutterfly.com</stringProp>
-        <stringProp name="HTTPSampler.port">8080</stringProp>
+        <stringProp name="HTTPSampler.domain">missioncontrol-tst.uhg.com</stringProp>
+        <stringProp name="HTTPSampler.port"></stringProp>
         <stringProp name="HTTPSampler.connect_timeout"></stringProp>
         <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
         <stringProp name="HTTPSampler.contentEncoding"></stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -969,9 +969,9 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">100</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">2</stringProp>
+        <stringProp name="ThreadGroup.num_threads">100</stringProp>
         <stringProp name="ThreadGroup.ramp_time">0</stringProp>
         <longProp name="ThreadGroup.start_time">1506495220000</longProp>
         <longProp name="ThreadGroup.end_time">1506495220000</longProp>
@@ -994,7 +994,7 @@
          &lt;!--Optional:--&gt;&#xd;
          &lt;sch:sourceID&gt;${requestorId}&lt;/sch:sourceID&gt;&#xd;
          &lt;!--Optional:--&gt;&#xd;
-         &lt;sch:destinationID&gt;SBX&lt;/sch:destinationID&gt;&#xd;
+         &lt;sch:destinationID&gt;SBS&lt;/sch:destinationID&gt;&#xd;
          &lt;!--Optional:--&gt;&#xd;
          &lt;sch:requestDate&gt;2016-12-17T09:30:47Z&lt;/sch:requestDate&gt;&#xd;
          &lt;!--Optional:--&gt;&#xd;
@@ -2495,110 +2495,104 @@ f.close();</stringProp>
             <collectionProp name="Arguments.arguments">
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xd;
- &lt;sch:processArchiveRequest xmlns:sch=&quot;http://dms-fsl.uhc.com/fulfillment/schema&quot; xmlns:v7=&quot;http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;&#xd;
-&#xd;
-     &lt;sch:archiveRequest&gt;&#xd;
-&#xd;
-       &lt;sch:archiveRequestHeader&gt;&#xd;
-&#xd;
-         &lt;sch:requestID&gt;pt_pr_tid_${runUuid}_${__counter(false,RequestId)}&lt;/sch:requestID&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:sourceID&gt;SBS&lt;/sch:sourceID&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:destinationID&gt;EDMS&lt;/sch:destinationID&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:requestDate&gt;2016-12-17T09:30:47Z&lt;/sch:requestDate&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:requestType&gt;Archive&lt;/sch:requestType&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:businessSegmentID&gt;EI&lt;/sch:businessSegmentID&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:marketSegmentCd&gt;OXF&lt;/sch:marketSegmentCd&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:fulfillmentType&gt;11300&lt;/sch:fulfillmentType&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:requestCategory&gt;BulkDataOnly&lt;/sch:requestCategory&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:serviceLevelCategory&gt;String&lt;/sch:serviceLevelCategory&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:dataFormat&gt;XML&lt;/sch:dataFormat&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:requestorRefNo&gt;REQ_REFNO_9876&lt;/sch:requestorRefNo&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:supplierRefNo&gt;String&lt;/sch:supplierRefNo&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:bulkRequestHeaderID&gt;String&lt;/sch:bulkRequestHeaderID&gt;&#xd;
-&#xd;
-         &lt;!--Optional:--&gt;&#xd;
-&#xd;
-         &lt;sch:docCompositionEngineID&gt;&lt;/sch:docCompositionEngineID&gt;&#xd;
-&#xd;
-       &lt;/sch:archiveRequestHeader&gt;&#xd;
-&#xd;
-       &lt;sch:archiveRequestDetail&gt;&#xd;
-&#xd;
-         &lt;!--1 to 10 repetitions:--&gt;&#xd;
-&#xd;
-         &lt;sch:archiveBulkDetail&gt;&#xd;
-&#xd;
-           &lt;!--Optional:--&gt;&#xd;
-&#xd;
-           &lt;sch:filePath&gt;/MissionControl/Archive/SBS&lt;/sch:filePath&gt;&#xd;
-&#xd;
-           &lt;sch:fileName&gt;bulkfile_all_valid_${__counter(false,RequestId)}.xml&lt;/sch:fileName&gt;&#xd;
-&#xd;
-           &lt;sch:fileSize&gt;4096&lt;/sch:fileSize&gt;&#xd;
-&#xd;
-           &lt;!--Optional:--&gt;&#xd;
-&#xd;
-           &lt;sch:ecgDetail&gt;text&lt;/sch:ecgDetail&gt;&#xd;
-&#xd;
-           &lt;!--Optional:--&gt;&#xd;
-&#xd;
-           &lt;sch:sourceDetail&gt;text&lt;/sch:sourceDetail&gt;&#xd;
-&#xd;
-         &lt;/sch:archiveBulkDetail&gt;&#xd;
-&#xd;
-       &lt;/sch:archiveRequestDetail&gt;&#xd;
-&#xd;
-       &lt;!--Optional:--&gt;&#xd;
-&#xd;
-       &lt;sch:requestTrailer&gt;&#xd;
-&#xd;
-         &lt;sch:requestItemCount&gt;1000&lt;/sch:requestItemCount&gt;&#xd;
-&#xd;
-       &lt;/sch:requestTrailer&gt;&#xd;
-&#xd;
-     &lt;/sch:archiveRequest&gt;&#xd;
-&#xd;
-   &lt;/sch:processArchiveRequest&gt;</stringProp>
+                <stringProp name="Argument.value">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#xd;
+&lt;sch:processArchiveRequest xmlns:xs=&quot;http://www.w3.org/2003/05/soap-envelope&quot;&#xd;
+	xmlns:sch=&quot;http://dms-fsl.uhc.com/fulfillment/schema&quot;&#xd;
+	xmlns:v7=&quot;http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00&quot;&gt;&#xd;
+	&lt;sch:archiveRequest&gt;&#xd;
+		&lt;sch:archiveRequestHeader&gt;&#xd;
+			&lt;sch:requestID&gt;pt_pr_tid_${runUuid}_${__counter(false,RequestId)}&lt;/sch:requestID&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:sourceID&gt;SBS&lt;/sch:sourceID&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:destinationID&gt;EDMS&lt;/sch:destinationID&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:requestDate&gt;2001-12-17T09:30:47Z&lt;/sch:requestDate&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:requestType&gt;Archive&lt;/sch:requestType&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:businessSegmentID&gt;EI&lt;/sch:businessSegmentID&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:marketSegmentCd&gt;OXF&lt;/sch:marketSegmentCd&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:fulfillmentType&gt;11300&lt;/sch:fulfillmentType&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:requestCategory&gt;TransactionalExternalDataOnly&lt;/sch:requestCategory&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:serviceLevelCategory&gt;String&lt;/sch:serviceLevelCategory&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:dataFormat&gt;XML&lt;/sch:dataFormat&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:requestorRefNo&gt;REQ_MNB12&lt;/sch:requestorRefNo&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:supplierRefNo&gt;SUP_900098&lt;/sch:supplierRefNo&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:bulkRequestHeaderID&gt;String&lt;/sch:bulkRequestHeaderID&gt;&#xd;
+			&lt;!--Optional: --&gt;&#xd;
+			&lt;sch:docCompositionEngineID&gt;&lt;/sch:docCompositionEngineID&gt;&#xd;
+		&lt;/sch:archiveRequestHeader&gt;&#xd;
+		&lt;sch:archiveRequestDetail&gt;&#xd;
+			&lt;!--You have a CHOICE of the next 2 items at this level --&gt;&#xd;
+			&lt;sch:archiveTransactionalDetail&gt;&#xd;
+				&lt;sch:data&gt;&#xd;
+          &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+          &#xd;
+				&lt;sch:externalFileType&gt;&#xd;
+            &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+            &#xd;
+				&lt;sch:filePath&gt;/MissionControl/SBS&lt;/sch:filePath&gt;&#xd;
+            &#xd;
+				&lt;sch:fileName&gt;archive_sample.afp&lt;/sch:fileName&gt;&#xd;
+            &#xd;
+				&lt;sch:fileSize&gt;9999&lt;/sch:fileSize&gt;&#xd;
+          &#xd;
+				&lt;/sch:externalFileType&gt;&#xd;
+          &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+          &#xd;
+				&lt;sch:embeddedDataType&gt;&lt;/sch:embeddedDataType&gt;&#xd;
+          &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+          &#xd;
+				&lt;sch:contentFormatType&gt;&#xd;
+            &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+            &#xd;
+				&lt;sch:contentStream /&gt;&#xd;
+            &#xd;
+				&lt;sch:documentType&gt;u_uhg_acet&lt;/sch:documentType&gt;&#xd;
+            &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+            &#xd;
+				&lt;sch:mimeType&gt;mime&lt;/sch:mimeType&gt;&#xd;
+            &#xd;
+				&lt;!--0 to 20 repetitions: --&gt;&#xd;
+            &#xd;
+				&lt;sch:documentMetadata&gt;&#xd;
+              &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+              &#xd;
+				&lt;v7:name&gt;u_dt&lt;/v7:name&gt;&#xd;
+              &#xd;
+				&lt;!--Optional: --&gt;&#xd;
+              &#xd;
+				&lt;v7:value&gt;2017-10-04&lt;/v7:value&gt;&#xd;
+            &#xd;
+				&lt;/sch:documentMetadata&gt;&#xd;
+          &#xd;
+				&lt;/sch:contentFormatType&gt;&#xd;
+        &#xd;
+			&lt;/sch:data&gt;&#xd;
+			&lt;/sch:archiveTransactionalDetail&gt;&#xd;
+		&lt;/sch:archiveRequestDetail&gt;&#xd;
+		&lt;!--Optional: --&gt;&#xd;
+		&lt;sch:requestTrailer&gt;&#xd;
+			&lt;sch:requestItemCount&gt;1&lt;/sch:requestItemCount&gt;&#xd;
+		&lt;/sch:requestTrailer&gt;&#xd;
+	&lt;/sch:archiveRequest&gt;&#xd;
+&lt;/sch:processArchiveRequest&gt;</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
             </collectionProp>
