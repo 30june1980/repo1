@@ -1,0 +1,3 @@
+jmeter -n -t performace-test-plan.jmx -j hub.log -p performace-test-plan.properties -l D:\apps\performance-tests\results\process-transactional-inline-data\process_transactional_50_6_partitions.jtl -e
+
+jmeter -n -t D:\apps\performance-tests\performace-test-plan.jmx -j hub.log -p performace-test-plan.properties -l D:\apps\performance-tests\results\cancel\cancel_50_6_partitions.jtl -e
