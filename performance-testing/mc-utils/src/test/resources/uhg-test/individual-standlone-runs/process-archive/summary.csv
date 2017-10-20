@@ -1,0 +1,3 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,KB/sec,Avg. Bytes
+ArchiveRequestTransactionalInlineDataOnly:HTTP Request Archive,32208,116,69,2213,45.19,0.00%,10.0,12.35,1264.7
+TOTAL,32208,116,69,2213,45.19,0.00%,10.0,12.35,1264.7
