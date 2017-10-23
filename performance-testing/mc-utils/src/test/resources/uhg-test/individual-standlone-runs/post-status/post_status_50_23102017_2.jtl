@@ -1,0 +1,2 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,grpThreads,allThreads,Latency,IdleTime
+1508754559956,657,HTTP Request post,200,,PostRequestTransactionalInlineDataOnly 1-1,text,true,,1262,1,1,657,0
