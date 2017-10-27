@@ -1,0 +1,12 @@
+2017/10/16 16:57:25 INFO  - jmeter.util.JMeterUtils: Setting Locale to en_US 
+2017/10/16 16:57:25 INFO  - jmeter.JMeter: Loading user properties from: D:\nitink\projects\mission_control\apache-jmeter-3.0\bin\user.properties 
+2017/10/16 16:57:25 INFO  - jmeter.JMeter: Loading system properties from: D:\nitink\projects\mission_control\apache-jmeter-3.0\bin\system.properties 
+2017/10/16 16:57:25 FATAL - jmeter.JMeter: An error occurred:  java.lang.IllegalArgumentException: Unknown arg: D:\nitink\projects\mission_control\git\mc-fulfillmenthub-test\performance-testing\mc-utils\src\test\resources\uhg-test\individual-standlone-runs\cancel\cancel_50_6_partitions.jtl
+	at org.apache.jmeter.JMeter.initializeProperties(JMeter.java:746)
+	at org.apache.jmeter.JMeter.start(JMeter.java:385)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.apache.jmeter.NewDriver.main(NewDriver.java:259)
+
