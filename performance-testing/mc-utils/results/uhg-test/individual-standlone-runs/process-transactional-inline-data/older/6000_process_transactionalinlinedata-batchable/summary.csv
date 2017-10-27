@@ -1,3 +1,0 @@
-Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,KB/sec,Avg. Bytes
-ProcessRequestTransactionalInlineDataOnly:HTTP Request process,6000,529,241,4848,470.37,0.00%,33.6,40.96,1250.0
-TOTAL,6000,529,241,4848,470.37,0.00%,33.6,40.96,1250.0

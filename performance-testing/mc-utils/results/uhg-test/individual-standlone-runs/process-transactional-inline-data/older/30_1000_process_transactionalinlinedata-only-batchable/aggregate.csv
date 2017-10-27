@@ -1,3 +1,0 @@
-Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,KB/sec
-ProcessRequestTransactionalInlineDataOnly:HTTP Request process,2642,27132,1144,72672,75301,79400,243,87108,1.14%,1.1,1.4
-TOTAL,2642,27132,1144,72672,75301,79400,243,87108,1.14%,1.1,1.4

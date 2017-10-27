@@ -1,3 +1,0 @@
-Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,KB/sec,Avg. Bytes
-HTTP Request process,7500,2821,975,16661,1566.87,0.07%,8.6,10.53,1248.2
-TOTAL,7500,2821,975,16661,1566.87,0.07%,8.6,10.53,1248.2

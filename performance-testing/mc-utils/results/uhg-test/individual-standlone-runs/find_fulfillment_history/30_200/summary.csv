@@ -1,3 +1,0 @@
-Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,KB/sec,Avg. Bytes
-FindFulfillmentHistory:HTTP Request process,6000,162,93,1475,76.97,0.00%,174.8,1146.42,6717.3
-TOTAL,6000,162,93,1475,76.97,0.00%,174.8,1146.42,6717.3
