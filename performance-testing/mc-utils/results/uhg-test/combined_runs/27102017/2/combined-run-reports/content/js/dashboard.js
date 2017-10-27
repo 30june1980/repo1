@@ -1,0 +1,169 @@
+/*
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+var showControllersOnly = false;
+var seriesFilter = "";
+var filtersOnlySampleSeries = true;
+
+/*
+ * Populates the table identified by id parameter with the specified data and
+ * format
+ *
+ */
+function createTable(table, info, formatter, defaultSorts, seriesIndex) {
+    var tableRef = table[0];
+
+    // Create header and populate it with data.titles array
+    var header = tableRef.createTHead();
+    var newRow = header.insertRow(-1);
+    for (var index = 0; index < info.titles.length; index++) {
+        var cell = document.createElement('th');
+        cell.innerHTML = info.titles[index];
+        newRow.appendChild(cell);
+    }
+
+    var tBody;
+
+    // Create overall body if defined
+    if(info.overall){
+        tBody = document.createElement('tbody');
+        tBody.className = "tablesorter-no-sort";
+        tableRef.appendChild(tBody);
+        var newRow = tBody.insertRow(-1);
+        var data = info.overall.data;
+        for(var index=0;index < data.length; index++){
+            var cell = newRow.insertCell(-1);
+            cell.innerHTML = formatter ? formatter(index, data[index]): data[index];
+        }
+    }
+
+    // Create regular body
+    tBody = document.createElement('tbody');
+    tableRef.appendChild(tBody);
+
+    var regexp;
+    if(seriesFilter)
+        regexp = new RegExp(seriesFilter, 'i');
+
+    // Populate body with data.items array
+    for(var index=0; index < info.items.length; index++){
+        var item = info.items[index];
+        if((!regexp || filtersOnlySampleSeries && !info.supportsControllersDiscrimination || regexp.test(item.data[seriesIndex]))
+                &&
+                (!showControllersOnly || !info.supportsControllersDiscrimination || item.isController)){
+            var newRow = tBody.insertRow(-1);
+            for(var col=0; col < item.data.length; col++){
+                var cell = newRow.insertCell(-1);
+                cell.innerHTML = formatter ? formatter(col, item.data[col]) : item.data[col];
+            }
+        }
+    }
+
+    // Add support of columns sort
+    table.tablesorter({sortList : defaultSorts});
+}
+
+$(document).ready(function() {
+
+    // Customize table sorter default options
+    $.extend( $.tablesorter.defaults, {
+        theme: 'blue',
+        cssInfoBlock: "tablesorter-no-sort",
+        widthFixed: true,
+        widgets: ['zebra']
+    });
+
+    var data = {"OkPercent": 100.0, "KoPercent": 0.0};
+    var dataset = [
+        {
+            "label" : "KO",
+            "data" : data.KoPercent,
+               "color" : "red"
+        },
+        {
+            "label" : "OK",
+            "data" : data.OkPercent,
+            "color" : "blue"
+        }];
+    $.plot($("#flot-requests-summary"), dataset, {
+        series : {
+            pie : {
+                show : true,
+                radius : 1,
+                label : {
+                    show : true,
+                    radius : 3 / 4,
+                    formatter : function(label, series) {
+                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'
+                            + label
+                            + '<br/>'
+                            + Math.round(series.percent)
+                            + '%</div>';
+                    },
+                    background : {
+                        opacity : 0.5,
+                        color : '#000'
+                    }
+                }
+            }
+        },
+        legend : {
+            show : true
+        }
+    });
+
+    // Creates APDEX table
+    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.9965, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)  ", "F (Frustration threshold)", "Label"], "items": [{"data": [0.9973166666666666, 500, 1500, "Post Status Requests"], "isController": false}, {"data": [0.995, 500, 1500, "Search Request By Request Id"], "isController": false}, {"data": [0.9959, 500, 1500, "Process Archive Requests"], "isController": false}, {"data": [0.9959, 500, 1500, "Cancel Requests"], "isController": false}, {"data": [0.99525, 500, 1500, "Find Fulfillment History Requests"], "isController": false}, {"data": [0.9964333333333333, 500, 1500, "Process transactional inline data requests"], "isController": false}]}, function(index, item){
+        switch(index){
+            case 0:
+                item = item.toFixed(3);
+                break;
+            case 1:
+            case 2:
+                item = formatDuration(item);
+                break;
+        }
+        return item;
+    }, [[0, 0]], 3);
+
+    // Create statistics table
+    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 150000, 0, 0.0, 139.0, 158.0, 237.9899999999907, 41.66847230046635, 53.78699005776361, 9, 6546], "isController": false}, "titles": ["Label", "#Samples", "KO", "Error %", "90th pct", "95th pct", "99th pct", "Throughput", "KB/sec", "Min", "Max"], "items": [{"data": ["Post Status Requests", 60000, 0, 0.0, 122.0, 141.0, 210.0, 16.667893608835097, 20.6039727360139, 61, 5517], "isController": false}, {"data": ["Search Request By Request Id", 5000, 0, 0.0, 34.0, 44.94999999999982, 686.2699999999186, 1.5151551882550018, 0.5664786460088388, 9, 1305], "isController": false}, {"data": ["Process Archive Requests", 30000, 0, 0.0, 152.0, 174.0, 261.0, 8.333821787888123, 10.292186895363866, 78, 6376], "isController": false}, {"data": ["Cancel Requests", 15000, 0, 0.0, 80.0, 93.94999999999891, 172.98999999999978, 4.167040542804257, 5.135551918963841, 42, 5258], "isController": false}, {"data": ["Find Fulfillment History Requests", 10000, 0, 0.0, 59.0, 71.0, 154.96999999999935, 3.003378199799134, 7.860652012946662, 27, 3538], "isController": false}, {"data": ["Process transactional inline data requests", 30000, 0, 0.0, 158.0, 179.0, 252.98999999999796, 8.333712980257989, 9.96651685573315, 85, 6546], "isController": false}]}, function(index, item){
+        switch(index){
+            case 3:
+                item = item.toFixed(2) + '%';
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                item = item.toFixed(2);
+                break;
+        }
+        return item;
+    }, [[0, 0]], 0);
+
+    // Create error table
+    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": []}, function(index, item){
+        switch(index){
+            case 2:
+            case 3:
+                item = item.toFixed(2) + '%';
+                break;
+        }
+        return item;
+    }, [[1, 1]]);
+});
