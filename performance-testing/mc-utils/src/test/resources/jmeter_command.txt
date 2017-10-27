@@ -1,3 +1,5 @@
-jmeter -n -t performace-test-plan.jmx -j hub.log -p performace-test-plan.properties -l D:\apps\performance-tests\results\process-transactional-inline-data\process_transactional_50_6_partitions.jtl -e
+jmeter -n -t D:\apps\performance-tests\performace-test-plan.jmx -j D:\apps\performance-tests\results\combined-runs\251017\1\combined-run-1\hub.log -l D:\apps\performance-tests\results\combined-runs\251017\1\combined-run-1\results.jtl -e -o D:\apps\performance-tests\results\combined-runs\251017\1\combined-run-1-reports
 
-jmeter -n -t D:\apps\performance-tests\performace-test-plan.jmx -j hub.log -p performace-test-plan.properties -l D:\apps\performance-tests\results\cancel\cancel_50_6_partitions.jtl -e
+jmeter -n -t D:\apps\performance-tests\performace-test-plan.jmx -j D:\apps\performance-tests\results\combined-runs\251017\1\process-run\hub.log -l D:\apps\performance-tests\results\combined-runs\251017\1\process-run\results.jtl -e -o D:\apps\performance-tests\results\combined-runs\251017\1\process-run-reports
+
+jmeter -n -t D:\apps\performance-tests\performace-test-plan.jmx -j D:\apps\performance-tests\results\combined-runs\261017\1\combined-run\hub.log -l D:\apps\performance-tests\results\combined-runs\261017\1\combined-run\results.jtl -e -o D:\apps\performance-tests\results\combined-runs\261017\1\combined-run-reports

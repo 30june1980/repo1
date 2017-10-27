@@ -19,7 +19,7 @@
         <stringProp name="HTTPSampler.port"></stringProp>
         <stringProp name="HTTPSampler.connect_timeout"></stringProp>
         <stringProp name="HTTPSampler.response_timeout"></stringProp>
-        <stringProp name="HTTPSampler.protocol">http</stringProp>
+        <stringProp name="HTTPSampler.protocol">https</stringProp>
         <stringProp name="HTTPSampler.contentEncoding"></stringProp>
         <stringProp name="HTTPSampler.path"></stringProp>
         <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
@@ -37,95 +37,127 @@
             <stringProp name="Argument.value">0</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="users" elementType="Argument">
-            <stringProp name="Argument.name">users</stringProp>
-            <stringProp name="Argument.value">1</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">50</stringProp>
-          </elementProp>
-          <elementProp name="searchRequestsThroughput" elementType="Argument">
-            <stringProp name="Argument.name">searchRequestsThroughput</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-            <stringProp name="Argument.desc">90</stringProp>
-          </elementProp>
           <elementProp name="processRequestsThroughput" elementType="Argument">
             <stringProp name="Argument.name">processRequestsThroughput</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
+            <stringProp name="Argument.value">500</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">500</stringProp>
           </elementProp>
           <elementProp name="processCount" elementType="Argument">
             <stringProp name="Argument.name">processCount</stringProp>
-            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.value">600</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">600</stringProp>
           </elementProp>
           <elementProp name="searchCount" elementType="Argument">
             <stringProp name="Argument.name">searchCount</stringProp>
-            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
             <stringProp name="Argument.desc">100</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="searchRequestsThroughput" elementType="Argument">
+            <stringProp name="Argument.name">searchRequestsThroughput</stringProp>
+            <stringProp name="Argument.value">90</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">90</stringProp>
+          </elementProp>
           <elementProp name="postStatusCount" elementType="Argument">
             <stringProp name="Argument.name">postStatusCount</stringProp>
-            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.value">1200</stringProp>
             <stringProp name="Argument.desc">1200</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="postStatusThroughput" elementType="Argument">
             <stringProp name="Argument.name">postStatusThroughput</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
+            <stringProp name="Argument.value">1000</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1000</stringProp>
           </elementProp>
-          <elementProp name="processRunUuid" elementType="Argument">
-            <stringProp name="Argument.name">processRunUuid</stringProp>
-            <stringProp name="Argument.value">2410_4</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="cancelReqCount" elementType="Argument">
             <stringProp name="Argument.name">cancelReqCount</stringProp>
-            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">300</stringProp>
           </elementProp>
           <elementProp name="cancelReqThroughput" elementType="Argument">
             <stringProp name="Argument.name">cancelReqThroughput</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
+            <stringProp name="Argument.value">250</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="cancelRunUuid" elementType="Argument">
-            <stringProp name="Argument.name">cancelRunUuid</stringProp>
-            <stringProp name="Argument.value">2410_3</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="postArchiveRunUuid" elementType="Argument">
-            <stringProp name="Argument.name">postArchiveRunUuid</stringProp>
-            <stringProp name="Argument.value">2410_3</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">250</stringProp>
           </elementProp>
           <elementProp name="archiveCount" elementType="Argument">
             <stringProp name="Argument.name">archiveCount</stringProp>
-            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.value">600</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">600</stringProp>
           </elementProp>
           <elementProp name="archiveThroughput" elementType="Argument">
             <stringProp name="Argument.name">archiveThroughput</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
+            <stringProp name="Argument.value">500</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">500</stringProp>
           </elementProp>
           <elementProp name="findFulfillmentHistoryCount" elementType="Argument">
             <stringProp name="Argument.name">findFulfillmentHistoryCount</stringProp>
-            <stringProp name="Argument.value">5</stringProp>
+            <stringProp name="Argument.value">200</stringProp>
             <stringProp name="Argument.desc">200</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="findFulfillmentHistoryThroughput" elementType="Argument">
             <stringProp name="Argument.name">findFulfillmentHistoryThroughput</stringProp>
-            <stringProp name="Argument.value">25</stringProp>
-            <stringProp name="Argument.desc">30</stringProp>
+            <stringProp name="Argument.value">180</stringProp>
+            <stringProp name="Argument.desc">180</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="users" elementType="Argument">
+            <stringProp name="Argument.name">users</stringProp>
+            <stringProp name="Argument.value">50</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+            <stringProp name="Argument.desc">50</stringProp>
+          </elementProp>
+          <elementProp name="processRunUuid" elementType="Argument">
+            <stringProp name="Argument.name">processRunUuid</stringProp>
+            <stringProp name="Argument.value">2610_12</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="cancelRunUuid" elementType="Argument">
+            <stringProp name="Argument.name">cancelRunUuid</stringProp>
+            <stringProp name="Argument.value">2510_2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="cancelReqStartOffset" elementType="Argument">
+            <stringProp name="Argument.name">cancelReqStartOffset</stringProp>
+            <stringProp name="Argument.value">60000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="postArchiveRunUuid" elementType="Argument">
+            <stringProp name="Argument.name">postArchiveRunUuid</stringProp>
+            <stringProp name="Argument.value">2510_2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="archiveFileCount" elementType="Argument">
+            <stringProp name="Argument.name">archiveFileCount</stringProp>
+            <stringProp name="Argument.value">1000</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="archiveFileName" elementType="Argument">
+            <stringProp name="Argument.name">archiveFileName</stringProp>
+            <stringProp name="Argument.value">archive_</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="archiveFileExtension" elementType="Argument">
+            <stringProp name="Argument.name">archiveFileExtension</stringProp>
+            <stringProp name="Argument.value">.afp</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="fulfillmentHistoryUuid" elementType="Argument">
+            <stringProp name="Argument.name">fulfillmentHistoryUuid</stringProp>
+            <stringProp name="Argument.value">2510_2</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="accessToken" elementType="Argument">
+            <stringProp name="Argument.name">accessToken</stringProp>
+            <stringProp name="Argument.value">eyJjdHkiOiJhcHBsaWNhdGlvblwvSlNPTiIsImFsZyI6IlJTMjU2In0.eyJ0b2tlbiI6IjB5TUhRNmRocUxpQmVaM2FTbWJLQmppeUJSMXc1TnZSMEhZdzB4Y3lJSDN6YnJidExGQ3JHaFhDVzlHWlozRWlaUjhyZjJtUjdYcitxdTJhdnhSQmp1ZEYzQnNZdkFja2JzajVsbU1RQ0tIQzBpbWNPWitHNXJDVWhyNkNkNFlqZ3Z4eThrcmorUGZJdlM5NlZPQTloYjhYNEJZbjR5Q0ExNmVLT3lWeFhQVlJhNGFpMnRIWFNrcFRIZkpMMU5GV3A3TG9tWC9sWlFkaVBrc29LOU04V2NiVVIyVWpRb1AxNjVVZ0dXZy96dXNUbUwyMHkrVlozMmFBdUdibmg2K2cxRWFHeUpWem5Db2tiS0lHNzRvSjN2NGs0UWN3TU9Ma0xLcHViZmFpZVJveU9aZ0ZaM1pkU1BkbmNnMmJGQkhOMnlNVVByWFNaR3BYSlMwZ1B0eWlURVJzWG1tZGlFaTExRmUydXJVRGFqRFZqclRWZUhoYXV6Z1piYUtTcnFtQUdTYWJkL0FyUjlPbE5LeU82QXpYU3VGeFF3WE45NEhKaDBLZzVyUkZyeGtLVHlYVmRsb0xZcEd3c3NKNXlXOGRIK2JuaVAwQmFJYUxzZXBiNUhGTlhQZnYzMFNuclAwcCtNNktHRDJsMjIxaHVOSlRqQ2c4NndMZWxnRjBLY3BFODhtdGh4OGVJSjJQSmJuTUJYN0JHMHhURTdQalZ0SGFFaWVDNjRORWg4RkFkYlJoZEpXUU15ZFNNN3NUblpDK2RyRUMrMnJmMGhhR1p0akVpRWNuOFNYMG42V2R4SWIraTdLeVdySS83QXFtZGVzaEN3VTdDaGdFMDcvdmdlTEZCMjJaZ1pvelZRdElnbDk4blZBeGkwNFo4R3ZrTFIybk42S28za1ZnMW8xdXhDMDRLNDRldDJmc3RVTzFacDhETTBmUld3d3hUS1hqd2t1enVtWmx1NDFHczRiTzV6amV6TkpwTGR2MjArRXRraml6NVFDKytBWFhQQk1HZHN5cGxTMnRyUDJaVTFpUG1NWHphbTFocDFIRGZ6SktocGVReEpJOGZESWJiRUlXSXdtZjZNVFViZURjNHhPR1ZpT0hjajJpS1MzVDliQUVsVTZTTXNNQVNOTC92d3NHbDY3R1padkRjYlJnUnV5dDFURE15cm40SWRNNjJFR0VBdTdyVzJOS0NkR1FEamw4YUh6WGhmT0R4NTJLME5iM3JRL1VqbUN3dVNkUmNXYlBtUWRDS3BKMG9JbnR4NjJKdGY4MCtibnQ1aFNWWmxPQUJpSjlpU2dVMUVoT3JZTWltdjV5emtaUHU0UlZGTUpyTUErS2xxRUxzNzRxZm56MDRXVG12V2hna3czbFhUc0xjaWdYVjZQbFY1YlVBQldYa0luY2ZBemt4bm9ucnM1WmdkbEU2MXNqbVY3Uzl1dVo0Qzg0ZTlUWW8zN3VoMU9VbVdkWDEydFlWQVpTTEVNMkhmc1hCUWF0Zmp4VHBQU0NMOGlQaGMvdDFTMnpQd2lQZVpKdDF3c2tVR0ZVaFI3MzZjeE1POUV0dy9aMFJBdTB2MEx3ZllzY2lneXF6SU8zenFwOGliMjVQK2dYeUI5ZlVFYmMyU3NLRXZNUDdVZ3gwRjhBWkdEU0RqS1ZpWjg5OGYvc0JUanpwdG9naHJqQTdiTGNVanJVYmVGWVpLeUQxaXZKM2lDK2IvNUlXY2hrTjJDVUNIUjJ5bVQza2h4M0xkZkpHM3k3Z2VVbVN5UmhEZSt6a01vSmwwTGZNQUh0Y2ZHSUlCcTE2eTlxV2hocXV5NHBzK2l6MWNMc1pkZ3ptN2lpTzFxdDAveHBDZklTYThTZGhrbjkwdHp0WDlRNGpaekJId1BPOVRObXlsQ0RLZk4rUTBIblczL01vUC9kQzZ3OTNQbE13TzE3ekEvdWJLNVZxR2RMZ0NXQlpnYXZQWE10aUw3TVBKNHRBY1c5eVNsc0lpUE1jeHdlODZUWVMvUnlQSnJZL0g3OWZDMmZTN3Evb0srZEpYY2s2ZXhyL3JmTkJydEJMK09YN1JsMjE1d2daVnZ1bW44ZkczcFFMaUpSM1FDZUZieDI3MUZUMDVMSHZZaEFRTlpMTEh0cm1PZ0IiLCAiaXYiOiJCY2E5TmJnL2tkTnU4eHFGWjJjbFVBPT0iLCAibWF4RXhwaXJhdGlvblRpbWUiOiIxNTA5MDM5MjUyMTEwIn0.AMUj4qWKK2vFlulA6LK8-88HJHEgFyFc7eTlPUl5BPx972InaCIoflu0jh0daQwv2p1DJHIzdUIobE-n3rB7Sqeo8chsZHDTVZmaBEs7DhNYgXWMuyuLtc9L8jMF-30z7_n8p_in5hHFGzs73pgWr-ge9N4Gd3DX1Z44b0tNyXXcna_Tc2tFDj-TB-22N_7j9vAcl-1Z4wZzQsOTplO4dlXwPXzfcpYCDA_O1keJBua_d42DJH21OKpPF3ykTZY0Bv-AgOMPc3xiF_WJ8-ebRUEdlUVpA9L2BzsjmCT297DaFKziRsUNRZ0zUkE4LD3m8qObSEfiSIdM5CGiu90zrA</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -144,7 +176,7 @@
         </collectionProp>
       </HeaderManager>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ProcessRequestTransactionalInlineDataOnly" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ProcessRequestTransactionalInlineDataOnly" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -351,7 +383,7 @@
         </ResponseAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="PostRequestTransactionalInlineDataOnly" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="PostRequestTransactionalInlineDataOnly" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -505,7 +537,7 @@
         </XPathAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="FindFulfillmentHistory" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="FindFulfillmentHistory" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -546,7 +578,7 @@
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
   &quot;searchSourceID&quot;: &quot;CIRRUS&quot;,&#xd;
-  &quot;requestID&quot;: &quot;pt_pr_tid_${postArchiveRunUuid}_${__intSum(${__counter(false)},${counterStartValue})}&quot;&#xd;
+  &quot;requestID&quot;: &quot;pt_pr_tid_${fulfillmentHistoryUuid}_${__intSum(${__counter(false)},${counterStartValue})}&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -569,7 +601,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
           <collectionProp name="Asserion.test_strings">
             <stringProp name="49586">200</stringProp>
           </collectionProp>
@@ -579,7 +611,7 @@
           <stringProp name="Scope.variable"></stringProp>
         </ResponseAssertion>
         <hashTree/>
-        <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="true">
+        <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="XPath Assertion" enabled="false">
           <boolProp name="XPath.negate">true</boolProp>
           <stringProp name="XPath.xpath">/fulfillmentHistoryResponse/responseExceptionDetail/errorCode</stringProp>
           <boolProp name="XPath.validate">false</boolProp>
@@ -589,7 +621,7 @@
         </XPathAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ArchiveRequestTransactionalInlineDataOnly" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ArchiveRequestTransactionalInlineDataOnly" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -665,7 +697,7 @@
             &#xd;
 				&lt;sch:filePath&gt;/MissionControl/SBS/&lt;/sch:filePath&gt;&#xd;
             &#xd;
-				&lt;sch:fileName&gt;archive_${__counter(false)}.afp&lt;/sch:fileName&gt;&#xd;
+				&lt;sch:fileName&gt;${archiveFileName}${__javaScript(${__counter(false)}%${archiveFileCount})}${archiveFileExtension}&lt;/sch:fileName&gt;&#xd;
             &#xd;
 				&lt;sch:fileSize&gt;9999&lt;/sch:fileSize&gt;&#xd;
           &#xd;
@@ -764,7 +796,7 @@
         </XPathAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="CancelRequestTransactionalInlineDataOnly" enabled="false">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="CancelRequestTransactionalInlineDataOnly" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -795,7 +827,7 @@
 &#xd;
         &lt;sch:cancelRequestHeader&gt;&#xd;
  &#xd;
-          &lt;sch:requestID&gt;pt_pr_tid_${cancelRunUuid}_${__intSum(${__counter(false,cancelCounter)},${counterStartValue})}&lt;/sch:requestID&gt;&#xd;
+          &lt;sch:requestID&gt;pt_pr_tid_${cancelRunUuid}_${__intSum(${__counter(false,cancelCounter)},${cancelReqStartOffset})}&lt;/sch:requestID&gt;&#xd;
  &#xd;
           &lt;!--Optional:--&gt;&#xd;
  &#xd;
@@ -920,7 +952,7 @@
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
-        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Run Only once for login" enabled="true"/>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Run Only once for login" enabled="false"/>
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTPLogin Header Manager" enabled="true">
             <collectionProp name="HeaderManager.headers">
@@ -936,14 +968,14 @@
               <collectionProp name="Arguments.arguments">
                 <elementProp name="userName" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">MC_DEV_OPS</stringProp>
+                  <stringProp name="Argument.value">nkasat</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">userName</stringProp>
                 </elementProp>
                 <elementProp name="password" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.value">password</stringProp>
+                  <stringProp name="Argument.value">nkcs2017!</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                   <stringProp name="Argument.name">password</stringProp>
@@ -980,6 +1012,23 @@
             <hashTree/>
           </hashTree>
         </hashTree>
+        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
+          <collectionProp name="CookieManager.cookies">
+            <elementProp name="ACCESS_TOKEN" elementType="Cookie" testname="ACCESS_TOKEN">
+              <stringProp name="Cookie.value">${accessToken}</stringProp>
+              <stringProp name="Cookie.domain">.uhg.com</stringProp>
+              <stringProp name="Cookie.path">/</stringProp>
+              <boolProp name="Cookie.secure">false</boolProp>
+              <longProp name="Cookie.expires">0</longProp>
+              <boolProp name="Cookie.path_specified">true</boolProp>
+              <boolProp name="Cookie.domain_specified">true</boolProp>
+            </elementProp>
+          </collectionProp>
+          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
+          <stringProp name="CookieManager.policy">standard</stringProp>
+          <stringProp name="CookieManager.implementation">org.apache.jmeter.protocol.http.control.HC4CookieHandler</stringProp>
+        </CookieManager>
+        <hashTree/>
         <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer" enabled="true">
           <intProp name="calcMode">2</intProp>
           <stringProp name="throughput">${searchRequestsThroughput}</stringProp>
@@ -994,13 +1043,6 @@
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">searchCriteria</stringProp>
-              </elementProp>
-              <elementProp name="accessToken" elementType="HTTPArgument">
-                <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">${ACCESS_TOKEN}</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-                <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                <stringProp name="Argument.name">accessToken</stringProp>
               </elementProp>
             </collectionProp>
           </elementProp>
@@ -1021,7 +1063,7 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
+        <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="false">
           <collectionProp name="Asserion.test_strings">
             <stringProp name="49586">200</stringProp>
           </collectionProp>
@@ -1030,7 +1072,7 @@
           <intProp name="Assertion.test_type">2</intProp>
         </ResponseAssertion>
         <hashTree/>
-        <com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.JSONPathAssertion guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.gui.JSONPathAssertionGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.JSONPathAssertion" testname="jp@gc - JSON Path Assertion" enabled="true">
+        <com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.JSONPathAssertion guiclass="com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.gui.JSONPathAssertionGui" testclass="com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.JSONPathAssertion" testname="jp@gc - JSON Path Assertion" enabled="false">
           <stringProp name="JSON_PATH">$.hits.total</stringProp>
           <stringProp name="EXPECTED_VALUE">1</stringProp>
           <boolProp name="JSONVALIDATION">true</boolProp>
@@ -1038,13 +1080,6 @@
           <boolProp name="INVERT">false</boolProp>
           <boolProp name="ISREGEX">true</boolProp>
         </com.atlantbh.jmeter.plugins.jsonutils.jsonpathassertion.JSONPathAssertion>
-        <hashTree/>
-        <CookieManager guiclass="CookiePanel" testclass="CookieManager" testname="HTTP Cookie Manager" enabled="true">
-          <collectionProp name="CookieManager.cookies"/>
-          <boolProp name="CookieManager.clearEachIteration">false</boolProp>
-          <stringProp name="CookieManager.policy">standard</stringProp>
-          <stringProp name="CookieManager.implementation">org.apache.jmeter.protocol.http.control.HC4CookieHandler</stringProp>
-        </CookieManager>
         <hashTree/>
       </hashTree>
       <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="false">
@@ -1078,7 +1113,7 @@
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">D:\apps\performance-tests\results\combined-runs\251017\1\combined-run\results.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="false">
@@ -1112,10 +1147,10 @@
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">D:\apps\performance-tests\results\combined-runs\251017\1\combined-run-1\results.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -1146,7 +1181,7 @@
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename"></stringProp>
+        <stringProp name="filename">D:\apps\performance-tests\results\combined-runs\251017\1\combined-run\results.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
