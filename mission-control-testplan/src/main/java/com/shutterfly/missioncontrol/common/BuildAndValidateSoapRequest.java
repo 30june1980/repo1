@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,6 +26,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,9 +44,9 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
  */
 
 public class BuildAndValidateSoapRequest extends ConfigLoader {
-
-	public static SOAPMessage readXml(String fileName, Map<String, String> updateMap )
-			throws ParserConfigurationException, SAXException, IOException,  SOAPException {
+	private static final Logger logger = LoggerFactory.getLogger(BuildAndValidateSoapRequest.class);
+public static SOAPMessage readXml(String fileName, Map<String, String> updateMap)
+			throws ParserConfigurationException, SAXException, IOException, SOAPException {
 
 		File file = new File(fileName);
 		DocumentBuilderFactory builder = DocumentBuilderFactory.newInstance();
@@ -64,46 +68,42 @@ public class BuildAndValidateSoapRequest extends ConfigLoader {
 		}
 		String myEnvelope = convertDocumentToString(document);
 		InputStream in = new ByteArrayInputStream(myEnvelope.getBytes());
-		SOAPMessage soapRequest = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL)
-				.createMessage(new MimeHeaders(), in);
-	//	soapRequest.writeTo(System.out);
-		return soapRequest;
+		return MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL).createMessage(new MimeHeaders(), in);
 	}
 
-	public static SOAPMessage getSOAPResponse(SOAPMessage soapRequest, String strEndpoint)
-			throws Exception, SOAPException {
+	public static SOAPMessage getSOAPResponse(SOAPMessage soapRequest, String strEndpoint) throws SOAPException {
 		// Send the SOAP request to the given endpoint and return the
 		// corresponding response
 		SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
 		SOAPConnection soapConnection = soapConnectionFactory.createConnection();
-		SOAPMessage soapResponse = soapConnection.call(soapRequest, strEndpoint);
-	//	soapResponse.writeTo(System.out);
-		return soapResponse;
+
+		return soapConnection.call(soapRequest, strEndpoint);
 
 	}
 
-	public static void validateSoapResponse(SOAPMessage soapResponse,
-			Map<String, String> validateMap) throws Exception {
+	public static void validateSoapResponse(SOAPMessage soapResponse, Map<String, String> validateMap)
+			throws SOAPException {
 
 		// Get all elements with the requested element tag from the SOAP message
 		SOAPBody soapBody = soapResponse.getSOAPBody();
-		
+
 		validateMap.forEach((key, value) -> {
 			NodeList elements = soapBody.getElementsByTagName(key);
 			if (elements.getLength() != 1) {
-				System.out.println("Expected exactly one element " + key + "in message, but found "
+
+				logger.info("Expected exactly one element " + key + "in message, but found "
 						+ Integer.toString(elements.getLength()));
 
 				Assert.assertEquals(false, true);
 			} else {
 				// Validate the element value against the expected value
-				
+
 				String strActual = elements.item(0).getTextContent();
 				Assert.assertEquals(strActual, value);
 			}
 		});
 		// Check whether there is exactly one element with the given tag
-		
+
 	}
 
 	private static String convertDocumentToString(Document doc) {
@@ -113,10 +113,10 @@ public class BuildAndValidateSoapRequest extends ConfigLoader {
 			transformer = tf.newTransformer();
 			StringWriter writer = new StringWriter();
 			transformer.transform(new DOMSource(doc), new StreamResult(writer));
-			String output = writer.getBuffer().toString();
-			return output;
+
+			return writer.getBuffer().toString();
 		} catch (TransformerException e) {
-			e.printStackTrace();
+			logger.error("Error stack trace : ",e);
 		}
 
 		return null;

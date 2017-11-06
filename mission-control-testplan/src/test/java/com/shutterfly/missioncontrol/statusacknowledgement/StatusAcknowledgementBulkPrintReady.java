@@ -53,8 +53,8 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
-		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildSourceFilePath(payload),
-				EcgFileSafeUtil.buildTargetFilePath(payload), record, "bulkfile_invalid.xml");
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+				record, "bulkfile_invalid.xml");
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
 				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
@@ -65,8 +65,8 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 	}
 
 	@Test(groups = "database", dependsOnGroups = { "Test_SABPR_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
 	}
 }

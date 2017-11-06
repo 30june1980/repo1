@@ -13,8 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class CustomWebDriverWait extends ConfigLoader {
 
 	public WebDriverWait universalWait() {
-		int time = Integer.parseInt(config.getProperty("WebDriverWaitDurationSeconds"));
-		WebDriverWait wait = new WebDriverWait(driver, time);
-		return wait;
+		return new WebDriverWait(driver, Integer.parseInt(config.getProperty("WebDriverWaitDurationSeconds")));
 	}
 }

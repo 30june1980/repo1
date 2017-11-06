@@ -42,7 +42,7 @@ public class ProcessFulfillmentRequestDbTest extends ConfigLoader {
 
 		CsvReaderWriter wr = new CsvReaderWriter();
 
-		for (String record : wr.readCsv()) {
+		for (String record : wr.readCsv("test")) {
 			/*
 			 * Verification of RequestId presence in fulfillment_tracking_record
 			 * and fulfillment_status_tracking collection Verification of

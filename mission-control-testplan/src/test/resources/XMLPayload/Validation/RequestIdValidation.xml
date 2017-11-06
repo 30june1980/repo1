@@ -6,15 +6,15 @@
          <!--Optional:-->
          <sch:sourceID>CIRRUS</sch:sourceID>
          <!--Optional:-->
-         <sch:destinationID>SBS</sch:destinationID>
+         <sch:destinationID>RRD</sch:destinationID>
          <!--Optional:-->
          <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
          <!--Optional:-->
          <sch:requestType>Process</sch:requestType>
          <sch:businessSegmentID>EI</sch:businessSegmentID>
-         <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+         <sch:marketSegmentCd>LRG</sch:marketSegmentCd>
          <!--Optional:-->
-         <sch:fulfillmentType>10200</sch:fulfillmentType>
+         <sch:fulfillmentType>10000</sch:fulfillmentType>
          <!--Optional:-->
          <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
          <!--Optional:-->

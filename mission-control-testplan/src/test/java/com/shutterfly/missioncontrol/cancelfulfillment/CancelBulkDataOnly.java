@@ -4,6 +4,7 @@
 package com.shutterfly.missioncontrol.cancelfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
+import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 /**
@@ -53,8 +56,13 @@ public class CancelBulkDataOnly extends ConfigLoader {
 	@Test(groups = "Test_CBDO_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
-		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+
+EncoderConfig encoderconfig = new EncoderConfig();
+		Response response = given()
+				.config(RestAssured.config()
+						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+				.body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -64,8 +72,8 @@ public class CancelBulkDataOnly extends ConfigLoader {
 
 
 	@Test(groups = "database", dependsOnGroups = { "Test_CBDO_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception  {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
 	}
 }

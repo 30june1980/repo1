@@ -4,6 +4,7 @@
 package com.shutterfly.missioncontrol.postarchive;
 
 import static org.hamcrest.Matchers.equalTo;
+import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
@@ -65,8 +66,8 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
 
 	@Test(groups = "database", dependsOnGroups = { "Test_PABPR_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
 	}
 }

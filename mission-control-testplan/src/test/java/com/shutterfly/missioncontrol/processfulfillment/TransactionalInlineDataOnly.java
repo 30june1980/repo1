@@ -4,7 +4,7 @@
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
+import static io.restassured.RestAssured.given;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +18,8 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 /**
@@ -47,9 +49,19 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 	@Test(groups = "Test_TIDO_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
-		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
-		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+		/*
+		 * remove charset from content type using encoder config
+		 * 
+		 * build the payload
+		 */
+
+		EncoderConfig encoderconfig = new EncoderConfig();
+		Response response = given()
+				.config(RestAssured.config()
+						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+				.body(this.buildPayload()).when().post(this.getProperties());
+
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
@@ -59,8 +71,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 	}
 
 	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDO_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
 	}
 }

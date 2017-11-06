@@ -3,6 +3,7 @@
  */
 package com.shutterfly.missioncontrol.processarchive;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
@@ -19,6 +20,8 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 /**
@@ -54,10 +57,15 @@ public class ProcessArchiveTransactionalExternalDataOnly extends ConfigLoader {
 		basicConfigNonWeb();
 
 		String payload = this.buildPayload();
-		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildSourceFilePath(payload),
-				EcgFileSafeUtil.buildTargetFilePath(payload), record, "bulkfile_all_valid.xml");
-		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+				record, "bulkfile_all_valid.xml");
+
+		EncoderConfig encoderconfig = new EncoderConfig();
+		Response response = given()
+				.config(RestAssured.config()
+						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+				.body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -66,8 +74,8 @@ public class ProcessArchiveTransactionalExternalDataOnly extends ConfigLoader {
 	}
 
 	@Test(groups = "database", dependsOnGroups = { "Test_PATEDO_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByArchivalSystem");
 	}
 }

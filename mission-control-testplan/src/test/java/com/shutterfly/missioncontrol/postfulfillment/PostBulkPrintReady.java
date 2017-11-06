@@ -65,8 +65,8 @@ public class PostBulkPrintReady extends ConfigLoader {
 
 
 	@Test(groups = "database", dependsOnGroups = { "Test_PBPR_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record,"AcceptedByRequestor");
 	}
 }

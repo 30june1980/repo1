@@ -75,7 +75,6 @@ public class ProcessFulfillmentRequestTransactionalInlineDataOnly extends Config
 	@Test(groups = "database", dependsOnGroups = { "Test_TIDO" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
-		Thread.sleep(20000);
 		basicConfigNonWeb();
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");

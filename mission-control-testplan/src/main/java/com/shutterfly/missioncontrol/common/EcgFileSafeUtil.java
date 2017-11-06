@@ -2,7 +2,8 @@ package com.shutterfly.missioncontrol.common;
 
 import static org.testng.Assert.assertNotNull;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -15,34 +16,52 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
 import io.restassured.path.xml.XmlPath;
 
 public class EcgFileSafeUtil extends ConfigLoader {
+	private static final Logger logger = LoggerFactory.getLogger(EcgFileSafeUtil.class);
 
-	public static String buildSourceFilePath(String payload) throws IOException {
+	public static String buildInboundFilePath(String payload) {
 
 		/*
-		 * Get Source Id Build source ECG file location
+		 * Get Source Id Build Inbound ECG file location
 		 */
+
+		String sourceEcgPath = "";
 		XmlPath xmlPath = new XmlPath(payload);
-		String sourceId = xmlPath.get("**.findAll { it.name() == 'sourceID' }");
-		assertNotNull(sourceId);
-		String sourceEcgPath = "/MissionControl/" + sourceId + "/";
+
+		final String requestType = xmlPath.get("**.findAll { it.name() == 'requestType' }");
+		final String requestCategory = xmlPath.get("**.findAll { it.name() == 'requestCategory' }");
+		final String direction = "INBOUND";
+		String sourceParticipantId = "";
+		final String requestorParticipantId = xmlPath.get("**.findAll { it.name() == 'sourceID' }");
+		if (requestType.equals("Process")) {
+			sourceParticipantId = xmlPath.get("**.findAll { it.name() == 'sourceID' }");
+		} else {
+			sourceParticipantId = xmlPath.get("**.findAll { it.name() == 'destinationID' }");
+		}
+		final String targetParticipantId = "MC";
+		final String materialType = xmlPath.get("**.findAll { it.name() == 'fulfillmentType' }");
+
+		FileTransferDetailsUtil fileTransfer = new FileTransferDetailsUtil();
+		sourceEcgPath = fileTransfer.getFileTransferPathForProcessRequest(requestType, requestCategory, direction,
+				requestorParticipantId, sourceParticipantId, targetParticipantId, materialType);
+		assertNotNull(sourceEcgPath);
 		return sourceEcgPath;
 
 	}
 
-	public static String buildTargetFilePath(String payload) throws IOException {
+	public static String buildTargetFilePath(String payload) {
 		/*
 		 * Get DestinationId Build Destination ECG file location
 		 */
 		XmlPath xmlPath = new XmlPath(payload);
 		String destinationId = xmlPath.get("**.findAll { it.name() == 'destinationID' }");
+
 		assertNotNull(destinationId);
-		String targetEcgPath = "/MissionControl/" + destinationId + "/";
-		return targetEcgPath;
+
+		return "/MissionControl/" + destinationId + "/";
 
 	}
 
-	public static void putFileAtSourceLocation(String sourceEcgPath, String destinationEcgPath, String record,
-			String externalFilename) {
+	public static void putFileAtSourceLocation(String sourceEcgPath, String record, String externalFilename) {
 
 		JSch jsch = new JSch();
 		Session session = null;
@@ -55,20 +74,20 @@ public class EcgFileSafeUtil extends ConfigLoader {
 			Channel channel = session.openChannel("sftp");
 			channel.connect();
 			ChannelSftp sftpChannel = (ChannelSftp) channel;
-			sftpChannel.put(("src/test/resources/XMLPayload/BulkFiles/" + externalFilename),
-					(sourceEcgPath + record + ".xml"));
 			/*
-			 * sftpChannel.get("/MissionControl/ACET/bulkfile_all_valid.xml",
-			 * "localfile.txt");
+			 * normalize folder path with regex expression
 			 */
+			sftpChannel.put(("src/test/resources/XMLPayload/BulkFiles/" + externalFilename),
+					(sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
 			sftpChannel.exit();
 
-		} catch (JSchException e) {
-			e.printStackTrace();
-		} catch (SftpException e) {
-			e.printStackTrace();
+		} catch (JSchException | SftpException e) {
+			logger.error("Error stack trace while building source file path : ", e);
 		} finally {
-			session.disconnect();
+
+			if (session != null && session.isConnected()) {
+				session.disconnect();
+			}
 		}
 	}
 

@@ -76,7 +76,7 @@ public class ProcessFulfillmentRequestTransactionalExternalDataOnly extends Conf
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
 		client = connectToDatabase.getMongoConnection();
 		basicConfigNonWeb();
-		Thread.sleep(20000);
+
 		MongoDatabase database = client.getDatabase("missioncontrol");
 		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");
 		MongoCollection<Document> fulfillment_status_tracking = database.getCollection("fulfillment_status_tracking");

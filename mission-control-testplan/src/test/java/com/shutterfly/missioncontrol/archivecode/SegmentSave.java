@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.accessToken.AccessToken;
+import com.shutterfly.missioncontrol.accesstoken.AccessToken;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 
 import io.restassured.response.Response;

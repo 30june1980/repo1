@@ -12,67 +12,74 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Diptman Gupta
  *
  */
 public class ConfigLoader {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 
-	public static Properties config = null;
-	public static Properties elements = null;
-	public static WebDriver driver = null;
-	public static WebElement element = null;
-
+	public static  Properties config = null;
+	public static  Properties elements = null;
+	public static  WebDriver driver = null;
+	public static  WebElement element = null;
+	 static final String BROWSER = "Browser";
 	// To get basic configurations from property files
-	public void basicConfigWeb() {
+	public static void basicConfigLoaderWeb() {
+
 		if (driver == null) {
 			config = new Properties();
 			try {
 				config.load(ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties"));
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Unable to load config property file: " + e);
 			}
 
 			elements = new Properties();
 			try {
 				elements.load(ConfigLoader.class.getClassLoader().getResourceAsStream("elements.properties"));
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Unable to load element property file: " + e);
 			}
 		}
-
-		if (config.getProperty("Browser").equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", "C:/Users/dgupta/Desktop/Mission Control/Drivers/ChromeDriver/chromedriver.exe");
+		
+		if (config.getProperty(BROWSER).equalsIgnoreCase("chrome")) {
+			System.setProperty("webdriver.chrome.driver", "D:\\Drivers\\ChromeDriver\\chromedriver.exe");
 			driver = new ChromeDriver();
 
-		} else if (config.getProperty("Browser").equalsIgnoreCase("firefox")) {
-			System.setProperty("webdriver.gecko.driver", "C:/Users/dgupta/Desktop/Mission Control/Drivers/FirefoxDriver/geckodriver.exe");
+		} else if (config.getProperty(BROWSER).equalsIgnoreCase("firefox")) {
+			System.setProperty("webdriver.gecko.driver",
+					"C:/Users/dgupta/Desktop/Mission Control/Drivers/FirefoxDriver/geckodriver.exe");
 			driver = new FirefoxDriver();
-		} else if (config.getProperty("Browser").equalsIgnoreCase("ie")) {
+		} else if (config.getProperty(BROWSER).equalsIgnoreCase("ie")) {
 			DesiredCapabilities caps = DesiredCapabilities.internetExplorer();
 			caps.setCapability("ignoreZoomSetting", true);
-			System.setProperty("webdriver.ie.driver", "C:/Users/dgupta/Desktop/Mission Control/Drivers/InternetExplorer/IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver",
+					"C:/Users/dgupta/Desktop/Mission Control/Drivers/InternetExplorer/IEDriverServer.exe");
 			driver = new InternetExplorerDriver(caps);
 		}
 	}
 
-	public void basicConfigNonWeb() {
-		{
+	public static void basicConfigNonWeb() {
+		
 			config = new Properties();
 			try {
 				config.load(ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties"));
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Unable to load config property file: " + e);
 			}
 
 			elements = new Properties();
 			try {
 				elements.load(ConfigLoader.class.getClassLoader().getResourceAsStream("elements.properties"));
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Unable to load element property file: " + e);
 			}
-		}
+		
 
 	}
 }

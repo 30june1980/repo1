@@ -41,7 +41,7 @@ public class ProcessFulfillmentRequestBulkDbTest extends ConfigLoader {
 		MongoCollection<Document> collection = database.getCollection("fulfillment_tracking_record");
 		CsvReaderWriter wr = new CsvReaderWriter();
 
-		for (String record : wr.readCsv()) {
+		for (String record : wr.readCsv("Test")) {
 			Document myDoc = collection.find(eq("requestId", record)).first();
 			myDoc.containsKey("requestId");
 			Assert.assertEquals(record, myDoc.getString("requestId"));

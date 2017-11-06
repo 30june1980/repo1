@@ -5,9 +5,9 @@ package com.shutterfly.missioncontrol.common;
 
 import static com.mongodb.client.model.Filters.eq;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.bson.Document;
 import org.testng.Assert;
@@ -27,13 +27,13 @@ public class DatabaseValidationUtil extends ConfigLoader {
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	public void validateRecordsAvailabilityAndStatusCheck(String record) throws IOException, InterruptedException {
+	public void validateRecordsAvailabilityAndStatusCheck(String record, String statusToValidate) throws Exception   {
 		client = connectToDatabase.getMongoConnection();
-		Thread.sleep(20000);
+
 		basicConfigNonWeb();
 		MongoDatabase database = client.getDatabase("missioncontrol");
-		MongoCollection<Document> fulfillment_tracking_record = database.getCollection("fulfillment_tracking_record");
-		MongoCollection<Document> fulfillment_status_tracking = database.getCollection("fulfillment_status_tracking");
+		MongoCollection<Document> fulfillmentTrackingRecord = database.getCollection("fulfillment_tracking_record");
+		MongoCollection<Document> fulfillmentStatusTracking = database.getCollection("fulfillment_status_tracking");
 
 		/*
 		 * Verification of RequestId presence in fulfillment_tracking_record and
@@ -41,35 +41,80 @@ public class DatabaseValidationUtil extends ConfigLoader {
 		 * fulfillment_status_tracking status where status is not logged as
 		 * PutToDeadLetterTopic
 		 */
-		Document fulfillment_tracking_record_doc = fulfillment_tracking_record.find(eq("requestId", record)).first();
-		fulfillment_tracking_record_doc.containsKey("requestId");
-		Assert.assertEquals(record, fulfillment_tracking_record_doc.getString("requestId"));
+		Document fulfillmentTrackingRecordDoc = null;
+		Document fulfillmentStatusTrackingDoc = null;
+		final String requestId = "requestId";
 
-		Document fulfillment_status_tracking_doc = fulfillment_status_tracking.find(eq("requestId", record)).first();
+		for (int retry = 0; retry <= 7; retry++) {
+			try {
+				if ((fulfillmentTrackingRecord.find(eq(requestId, record)).first()) != null) {
+					fulfillmentTrackingRecordDoc = fulfillmentTrackingRecord.find(eq(requestId, record)).first();
+					fulfillmentTrackingRecordDoc.containsKey(requestId);
+					Assert.assertEquals(record, fulfillmentTrackingRecordDoc.getString(requestId));
 
-		/*
-		 * if(fulfillment_status_tracking_doc.get("requestTracking") instanceof
-		 * List<?>){ Object class1 =
-		 * fulfillment_status_tracking_doc.get("requestTracking").getClass();
-		 * if(class1 instanceof Document){
-		 * 
-		 * } }
-		 */
+					fulfillmentStatusTrackingDoc = fulfillmentStatusTracking.find(eq(requestId, record)).first();
+
+					if (validateRecordStatus(fulfillmentStatusTrackingDoc, record, statusToValidate)) {
+						break;
+
+					} else 
+
+						throw new Exception("Record Status not  Found " + statusToValidate);
+					
+
+				} else {
+
+					throw new Exception("Record Not Found " + record);
+				}
+			} catch (Exception ex) {
+				if (retry >= 7) 
+
+					throw new Exception(ex.getMessage());
+
+				 else {
+					
+						TimeUnit.SECONDS.sleep(20);
+					
+				}
+			}
+		}
+
+		
+		connectToDatabase.closeMongoConnection();
+
+	}
+
+	private boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record,
+			String statusToValidate) {
+		boolean flag = false;
 
 		@SuppressWarnings("unchecked")
-		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillment_status_tracking_doc
+		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillmentStatusTrackingDoc
 				.get("requestTracking");
-		requestTrackingDoc.forEach(documentRequestTrackingCollection -> {
-			if (documentRequestTrackingCollection.getString("status").equals("PutToDeadLetterTopic")) {
-				System.out.println("Request is moved to Dead Letter Topic");
-				System.out.println("Request Id: " + record);
-				Assert.assertEquals(true, false);
+
+		for (int i = 0; i < requestTrackingDoc.size(); i++) {
+
+			if (requestTrackingDoc.get(i).getString("status").equals("PutToDeadLetterTopic")) {
+				Assert.assertEquals(false, true, " Request is moved to Dead Letter Topic " + record);
+				flag = true;
+				break;
+			} else {
+
+				if (requestTrackingDoc.get(i).getString("status").equals(statusToValidate)) {
+
+					Assert.assertEquals(true, true, "Request is successfully Processed : " + record);
+					flag = true;
+					break;
+				} else {
+					flag = false;
+				}
 
 			}
-			;
-		});
 
-		connectToDatabase.closeMongoConnection();
+			
+		}
+		
+		return flag;
 
 	}
 }

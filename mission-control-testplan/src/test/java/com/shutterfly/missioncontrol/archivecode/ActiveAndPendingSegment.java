@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
-import com.shutterfly.missioncontrol.accessToken.AccessToken;
+import com.shutterfly.missioncontrol.accesstoken.AccessToken;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 
 /**

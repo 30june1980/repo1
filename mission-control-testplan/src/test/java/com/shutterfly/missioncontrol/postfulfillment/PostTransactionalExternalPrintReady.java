@@ -63,8 +63,8 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 	}
 
 	@Test(groups = "database", dependsOnGroups = { "Test_PTEPR_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record,"AcceptedByRequestor");
 	}
 }

@@ -3,6 +3,7 @@
  */
 package com.shutterfly.missioncontrol.processfulfillment;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
@@ -19,6 +20,8 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 /**
@@ -55,10 +58,24 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
-		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildSourceFilePath(payload),
-				EcgFileSafeUtil.buildTargetFilePath(payload), record, "bulkfile_all_valid.xml");
-		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+
+		/*
+		 * Adding file at source location build and store source file path build and
+		 * store target file path
+		 */
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+				record, "bulkfile_all_valid.xml");
+
+		/*
+		 * remove charset from content type using encoder config
+		 * build the payload
+		 */
+		EncoderConfig encoderconfig = new EncoderConfig();
+		Response response = given()
+				.config(RestAssured.config()
+						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+				.body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -68,8 +85,13 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 	}
 
 	@Test(dependsOnGroups = { "Test_TEPR_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
+
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		/*
+		 *  Supply the final status check value 
+		 */
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
+		
 	}
 }

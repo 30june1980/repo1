@@ -9,11 +9,11 @@
  
           <!--Optional:-->
  
-          <sch:sourceID>ACET</sch:sourceID>
+          <sch:sourceID>BRMS</sch:sourceID>
  
           <!--Optional:-->
  
-          <sch:destinationID>RRD</sch:destinationID>
+          <sch:destinationID>SBS</sch:destinationID>
  
           <!--Optional:-->
  
@@ -33,7 +33,7 @@
  
           <!--Optional:-->
  
-          <sch:fulfillmentType>10700</sch:fulfillmentType>
+          <sch:fulfillmentType>11300</sch:fulfillmentType>
  
           <!--Optional:-->
  
@@ -73,7 +73,7 @@
  
             <!--Optional:-->
  
-            <sch:filePath>/MissionControl/ACET</sch:filePath>
+            <sch:filePath>/MissionControl/bulkFiles/BRMS</sch:filePath>
  
             <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
  

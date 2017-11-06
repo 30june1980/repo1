@@ -30,7 +30,7 @@ public class CancelBulkPrintReady extends ConfigLoader {
 	 */
 	private String uri = "";
 	private String payload = "";
-	 private String record = "";
+	private String record = "";
 
 	private String getProperties() {
 		basicConfigNonWeb();
@@ -43,7 +43,6 @@ public class CancelBulkPrintReady extends ConfigLoader {
 		URL file = Resources.getResource("XMLPayload/CancelFulfillment/CancelBulkPrintReady.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BPR");
-
 		return payload = payload.replaceAll("REQUEST_101", record);
 
 	}
@@ -62,11 +61,9 @@ public class CancelBulkPrintReady extends ConfigLoader {
 
 	}
 
-
-
 	@Test(groups = "database", dependsOnGroups = { "Test_CBPR_XML" })
-	private void validateRecordsInDatabase() throws IOException, InterruptedException {
+	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySuplier");
 	}
 }

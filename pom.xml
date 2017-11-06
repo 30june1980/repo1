@@ -12,8 +12,10 @@
 		<maven.surfire>2.19.1</maven.surfire>
 		<testng.version>6.11</testng.version>
 		<mongo.version>3.4.2</mongo.version>
-		<rest.assured>3.0.3</rest.assured>
+		<rest.assured>3.0.5</rest.assured>
 		<apache.poi>3.16</apache.poi>
+		<slf4j.version>1.7.25</slf4j.version>
+		<logback.version>1.2.3</logback.version>
 	</properties>
 	<modules>
 		<module>mission-control-javabase</module>
@@ -67,7 +69,31 @@
 				<artifactId>poi-ooxml</artifactId>
 				<version>${apache.poi}</version>
 			</dependency>
+			<!-- slf4j dependency -->
 
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-access</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+
+			<!-- slf4j dependency -->
 		</dependencies>
 	</dependencyManagement>
 </project>

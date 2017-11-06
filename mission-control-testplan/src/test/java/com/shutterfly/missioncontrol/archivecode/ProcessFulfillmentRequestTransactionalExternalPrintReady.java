@@ -74,7 +74,6 @@ public class ProcessFulfillmentRequestTransactionalExternalPrintReady extends Co
 
 	@Test(dependsOnGroups = { "Test_TEPR" })
 	private void validateRecordsInDatabase() throws IOException, InterruptedException {
-		Thread.sleep(20000);
 		client = connectToDatabase.getMongoConnection();
 		basicConfigNonWeb();
 		MongoDatabase database = client.getDatabase("missioncontrol");

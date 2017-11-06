@@ -16,7 +16,7 @@ import com.mongodb.ServerAddress;
 
 public class ConnectToDatabase extends ConfigLoader {
 	MongoClient mongoClient;
-	int DB_PORT = 27017;
+	int dbPort = 27017;
 
 	public MongoClient getMongoConnection() {
 		basicConfigNonWeb();
@@ -28,8 +28,10 @@ public class ConnectToDatabase extends ConfigLoader {
 		//char[] password = { 'x', 'm', 'p', 'o', '4', '8', '5', 'n', 'h' }; // dev
 																			// password
 		MongoCredential credential = MongoCredential.createScramSha1Credential(userName, databaseName, password);
-		return this.mongoClient = new MongoClient(new ServerAddress(config.getProperty("DatabaseAddress"), DB_PORT),
+		
+		this.mongoClient = new MongoClient(new ServerAddress(config.getProperty("DatabaseAddress"), dbPort),
 				Arrays.asList(credential));
+		return mongoClient ;
 	}
 
 	public void closeMongoConnection() {

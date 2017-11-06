@@ -13,7 +13,7 @@ public class SampleWebTest extends ConfigLoader {
 	@Test
 	public void getApplicationUrlTest() {
 
-		basicConfigWeb();
+		basicConfigLoaderWeb();
 		driver.get(config.getProperty("ApplicationUrl"));
 		driver.quit();
 
