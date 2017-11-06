@@ -39,73 +39,73 @@
           </elementProp>
           <elementProp name="processRequestsThroughput" elementType="Argument">
             <stringProp name="Argument.name">processRequestsThroughput</stringProp>
-            <stringProp name="Argument.value">500</stringProp>
+            <stringProp name="Argument.value">250</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">500</stringProp>
           </elementProp>
           <elementProp name="processCount" elementType="Argument">
             <stringProp name="Argument.name">processCount</stringProp>
-            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">600</stringProp>
           </elementProp>
           <elementProp name="searchCount" elementType="Argument">
             <stringProp name="Argument.name">searchCount</stringProp>
-            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.value">50</stringProp>
             <stringProp name="Argument.desc">100</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="searchRequestsThroughput" elementType="Argument">
             <stringProp name="Argument.name">searchRequestsThroughput</stringProp>
-            <stringProp name="Argument.value">90</stringProp>
+            <stringProp name="Argument.value">45</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">90</stringProp>
           </elementProp>
           <elementProp name="postStatusCount" elementType="Argument">
             <stringProp name="Argument.name">postStatusCount</stringProp>
-            <stringProp name="Argument.value">1200</stringProp>
+            <stringProp name="Argument.value">600</stringProp>
             <stringProp name="Argument.desc">1200</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="postStatusThroughput" elementType="Argument">
             <stringProp name="Argument.name">postStatusThroughput</stringProp>
-            <stringProp name="Argument.value">1000</stringProp>
+            <stringProp name="Argument.value">500</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">1000</stringProp>
           </elementProp>
           <elementProp name="cancelReqCount" elementType="Argument">
             <stringProp name="Argument.name">cancelReqCount</stringProp>
-            <stringProp name="Argument.value">300</stringProp>
+            <stringProp name="Argument.value">150</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">300</stringProp>
           </elementProp>
           <elementProp name="cancelReqThroughput" elementType="Argument">
             <stringProp name="Argument.name">cancelReqThroughput</stringProp>
-            <stringProp name="Argument.value">250</stringProp>
+            <stringProp name="Argument.value">125</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">250</stringProp>
           </elementProp>
           <elementProp name="archiveCount" elementType="Argument">
             <stringProp name="Argument.name">archiveCount</stringProp>
-            <stringProp name="Argument.value">600</stringProp>
+            <stringProp name="Argument.value">300</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">600</stringProp>
           </elementProp>
           <elementProp name="archiveThroughput" elementType="Argument">
             <stringProp name="Argument.name">archiveThroughput</stringProp>
-            <stringProp name="Argument.value">500</stringProp>
+            <stringProp name="Argument.value">250</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
             <stringProp name="Argument.desc">500</stringProp>
           </elementProp>
           <elementProp name="findFulfillmentHistoryCount" elementType="Argument">
             <stringProp name="Argument.name">findFulfillmentHistoryCount</stringProp>
-            <stringProp name="Argument.value">200</stringProp>
+            <stringProp name="Argument.value">100</stringProp>
             <stringProp name="Argument.desc">200</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="findFulfillmentHistoryThroughput" elementType="Argument">
             <stringProp name="Argument.name">findFulfillmentHistoryThroughput</stringProp>
-            <stringProp name="Argument.value">180</stringProp>
+            <stringProp name="Argument.value">90</stringProp>
             <stringProp name="Argument.desc">180</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -117,12 +117,12 @@
           </elementProp>
           <elementProp name="processRunUuid" elementType="Argument">
             <stringProp name="Argument.name">processRunUuid</stringProp>
-            <stringProp name="Argument.value">2610_12</stringProp>
+            <stringProp name="Argument.value">0311_12</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="cancelRunUuid" elementType="Argument">
             <stringProp name="Argument.name">cancelRunUuid</stringProp>
-            <stringProp name="Argument.value">2510_2</stringProp>
+            <stringProp name="Argument.value">0311_8</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="cancelReqStartOffset" elementType="Argument">
@@ -132,7 +132,7 @@
           </elementProp>
           <elementProp name="postArchiveRunUuid" elementType="Argument">
             <stringProp name="Argument.name">postArchiveRunUuid</stringProp>
-            <stringProp name="Argument.value">2510_2</stringProp>
+            <stringProp name="Argument.value">0211_1</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="archiveFileCount" elementType="Argument">
@@ -152,12 +152,12 @@
           </elementProp>
           <elementProp name="fulfillmentHistoryUuid" elementType="Argument">
             <stringProp name="Argument.name">fulfillmentHistoryUuid</stringProp>
-            <stringProp name="Argument.value">2510_2</stringProp>
+            <stringProp name="Argument.value">0311_8</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="accessToken" elementType="Argument">
             <stringProp name="Argument.name">accessToken</stringProp>
-            <stringProp name="Argument.value">eyJjdHkiOiJhcHBsaWNhdGlvblwvSlNPTiIsImFsZyI6IlJTMjU2In0.eyJ0b2tlbiI6IjB5TUhRNmRocUxpQmVaM2FTbWJLQmppeUJSMXc1TnZSMEhZdzB4Y3lJSDN6YnJidExGQ3JHaFhDVzlHWlozRWlaUjhyZjJtUjdYcitxdTJhdnhSQmp1ZEYzQnNZdkFja2JzajVsbU1RQ0tIQzBpbWNPWitHNXJDVWhyNkNkNFlqZ3Z4eThrcmorUGZJdlM5NlZPQTloYjhYNEJZbjR5Q0ExNmVLT3lWeFhQVlJhNGFpMnRIWFNrcFRIZkpMMU5GV3A3TG9tWC9sWlFkaVBrc29LOU04V2NiVVIyVWpRb1AxNjVVZ0dXZy96dXNUbUwyMHkrVlozMmFBdUdibmg2K2cxRWFHeUpWem5Db2tiS0lHNzRvSjN2NGs0UWN3TU9Ma0xLcHViZmFpZVJveU9aZ0ZaM1pkU1BkbmNnMmJGQkhOMnlNVVByWFNaR3BYSlMwZ1B0eWlURVJzWG1tZGlFaTExRmUydXJVRGFqRFZqclRWZUhoYXV6Z1piYUtTcnFtQUdTYWJkL0FyUjlPbE5LeU82QXpYU3VGeFF3WE45NEhKaDBLZzVyUkZyeGtLVHlYVmRsb0xZcEd3c3NKNXlXOGRIK2JuaVAwQmFJYUxzZXBiNUhGTlhQZnYzMFNuclAwcCtNNktHRDJsMjIxaHVOSlRqQ2c4NndMZWxnRjBLY3BFODhtdGh4OGVJSjJQSmJuTUJYN0JHMHhURTdQalZ0SGFFaWVDNjRORWg4RkFkYlJoZEpXUU15ZFNNN3NUblpDK2RyRUMrMnJmMGhhR1p0akVpRWNuOFNYMG42V2R4SWIraTdLeVdySS83QXFtZGVzaEN3VTdDaGdFMDcvdmdlTEZCMjJaZ1pvelZRdElnbDk4blZBeGkwNFo4R3ZrTFIybk42S28za1ZnMW8xdXhDMDRLNDRldDJmc3RVTzFacDhETTBmUld3d3hUS1hqd2t1enVtWmx1NDFHczRiTzV6amV6TkpwTGR2MjArRXRraml6NVFDKytBWFhQQk1HZHN5cGxTMnRyUDJaVTFpUG1NWHphbTFocDFIRGZ6SktocGVReEpJOGZESWJiRUlXSXdtZjZNVFViZURjNHhPR1ZpT0hjajJpS1MzVDliQUVsVTZTTXNNQVNOTC92d3NHbDY3R1padkRjYlJnUnV5dDFURE15cm40SWRNNjJFR0VBdTdyVzJOS0NkR1FEamw4YUh6WGhmT0R4NTJLME5iM3JRL1VqbUN3dVNkUmNXYlBtUWRDS3BKMG9JbnR4NjJKdGY4MCtibnQ1aFNWWmxPQUJpSjlpU2dVMUVoT3JZTWltdjV5emtaUHU0UlZGTUpyTUErS2xxRUxzNzRxZm56MDRXVG12V2hna3czbFhUc0xjaWdYVjZQbFY1YlVBQldYa0luY2ZBemt4bm9ucnM1WmdkbEU2MXNqbVY3Uzl1dVo0Qzg0ZTlUWW8zN3VoMU9VbVdkWDEydFlWQVpTTEVNMkhmc1hCUWF0Zmp4VHBQU0NMOGlQaGMvdDFTMnpQd2lQZVpKdDF3c2tVR0ZVaFI3MzZjeE1POUV0dy9aMFJBdTB2MEx3ZllzY2lneXF6SU8zenFwOGliMjVQK2dYeUI5ZlVFYmMyU3NLRXZNUDdVZ3gwRjhBWkdEU0RqS1ZpWjg5OGYvc0JUanpwdG9naHJqQTdiTGNVanJVYmVGWVpLeUQxaXZKM2lDK2IvNUlXY2hrTjJDVUNIUjJ5bVQza2h4M0xkZkpHM3k3Z2VVbVN5UmhEZSt6a01vSmwwTGZNQUh0Y2ZHSUlCcTE2eTlxV2hocXV5NHBzK2l6MWNMc1pkZ3ptN2lpTzFxdDAveHBDZklTYThTZGhrbjkwdHp0WDlRNGpaekJId1BPOVRObXlsQ0RLZk4rUTBIblczL01vUC9kQzZ3OTNQbE13TzE3ekEvdWJLNVZxR2RMZ0NXQlpnYXZQWE10aUw3TVBKNHRBY1c5eVNsc0lpUE1jeHdlODZUWVMvUnlQSnJZL0g3OWZDMmZTN3Evb0srZEpYY2s2ZXhyL3JmTkJydEJMK09YN1JsMjE1d2daVnZ1bW44ZkczcFFMaUpSM1FDZUZieDI3MUZUMDVMSHZZaEFRTlpMTEh0cm1PZ0IiLCAiaXYiOiJCY2E5TmJnL2tkTnU4eHFGWjJjbFVBPT0iLCAibWF4RXhwaXJhdGlvblRpbWUiOiIxNTA5MDM5MjUyMTEwIn0.AMUj4qWKK2vFlulA6LK8-88HJHEgFyFc7eTlPUl5BPx972InaCIoflu0jh0daQwv2p1DJHIzdUIobE-n3rB7Sqeo8chsZHDTVZmaBEs7DhNYgXWMuyuLtc9L8jMF-30z7_n8p_in5hHFGzs73pgWr-ge9N4Gd3DX1Z44b0tNyXXcna_Tc2tFDj-TB-22N_7j9vAcl-1Z4wZzQsOTplO4dlXwPXzfcpYCDA_O1keJBua_d42DJH21OKpPF3ykTZY0Bv-AgOMPc3xiF_WJ8-ebRUEdlUVpA9L2BzsjmCT297DaFKziRsUNRZ0zUkE4LD3m8qObSEfiSIdM5CGiu90zrA</stringProp>
+            <stringProp name="Argument.value">eyJjdHkiOiJhcHBsaWNhdGlvblwvSlNPTiIsImFsZyI6IlJTMjU2In0.eyJ0b2tlbiI6IkI2Mk90YWkyb2tEYUhtQUdyVlI2ZFc1UkxGQXpuK2ErZnJ2Z2FwTDg4eWh4dHU0UERNbGpycVBDSDFGLzJSUVkraFdzT2JMc1RRb1JGWWJmbWFlVlBmVUhZd0F5MHFvK2FxMnQzUXhRZFVMUDc5VVQ5NnpNME84UHpjWG9tTVhhZWdlWms2eDdSRkRVZ0dQNVZhMk9EeHVrb2tpc3duMFZMQzhsa3RYenhRa2NPbXE3dUU4WlU1bVNLM2FabHc4MXVuaVlPMnNuTUoyYTdFcmtNeWg2a0lZT1F4ZUh3UHdySHUrclYxaWpkWGZxckNnZjhNOEtTa0V4OWlIWXJydHB2eEtpZGtvVTQ3V2k4Rm10UkswejJKOXRVbzVucm8wQmF6b25SQWhDMEYxbGhialVnVU1VaExDbVlqZnp4bk9LU2NsS2Q1b2VzdGRIMmhwNVllVTBIcEpQb1p4a3Rub0c0STkxYnBPRVZtSUJacHFqZWpwV3pFblljNSsycHBqK0h5M1JoWlNLc3RKcHNsRzhMckVnNCtHNDVGbVN5Uk1DSkNxL3YvNWdaQ1JnUXlBSllvdzl6cUVKRUNRcUN6Nnh2RlR1ZkIvUU0vYWd3SmR6MnpBa3huVUFDOGl2Q2ZLQktuVnBIaC8vLzBta0djZEFKR1VRYU9UZTlDZXJ0S092OUZlMXJ4ZTVIcDJobW1nL3gySHlEOEhUTU1iQWxxYmVmdUU5RnltY1RoYXhuUDRuTVZrUTd3YlpVL2V5Y296RCtwZXI2dHM3Ti83Y2xvMTVYd2Y0Nld3QlU0aFVlakhMOG1tM291cUFKaHlGR29XOEROcVlwUTdyUEptTmtrMndQNHFGd2tsRUMyaGdNQS8rSktZUHI3aTBTbURiOFNVNU5wK2UzQ2FBdVdTQWNjcW1OQTRBdGExcWZIakRpcnN3ejgySyt0MnpJZ0wwNjFRN0FZdUd2QytrSmlVZEhKazVUc0dLUmVvd1BGUW1lNzJGTk1LYW9kR2hqNXp5SndzSWdNWTRpOER2MlZKRVBRaEY3eUJVNnpGcWpVYUhuV3Zxa2Vycm5VOTdNdi9yci9XQmRaMlc4NkY3U3liS1B4Z3MrMml2K0UwUlBzZ2FsSW56WUQwaDZNeWh2ZGhHRUxlMkFFUEdJWFpKOFhGL1k0enNJL2NpRUUwa1BoQldiWXpUTE1CQ0lDanRueitLKysrMGVka2dHWG8wUFk5dGVtU0t0dFBIUnBDVXhMNlNYVEJPSGRyd01IMkk1Z2ltOVhVZTV5RVR4Yk4wMExZWXJ0ME42YWNlQmlhZmgzeHBGWFlWWXp4YkhyZ0c0WlJWUkxMNjhZZ0RaeFZKQXV0THZ1Y2Q3WXdyT1lLTTJFTmRYa0RFRmhmTWZhaTM3OGR6NDBPR1dpa3p5SkN0czFVeXRLSGx5RWtFMElndXVnUW9KZmFuWmxldU4ycmp6cmtDYjJ0blo1TVhqQVMrN3gvMFhNSytlOG9zaVhRS1V0dHd6WjNRaG9PSXpQMit4V3pPSGdIalErbTduLzU0OVBSMG4rTVNZZjJ3NUJVUUovTndrRXhmUktVcTl5dUpzWUw3YjgwaDZONkRhUHE4R2xza0drNW0xWXdqeU9vaWJybHY1RHdGUDhaRmN1Z09BY2V5R0ZCVjdzSUgyRXpwTkNqUG55VHpHYWdNNEFSOENCdDRLcS9DM2dlYWRjVmFNa3hqbHduNGtsWEhuaW1NRitoSExJa2RqR2lGd25POFVqcHFQa1d0OU5EYWppVitCS0xvWFhwbnNWNFBRSlhEeUU2U0hkU1VCc2ltZGRydUhLWjdnMkJMZ0htcXRvK1VWNzZ6T3JlcWhtSjBMOVp5ZVFvUEtXNW05VWppVUNCRkhPWURjR0tyZmtETkNFY1dxWjJQakM4czhTaERmWm1OUGZyazRKS0ZGS3VmaEo0bkdFdDZLM0lQK0QzTUg5WVJTU1ZxNzFaSVJSMFlMRU9ETTdsQkRaYkRQTTZaY285NnYxZ05BclJjVTNjSU0zWDNpR2xlWG1qWHFONzRNV0VWVW1oSTNCK3dzdWExaFFzY0xyWWs3YWdST1Z5OWNZS2J4bGRISEYxQkpqY0Ztd3drL1F2enZCMXAiLCAiaXYiOiJYcHp1SDlzYTQyejV6OFl1K3dJVC9RPT0iLCAibWF4RXhwaXJhdGlvblRpbWUiOiIxNTA5NzM1MTU3MzM3In0.mEvhPlvFxWKn4a67rwThFWH-q2ARhCIBefB8MWQE-iuJmcD994Qfcv6_p2fu-4AXGl6CmM4BsL_bt6qkou3-QjzeAFsqLQOyuaDstG_i_zb2paS3lMOQj0BFv0Rd1p-XUpbIoBB0ch6_pw9o5De7zCB5xGMRDxgjeuHPojR23J8_K9SsBPg5t7hvUkFfsnQNMbMSxxl7QwvcRh4snVsq8aMEFKMQLQO10e4Amk4s0BvqGb5lAtGbQofIu8HW1gsa5IMdVMTfLE0wL-nnIz1oKBpr_nT1IPpL5TbHxLZ0XKl9UMDxboLoPMkKb7wQcMFT9TyHqb_H5OdP9YrjyK12pw</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -176,7 +176,7 @@
         </collectionProp>
       </HeaderManager>
       <hashTree/>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ProcessRequestTransactionalInlineDataOnly" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ProcessRequestTransactionalInlineDataOnly" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -363,15 +363,6 @@
           <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
-          <stringProp name="RegexExtractor.useHeaders">false</stringProp>
-          <stringProp name="RegexExtractor.refname">msgIdentifier</stringProp>
-          <stringProp name="RegexExtractor.regex">&lt;msgIdentifier&gt;(.+?)&lt;/msgIdentifier&gt;</stringProp>
-          <stringProp name="RegexExtractor.template">$1$</stringProp>
-          <stringProp name="RegexExtractor.default"></stringProp>
-          <stringProp name="RegexExtractor.match_number">1</stringProp>
-        </RegexExtractor>
-        <hashTree/>
         <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
           <collectionProp name="Asserion.test_strings">
             <stringProp name="49586">200</stringProp>
@@ -382,8 +373,17 @@
           <stringProp name="Scope.variable"></stringProp>
         </ResponseAssertion>
         <hashTree/>
+        <XPathAssertion guiclass="XPathAssertionGui" testclass="XPathAssertion" testname="StatusAccepted" enabled="true">
+          <boolProp name="XPath.negate">false</boolProp>
+          <stringProp name="XPath.xpath">/acknowledgeMsg/acknowledge/validationResults/transactionLevelAck/transaction/transactionStatus/text()=&apos;Accepted&apos;</stringProp>
+          <boolProp name="XPath.validate">false</boolProp>
+          <boolProp name="XPath.whitespace">false</boolProp>
+          <boolProp name="XPath.tolerant">false</boolProp>
+          <boolProp name="XPath.namespace">false</boolProp>
+        </XPathAssertion>
+        <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="PostRequestTransactionalInlineDataOnly" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="PostRequestTransactionalInlineDataOnly" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -447,7 +447,7 @@
                 &lt;!--1 to 7 repetitions:--&gt;&#xd;
                 &lt;sch:requestHistory&gt;&#xd;
                     &lt;sch:processor&gt;PRINT_SUPPLIER_2345&lt;/sch:processor&gt;&#xd;
-                    &lt;sch:eventType&gt;Received&lt;/sch:eventType&gt;&#xd;
+                    &lt;sch:eventType&gt;Fulfilled&lt;/sch:eventType&gt;&#xd;
                     &lt;sch:receivedDate&gt;2001-12-17T09:31:47Z&lt;/sch:receivedDate&gt;&#xd;
                     &lt;!--Optional:--&gt;&#xd;
                     &lt;sch:dispatchedDate&gt;2001-12-17T09:32:47Z&lt;/sch:dispatchedDate&gt;&#xd;
@@ -458,38 +458,6 @@
                     &lt;sch:statusCode&gt;Accepted&lt;/sch:statusCode&gt;&#xd;
                     &lt;sch:successCount&gt;1&lt;/sch:successCount&gt;&#xd;
                     &lt;sch:exceptionCount&gt;0&lt;/sch:exceptionCount&gt;&#xd;
-                    &lt;!--0 to 50 repetitions:--&gt;&#xd;
-                    &lt;sch:exceptionDetail&gt;&#xd;
-                        &lt;sch:errorCode&gt;String&lt;/sch:errorCode&gt;&#xd;
-                        &lt;sch:message&gt;String&lt;/sch:message&gt;&#xd;
-                    &lt;/sch:exceptionDetail&gt;&#xd;
-                    &lt;sch:exceptionDetail&gt;&#xd;
-                        &lt;sch:errorCode&gt;String&lt;/sch:errorCode&gt;&#xd;
-                        &lt;sch:message&gt;String&lt;/sch:message&gt;&#xd;
-                    &lt;/sch:exceptionDetail&gt;&#xd;
-                    &lt;sch:exceptionDetail&gt;&#xd;
-                        &lt;sch:errorCode&gt;String&lt;/sch:errorCode&gt;&#xd;
-                        &lt;sch:message&gt;String&lt;/sch:message&gt;&#xd;
-                    &lt;/sch:exceptionDetail&gt;&#xd;
-                    &lt;!--0 to 20 repetitions:--&gt;&#xd;
-                    &lt;sch:postFeedback&gt;&#xd;
-                        &lt;!--Optional:--&gt;&#xd;
-                        &lt;v7:name&gt;String&lt;/v7:name&gt;&#xd;
-                        &lt;!--Optional:--&gt;&#xd;
-                        &lt;v7:value&gt;String&lt;/v7:value&gt;&#xd;
-                    &lt;/sch:postFeedback&gt;&#xd;
-                    &lt;sch:postFeedback&gt;&#xd;
-                        &lt;!--Optional:--&gt;&#xd;
-                        &lt;v7:name&gt;String&lt;/v7:name&gt;&#xd;
-                        &lt;!--Optional:--&gt;&#xd;
-                        &lt;v7:value&gt;String&lt;/v7:value&gt;&#xd;
-                    &lt;/sch:postFeedback&gt;&#xd;
-                    &lt;sch:postFeedback&gt;&#xd;
-                        &lt;!--Optional:--&gt;&#xd;
-                        &lt;v7:name&gt;String&lt;/v7:name&gt;&#xd;
-                        &lt;!--Optional:--&gt;&#xd;
-                        &lt;v7:value&gt;String&lt;/v7:value&gt;&#xd;
-                    &lt;/sch:postFeedback&gt;&#xd;
                 &lt;/sch:requestHistory&gt;&#xd;
                 &lt;!--Optional:--&gt;&#xd;
                 &lt;sch:requestTrailer&gt;&#xd;
@@ -537,7 +505,7 @@
         </XPathAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="FindFulfillmentHistory" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="FindFulfillmentHistory" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -621,7 +589,7 @@
         </XPathAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ArchiveRequestTransactionalInlineDataOnly" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="ArchiveRequestTransactionalInlineDataOnly" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -796,7 +764,7 @@
         </XPathAssertion>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="CancelRequestTransactionalInlineDataOnly" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="CancelRequestTransactionalInlineDataOnly" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -1150,7 +1118,7 @@
         <stringProp name="filename">D:\apps\performance-tests\results\combined-runs\251017\1\combined-run-1\results.jtl</stringProp>
       </ResultCollector>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="false">
+      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
           <name>saveConfig</name>
@@ -1181,7 +1149,7 @@
             <idleTime>true</idleTime>
           </value>
         </objProp>
-        <stringProp name="filename">D:\apps\performance-tests\results\combined-runs\251017\1\combined-run\results.jtl</stringProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
