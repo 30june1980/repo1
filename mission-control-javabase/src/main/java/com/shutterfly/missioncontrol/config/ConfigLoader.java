@@ -28,7 +28,9 @@ public class ConfigLoader {
 	public static  WebDriver driver = null;
 	public static  WebElement element = null;
 	 static final String BROWSER = "Browser";
-	// To get basic configurations from property files
+	/*
+	 *  To get basic configurations from property files
+	 */
 	public static void basicConfigLoaderWeb() {
 
 		if (driver == null) {

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="1" name="Suite">
+	<test name="ProcessFulfillment">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadyMultItem" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadySingleItem" />
+		</classes>
+	</test>
+	<test name="PostFulfillment">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlinePrintReadySingleItem" />
+
+		</classes>
+	</test>
+	<test name="CancelFulfillment">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlinePrintReadySingleItem" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlinePrintReadyMultItem" />
+		</classes>
+	</test>
+
+	<test name="CancelPostFulfillment">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelpostfulfillment.CancelPostTransactionalInlinePrintReadySingleItem" />
+		</classes>
+	</test>
+
+	<test name="ProcessArchive">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadyMultItem" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadySingleItem" />
+
+		</classes>
+	</test>
+
+	<test name="PostArchive">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalInlinePrintReadySingleItem" />
+		</classes>
+	</test>
+	<test name="StatusAcknowledgement">
+		<classes>
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkDataOnly" />
+		</classes>
+	</test>
+</suite> <!-- Suite -->
