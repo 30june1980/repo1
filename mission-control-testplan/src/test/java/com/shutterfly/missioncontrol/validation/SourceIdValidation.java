@@ -12,7 +12,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import org.testng.annotations.Test;
-
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 
@@ -25,7 +24,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class RequestIdValidation extends ConfigLoader {
+public class SourceIdValidation extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -42,7 +41,7 @@ public class RequestIdValidation extends ConfigLoader {
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/Validation/RequestIdValidation.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload = payload.replaceAll("REQUEST_101", "");
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("CIRRUS", "");
 	}
 
 	@Test
@@ -67,11 +66,11 @@ public class RequestIdValidation extends ConfigLoader {
 				equalTo("Rejected"));
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
-				equalTo("18000"));
+				equalTo("18001"));
 
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("Request ID is missing."));
+				equalTo("Source ID is missing."));
 
 	}
 }
