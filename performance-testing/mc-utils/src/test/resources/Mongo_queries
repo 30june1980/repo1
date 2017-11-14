@@ -1,0 +1,141 @@
+1. To use below queries assumption is first request is processed first i.e there is no intervention of other request.
+2. More or less below queries are same its just change of requestId , requestType and $match clause's "_id.requestTracking.status" will change for "fulfillment_status_tracking.requestTracking.status".
+3. Below queries are only triggered on "fulfillment_status_tracking" collection and queries uses embedded array "requestTracking" for finding maximum time taken by individual request.
+
+//process
+
+db.getCollection('fulfillment_status_tracking').aggregate([
+{"$match":{"$and":[
+{"requestId":/0711_3/}]}},
+{"$unwind":"$requestTracking"},
+{$project:{_id:{"requestId":"$requestId","currentStatus":"$currentStatus","requestTracking":"$requestTracking"}}},
+{"$match":{"$or":[
+    {"_id.requestTracking.status":"AcceptedBySupplier"},
+    {"_id.requestTracking.status":"PutToRequestTopic"}
+    ]}},
+{"$match":{"_id.requestTracking.requestType":"Process"}},
+{$group:{_id:{"requestId":"$_id.requestId"},"statTrack":{$push:"$_id.requestTracking"}}},
+
+{"$project":
+   {_id: {"requestId":"$_id.requestId","statusTrack":"$statTrack","minProcessedtime":{$min:"$statTrack.processedTime"},
+   "maxProcessedtime":{$max:"$statTrack.processedTime"},
+        diff:{"$subtract":[{$max:"$statTrack.processedTime"},{$min:"$statTrack.processedTime"}]}}}},
+{"$sort":{"_id.diff":-1}}
+
+],{allowDiskUse:true})
+
+
+//post
+
+db.getCollection('fulfillment_status_tracking').aggregate([
+{"$match":{"$and":[
+{"requestId":/0711_3/}]}},
+{"$unwind":"$requestTracking"},
+{$project:{_id:{"requestId":"$requestId","currentStatus":"$currentStatus","requestTracking":"$requestTracking"}}},
+{"$match":{"$or":[
+    {"_id.requestTracking.status":"AcceptedByRequestor"},
+    {"_id.requestTracking.status":"PutToStatusTopic"}
+    ]}},
+
+{"$match":{"_id.requestTracking.requestType":"PostStatus"}},
+{$group:{_id:{"requestId":"$_id.requestId"},"statTrack":{$push:"$_id.requestTracking"}}},
+
+{"$project":
+   {_id: {"requestId":"$_id.requestId","statusTrack":"$statTrack",
+   "maxAcceptedByRequestorTime":{$max:"$statTrack.processedTime"},filteredStatusTrack: {
+                    "$filter": {
+                        "input": "$statTrack",
+                        "as": "action",
+                        "cond": { "$eq": [ "$$action.status", "PutToStatusTopic" ] }
+                    }
+                }
+        }
+        }},
+ {$project:{_id:"$_id","maxPutToStatusTopicTime":{$max:"$_id.filteredStatusTrack.processedTime"}}},
+ {$project:{_id:"$_id", "maxPutToStatusTopicTime":1,diff:{"$subtract":["$_id.maxAcceptedByRequestorTime","$maxPutToStatusTopicTime"]}}}
+ , {"$sort":{"diff":-1}}
+
+
+],{allowDiskUse:true})
+
+
+//archive
+
+
+db.getCollection('fulfillment_status_tracking').aggregate([
+{"$match":{"$and":[
+{"requestId":/0311_8/}]}},
+{"$unwind":"$requestTracking"},
+{$project:{_id:{"requestId":"$requestId","currentStatus":"$currentStatus","requestTracking":"$requestTracking"}}},
+{"$match":{"$or":[
+    {"_id.requestTracking.status":"AcceptedByArchivalSystem"},
+    {"_id.requestTracking.status":"PutToRequestTopic"}
+    ]}},
+
+{"$match":{"_id.requestTracking.requestType":"Archive"}},
+{$group:{_id:{"requestId":"$_id.requestId"},"statTrack":{$push:"$_id.requestTracking"}}},
+
+{"$project":
+   {_id: {"requestId":"$_id.requestId","statusTrack":"$statTrack",
+   "maxAcceptedByArchivalSystem":{$max:"$statTrack.processedTime"},
+   filteredStatusTrack: {
+                    "$filter": {
+                        "input": "$statTrack",
+                        "as": "action",
+                        "cond": { "$eq": [ "$$action.status", "PutToRequestTopic" ] }
+                    }
+                }
+        }
+        }},
+ {$project:{_id:"$_id","maxPutToRequestTopicTime":{$max:"$_id.filteredStatusTrack.processedTime"}}},
+ {$project:{_id:"$_id", "maxPutToRequestTopicTime":1,diff:{"$subtract":["$_id.maxAcceptedByArchivalSystem","$maxPutToRequestTopicTime"]}}}
+ , {"$sort":{"diff":-1}}
+
+
+],{allowDiskUse:true})
+
+
+
+
+//cancel
+
+//cancel count
+
+db.getCollection('fulfillment_status_tracking').find({$and:[
+{'requestTracking.requestType':'Cancel'},
+{"currentStatus":{$ne:"PutToDeadLetterTopic"}},{'requestId':/0211_3/}]
+}).count()
+
+
+
+
+db.getCollection('fulfillment_status_tracking').aggregate([
+{"$match":{"$and":[
+{"requestId":/0211_3/}]}},
+{"$unwind":"$requestTracking"},
+{$project:{_id:{"requestId":"$requestId","currentStatus":"$currentStatus","requestTracking":"$requestTracking"}}},
+{"$match":{"$or":[
+    {"_id.requestTracking.status":"AcceptedBySupplier"},
+    {"_id.requestTracking.status":"PutToRequestTopic"}
+    ]}},
+
+{"$match":{"_id.requestTracking.requestType":"Cancel"}},
+{$group:{_id:{"requestId":"$_id.requestId"},"statTrack":{$push:"$_id.requestTracking"}}},
+
+{"$project":
+   {_id: {"requestId":"$_id.requestId","statusTrack":"$statTrack",
+   "minPutToRequestTopic":{$min:"$statTrack.processedTime"},filteredStatusTrack: {
+                    "$filter": {
+                        "input": "$statTrack",
+                        "as": "action",
+                        "cond": { "$eq": [ "$$action.status", "AcceptedBySupplier" ] }
+                    }
+                }
+        }
+        }},
+ {$project:{_id:"$_id","maxAcceptedByArchivalSystem":{$min:"$_id.filteredStatusTrack.processedTime"}}},
+ {$project:{_id:"$_id", "maxAcceptedByArchivalSystem":1,diff:{"$subtract":["$maxAcceptedByArchivalSystem","$_id.minPutToRequestTopic"]}}}
+ ,{"$sort":{"diff":-1}}
+
+
+],{allowDiskUse:true})
