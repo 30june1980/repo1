@@ -33,6 +33,27 @@
 				name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly" />
 			<class
 				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadySingleItem" />
+
+			<class name="com.shutterfly.missioncontrol.validation.RequestIdValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.BusinessSegmentIdValidation" />
+			<class name="com.shutterfly.missioncontrol.validation.SourceIdValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.RequestCategoryValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.InvalidRequestCategoryValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.RequestDateValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.RequestTypeValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.InvalidRequestTypeValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.DataFormatValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.MarketSegmentCodeValidation" />
+			<class
+				name="com.shutterfly.missioncontrol.validation.FulfillmentTypeValidation" />
 		</classes>
 
 	</test> <!-- Test -->

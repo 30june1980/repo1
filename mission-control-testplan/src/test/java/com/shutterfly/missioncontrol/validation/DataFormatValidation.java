@@ -24,7 +24,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class SourceIdValidation extends ConfigLoader {
+public class DataFormatValidation extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -41,7 +41,7 @@ public class SourceIdValidation extends ConfigLoader {
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/Validation/CommonValidationRules.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("CIRRUS", "");
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("XML", "");
 	}
 
 	@Test
@@ -66,11 +66,11 @@ public class SourceIdValidation extends ConfigLoader {
 				equalTo("Rejected"));
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
-				equalTo("18001"));
+				equalTo("18003"));
 
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("Source ID is missing."));
+				equalTo("Data format is missing."));
 
 	}
 }
