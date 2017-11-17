@@ -50,7 +50,7 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PABPR_XML")
+	@Test(groups = "Test_POABPR_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
@@ -64,7 +64,7 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
 
 
-	@Test(groups = "database", dependsOnGroups = { "Test_PABPR_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_POABPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");

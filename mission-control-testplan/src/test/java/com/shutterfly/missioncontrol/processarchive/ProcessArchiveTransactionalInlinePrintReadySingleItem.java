@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
@@ -45,7 +46,7 @@ public class ProcessArchiveTransactionalInlinePrintReadySingleItem extends Confi
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("TIPRSI");
 
-		return payload = payload.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",(record + ".xml"));
 
 	}
 
@@ -54,8 +55,12 @@ public class ProcessArchiveTransactionalInlinePrintReadySingleItem extends Confi
 	@Test(groups = "Test_PATIPRSI_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
-		
+
 		EncoderConfig encoderconfig = new EncoderConfig();
+		String payload = this.buildPayload();
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+				"bulkfile_all_valid.xml");
+		
 		Response response = given()
 				.config(RestAssured.config()
 						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))

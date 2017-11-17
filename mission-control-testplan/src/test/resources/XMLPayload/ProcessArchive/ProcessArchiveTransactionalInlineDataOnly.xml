@@ -2,11 +2,11 @@
  <sch:processArchiveRequest xmlns:xs="http://www.w3.org/2003/05/soap-envelope" xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
             <sch:archiveRequest>
                 <sch:archiveRequestHeader>
-                    <sch:requestID>rn1110027</sch:requestID>
+                    <sch:requestID>REQUEST_101</sch:requestID>
                     <!--Optional:-->
                     <sch:sourceID>CIRRUS</sch:sourceID>
                     <!--Optional:-->
-                    <sch:destinationID>EDMS</sch:destinationID>
+                    <sch:destinationID>SBS</sch:destinationID>
                     <!--Optional:-->
                     <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
                     <!--Optional:-->
@@ -14,9 +14,9 @@
                     <!--Optional:-->
                     <sch:businessSegmentID>EI</sch:businessSegmentID>
                     <!--Optional:-->
-                    <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+                    <sch:marketSegmentCd>LRG</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>10200</sch:fulfillmentType>
+                    <sch:fulfillmentType>10000</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
                     <!--Optional:-->
@@ -98,6 +98,12 @@
                         </sch:recipient>
                         <sch:data>
                             <!--Optional:-->
+                            <sch:externalFileType>
+						<!--Optional: -->
+						<sch:filePath>/MissionControl/RRD</sch:filePath>
+						<sch:fileName>bulkfile_all_valid.xml</sch:fileName>
+						<sch:fileSize>9999</sch:fileSize>
+					</sch:externalFileType>
                             <sch:contentFormatType>
                                 <!--Optional:-->
                                 <sch:contentStream>Binary content stream of document</sch:contentStream>

@@ -53,7 +53,7 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PABDO_XML")
+	@Test(groups = "Test_POABDO_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		EncoderConfig encoderconfig = new EncoderConfig();
@@ -69,7 +69,7 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
 	}
 
-	@Test(groups = "database", dependsOnGroups = { "Test_PABDO_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_POABDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");

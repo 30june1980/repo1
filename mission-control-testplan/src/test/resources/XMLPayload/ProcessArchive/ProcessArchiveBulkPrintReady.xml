@@ -4,9 +4,9 @@
                 <sch:archiveRequestHeader>
                     <sch:requestID>REQUEST_101</sch:requestID>
                     <!--Optional:-->
-                    <sch:sourceID>ACET</sch:sourceID>
+                    <sch:sourceID>BRMS</sch:sourceID>
                     <!--Optional:-->
-                    <sch:destinationID>RRD</sch:destinationID>
+                    <sch:destinationID>SBS</sch:destinationID>
                     <!--Optional:-->
                     <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
                     <!--Optional:-->
@@ -16,7 +16,7 @@
                     <!--Optional:-->
                     <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>10700</sch:fulfillmentType>
+                    <sch:fulfillmentType>11300</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>BulkPrintReady</sch:requestCategory>
                     <!--Optional:-->
@@ -35,16 +35,6 @@
                 <sch:archiveRequestDetail>
                     <!--You have a CHOICE of the next 2 items at this level-->
                     <!--1 to 10 repetitions:-->
-                    <sch:archiveBulkDetail>
-                        <!--Optional:-->
-                        <sch:filePath>/MissionControl/ACET</sch:filePath>
-                        <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
-                        <sch:fileSize>4096</sch:fileSize>
-                        <!--Optional:-->
-                        <sch:ecgDetail>text</sch:ecgDetail>
-                        <!--Optional:-->
-                        <sch:sourceDetail>text</sch:sourceDetail>
-                    </sch:archiveBulkDetail>
                     <sch:archiveBulkDetail>
                         <!--Optional:-->
                         <sch:filePath>/MissionControl/ACET</sch:filePath>

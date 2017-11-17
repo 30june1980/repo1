@@ -6,9 +6,9 @@
 		<sch:archiveRequestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>CIRRUS</sch:sourceID>
+			<sch:sourceID>EMPORTAL</sch:sourceID>
 			<!--Optional: -->
-			<sch:destinationID>SBS</sch:destinationID>
+			<sch:destinationID>RRD</sch:destinationID>
 			<!--Optional: -->
 			<sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
 			<!--Optional: -->

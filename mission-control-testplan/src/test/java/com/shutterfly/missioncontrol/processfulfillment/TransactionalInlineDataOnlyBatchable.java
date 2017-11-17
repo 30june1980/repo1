@@ -46,7 +46,7 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
 		return payload = payload.replaceAll("REQUEST_101", record);
 	}
 
-	@Test(groups = "Test_TIDO_XML")
+	@Test(groups = "Test_TIDOB_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		/*
@@ -70,7 +70,7 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
 
 	}
 
-	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDO_XML" })
+	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDOB_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
