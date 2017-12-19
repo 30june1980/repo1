@@ -20,18 +20,16 @@ public class ConnectToDatabase extends ConfigLoader {
 
 	public MongoClient getMongoConnection() {
 		basicConfigNonWeb();
-		String databaseName = "missioncontrol"; // Name of the database
-		String userName = "svc_sbs_missioncontrol_rw"; // user name
+		String databaseName = config.getProperty("DatabaseName"); // Name of the database
+		String userName = config.getProperty("UserName"); // user name
 
-		 char[] password = { 'm', 'c', '_', '0', '9', '5', 't', 'v', 'n' };
-		// qa password
-		//char[] password = { 'x', 'm', 'p', 'o', '4', '8', '5', 'n', 'h' }; // dev
-																			// password
-		MongoCredential credential = MongoCredential.createScramSha1Credential(userName, databaseName, password);
-		
+		String password = config.getProperty("DatabasePassword");
+		MongoCredential credential = MongoCredential.createScramSha1Credential(userName, databaseName,
+				password.toCharArray());
+
 		this.mongoClient = new MongoClient(new ServerAddress(config.getProperty("DatabaseAddress"), dbPort),
 				Arrays.asList(credential));
-		return mongoClient ;
+		return mongoClient;
 	}
 
 	public void closeMongoConnection() {
