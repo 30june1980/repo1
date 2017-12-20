@@ -73,6 +73,6 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
 	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDOB_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "RequestBatched");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "RequestBatched", "Process");
 	}
 }

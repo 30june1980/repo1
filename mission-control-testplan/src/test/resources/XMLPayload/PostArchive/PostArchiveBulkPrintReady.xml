@@ -3,15 +3,15 @@
         <sch:fulfillmentRequestStatus>
          <sch:requestHeader>
  
-          <sch:requestID>request_633</sch:requestID>
+          <sch:requestID>REQUEST_101</sch:requestID>
  
           <!--Optional:-->
  
-          <sch:sourceID>RRD</sch:sourceID>
+          <sch:sourceID>ACET</sch:sourceID>
  
           <!--Optional:-->
  
-          <sch:destinationID>ACET</sch:destinationID>
+          <sch:destinationID>RRD</sch:destinationID>
  
           <!--Optional:-->
  
@@ -35,7 +35,7 @@
  
           <!--Optional:-->
  
-          <sch:requestCategory>BulkDataOnly</sch:requestCategory>
+          <sch:requestCategory>BulkPrintReady</sch:requestCategory>
  
           <!--Optional:-->
  

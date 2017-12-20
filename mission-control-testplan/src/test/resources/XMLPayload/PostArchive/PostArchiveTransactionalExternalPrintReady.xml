@@ -3,7 +3,7 @@
         <sch:fulfillmentRequestStatus>
          <sch:requestHeader>
  
-          <sch:requestID>request_633</sch:requestID>
+          <sch:requestID>REQUEST_101</sch:requestID>
  
           <!--Optional:-->
  
