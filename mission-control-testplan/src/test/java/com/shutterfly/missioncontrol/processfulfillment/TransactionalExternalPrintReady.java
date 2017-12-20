@@ -91,7 +91,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 		/*
 		 *  Supply the final status check value 
 		 */
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "Process");
 		
 	}
 }

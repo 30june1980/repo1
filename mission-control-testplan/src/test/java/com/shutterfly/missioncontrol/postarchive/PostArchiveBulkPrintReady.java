@@ -67,6 +67,6 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_POABPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
 	}
 }

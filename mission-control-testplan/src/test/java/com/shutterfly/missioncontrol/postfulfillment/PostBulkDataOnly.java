@@ -70,6 +70,6 @@ public class PostBulkDataOnly extends ConfigLoader {
 	private void validateRecordsInDatabase() throws Exception {
 		record = record.replace("_Post", "");
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", null);
 	}
 }

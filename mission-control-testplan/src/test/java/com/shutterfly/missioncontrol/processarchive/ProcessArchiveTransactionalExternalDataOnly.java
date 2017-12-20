@@ -76,6 +76,6 @@ public class ProcessArchiveTransactionalExternalDataOnly extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_PATEDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByArchivalSystem");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByArchivalSystem", "Archive");
 	}
 }

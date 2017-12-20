@@ -27,7 +27,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
 	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
 	MongoClient client;
 
-	public void validateRecordsAvailabilityAndStatusCheck(String record, String statusToValidate) throws Exception   {
+	public void validateRecordsAvailabilityAndStatusCheck(String record, String statusToValidate, String requestTypeToValidate) throws Exception {
 		client = connectToDatabase.getMongoConnection();
 
 		basicConfigNonWeb();
@@ -54,43 +54,40 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
 					fulfillmentStatusTrackingDoc = fulfillmentStatusTracking.find(eq(requestId, record)).first();
 
-					if (validateRecordStatus(fulfillmentStatusTrackingDoc, record, statusToValidate)) {
+					if (validateRecordStatus(fulfillmentStatusTrackingDoc, record, statusToValidate , requestTypeToValidate)) {
 						break;
 
-					} else 
+					} else
 
-						throw new Exception("Record Status not  Found " + statusToValidate);
-					
+						throw new Exception("Record Status or Request Type mismatch!");
 
 				} else {
 
 					throw new Exception("Record Not Found " + record);
 				}
 			} catch (Exception ex) {
-				if (retry >= 7) 
+				if (retry >= 7)
 
 					throw new Exception(ex.getMessage());
 
-				 else {
-					
-						TimeUnit.SECONDS.sleep(20);
-					
+				else {
+
+					TimeUnit.SECONDS.sleep(20);
+
 				}
 			}
 		}
 
-		
 		connectToDatabase.closeMongoConnection();
 
 	}
 
-	private boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record,
-			String statusToValidate) {
+	private boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record, String statusToValidate,
+			String requestTypeToValidate) {
 		boolean flag = false;
 
 		@SuppressWarnings("unchecked")
-		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillmentStatusTrackingDoc
-				.get("requestTracking");
+		List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillmentStatusTrackingDoc.get("requestTracking");
 
 		for (int i = 0; i < requestTrackingDoc.size(); i++) {
 
@@ -101,19 +98,20 @@ public class DatabaseValidationUtil extends ConfigLoader {
 			} else {
 
 				if (requestTrackingDoc.get(i).getString("status").equals(statusToValidate)) {
+					if (requestTrackingDoc.get(i).getString("requestType").equals(requestTypeToValidate)) {
+						Assert.assertEquals(true, true, "Request is successfully Processed : " + record);
+						flag = true;
+						break;
+					}
 
-					Assert.assertEquals(true, true, "Request is successfully Processed : " + record);
-					flag = true;
-					break;
 				} else {
 					flag = false;
 				}
 
 			}
 
-			
 		}
-		
+
 		return flag;
 
 	}

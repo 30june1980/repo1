@@ -75,6 +75,6 @@ public class TransactionalInlinePrintReadySingleItem extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_TIPRSI_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "RequestBatched");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "RequestBatched", "Process");
 	}
 }

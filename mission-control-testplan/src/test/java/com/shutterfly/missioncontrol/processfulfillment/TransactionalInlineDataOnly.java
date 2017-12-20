@@ -73,6 +73,6 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",  "Process");
 	}
 }
