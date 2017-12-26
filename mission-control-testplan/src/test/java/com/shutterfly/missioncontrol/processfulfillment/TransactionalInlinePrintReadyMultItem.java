@@ -75,13 +75,13 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
 	@Test(groups = "Test_DB_MultItem", dependsOnGroups = { "Test_TIPRMI_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",  "Process");
 	}
 	
 	@Test(dependsOnGroups = { "Test_DB_MultItem" })
 	private void validateSingleItemRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record + "_2", "RequestBatched");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record + "_2", "RequestBatched",  "Process");
 	}
 	
 }

@@ -73,6 +73,6 @@ public class ProcessArchiveTransactionalExternalPrintReady extends ConfigLoader 
 	@Test(groups = "database", dependsOnGroups = { "Test_PATEPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByArchivalSystem");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByArchivalSystem", "Archive");
 	}
 }

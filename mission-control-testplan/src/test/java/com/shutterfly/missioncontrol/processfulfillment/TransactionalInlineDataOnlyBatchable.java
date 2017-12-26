@@ -41,7 +41,7 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
+		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnlyBatchable.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		return payload = payload.replaceAll("REQUEST_101", record);
 	}
@@ -73,6 +73,6 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
 	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDOB_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "RequestBatched", "Process");
 	}
 }

@@ -65,6 +65,6 @@ public class CancelTransactionalExternalDataOnly extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_CTEDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
 	}
 }
