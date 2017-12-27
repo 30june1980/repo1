@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sch:processFulfillmentRequest xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <sch:fulfillmentRequest>
+      <sch:requestHeader>
+         <sch:requestID>REQUEST_101</sch:requestID>
+         <!--Optional:-->
+         <sch:sourceID>CIRRUS</sch:sourceID>
+         <!--Optional:-->
+         <sch:destinationID>RRD</sch:destinationID>
+         <!--Optional:-->
+         <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
+         <!--Optional:-->
+         <sch:requestType>Process</sch:requestType>
+         <sch:businessSegmentID>EI</sch:businessSegmentID>
+         <sch:marketSegmentCd>SMB</sch:marketSegmentCd>
+         <!--Optional:-->
+         <sch:fulfillmentType>10700</sch:fulfillmentType>
+         <!--Optional:-->
+         <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
+         <!--Optional:-->
+         <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
+         <!--Optional:-->
+         <sch:dataFormat>XML</sch:dataFormat>
+         <!--Optional:-->
+         <sch:requestorRefNo>UHG_EOB_112233</sch:requestorRefNo>
+         <!--Optional:-->
+         <sch:supplierRefNo>String</sch:supplierRefNo>
+         <!--Optional:-->
+         <sch:bulkRequestHeaderID />
+         <!--Optional:-->
+         <sch:docCompositionEngineID>DC_COMP_ENGINE_001</sch:docCompositionEngineID>
+      </sch:requestHeader>
+      <sch:requestDetail>
+         <!--You have a CHOICE of the next 2 items at this level-->
+         <sch:transactionalRequestDetail>
+            <!--0 to 20 repetitions:-->
+            <sch:recipient>
+               <sch:recipientId>111223333</sch:recipientId>
+               <sch:idQualifier>SocialSecIDType</sch:idQualifier>
+               <!--Optional:-->
+               <sch:deliveryMethod1>Emailed</sch:deliveryMethod1>
+               <!--Optional:-->
+               <sch:deliveryMethod2></sch:deliveryMethod2>
+               <sch:recipientType>MemberType</sch:recipientType>
+               <sch:organization></sch:organization>
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <!--Optional:-->
+               <!--Optional:-->
+               
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <!--Optional:-->
+               <sch:MailToAddress>
+                  <!--Optional:-->
+                  <sch:Address1>1001 Main Street</sch:Address1>
+                  <!--Optional:-->
+                  <sch:Address2>String</sch:Address2>
+                  <!--Optional:-->
+                  <sch:Address3>String</sch:Address3>
+                  <!--Optional:-->
+                  <sch:City>Main City</sch:City>
+                  <!--Optional:-->
+                  <sch:State>CA</sch:State>
+                  <!--Optional:-->
+                  <sch:Zip>999999</sch:Zip>
+               </sch:MailToAddress>
+               <sch:MailToAddressInternational>
+                  <!--Optional:-->
+                  <sch:Address1>1001 Main Street</sch:Address1>
+                  <!--Optional:-->
+                  <sch:Address2>String</sch:Address2>
+                  <!--Optional:-->
+                  <sch:Address3>String</sch:Address3>
+                  <!--Optional:-->
+                  <sch:City>Main City</sch:City>
+                  <!--Optional:-->
+                  <sch:State>CA</sch:State>
+                  <!--Optional:-->
+                  <sch:Zip>999999</sch:Zip>
+               </sch:MailToAddressInternational>
+               <!--You have a CHOICE of the next 2 items at this level-->
+               <!--Optional:-->
+               <sch:ReturnToAddress>
+                  <!--Optional:-->
+                  <sch:Address1>String</sch:Address1>
+                  <!--Optional:-->
+                  <sch:Address2>String</sch:Address2>
+                  <!--Optional:-->
+                  <sch:Address3>String</sch:Address3>
+                  <!--Optional:-->
+                  <sch:City>String</sch:City>
+                  <!--Optional:-->
+                  <sch:State>String</sch:State>
+                  <!--Optional:-->
+                  <sch:Zip>String</sch:Zip>
+               </sch:ReturnToAddress>
+               <!--Optional:-->
+               <!--Optional:-->
+               <sch:faxNumber></sch:faxNumber>
+               <!--Optional:-->
+               <sch:emailAddress></sch:emailAddress>
+               <sch:carbonCopyInd>false</sch:carbonCopyInd>
+            </sch:recipient>
+            <!--Optional:-->
+            <sch:template>
+               <!--Optional:-->
+               <sch:templateID>EOBTemplateC12HD</sch:templateID>
+              
+               <!--Optional:-->
+               <sch:templateName>EOBTemplateC12HD</sch:templateName>
+            </sch:template>
+            <sch:data>
+               <!--Optional:-->
+               <sch:externalFileType>
+                  <filePath/>
+                  <fileName/>
+                  <fileSize/>
+               </sch:externalFileType>
+               <!--Optional:-->
+               <sch:embeddedDataType></sch:embeddedDataType>
+               <!--Optional:-->
+               <sch:contentFormatType>
+                  <!--Optional:-->
+                  <sch:contentStream />
+                  <sch:documentType/>
+                  <!--Optional:-->
+                  <sch:mimeType />
+                  <!--0 to 20 repetitions:-->
+                  <sch:documentMetadata>
+                     <!--Optional:-->
+                     <v7:name />
+                     <!--Optional:-->
+                     <v7:value />
+                  </sch:documentMetadata>
+               </sch:contentFormatType>
+            </sch:data>
+         </sch:transactionalRequestDetail>
+      </sch:requestDetail>
+      <!--Optional:-->
+      <sch:requestTrailer>
+         <sch:requestItemCount>1</sch:requestItemCount>
+      </sch:requestTrailer>
+   </sch:fulfillmentRequest>
+</sch:processFulfillmentRequest>
