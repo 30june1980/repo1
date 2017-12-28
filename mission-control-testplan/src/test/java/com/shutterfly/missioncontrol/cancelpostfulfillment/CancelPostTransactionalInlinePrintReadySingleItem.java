@@ -50,7 +50,7 @@ public class CancelPostTransactionalInlinePrintReadySingleItem extends ConfigLoa
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PTIPRSI_XML")
+	@Test(groups = "Test_CPTIPRSI_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
@@ -63,7 +63,7 @@ public class CancelPostTransactionalInlinePrintReadySingleItem extends ConfigLoa
 	}
 
 	
-	@Test(groups = "database", dependsOnGroups = { "Test_PTIPRSI_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_CPTIPRSI_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);

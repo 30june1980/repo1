@@ -17,7 +17,7 @@
                     <!--Optional:-->
                     <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>10000</sch:fulfillmentType>
+                    <sch:fulfillmentType>10700</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>TransactionalInlinePrintReadySingleItem</sch:requestCategory>
                     <!--Optional:-->

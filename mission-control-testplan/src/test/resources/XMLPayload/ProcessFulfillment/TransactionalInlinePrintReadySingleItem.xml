@@ -22,7 +22,7 @@ xmlns="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:xsi="http://www.w3.org/2
     <requestDetail>
         <transactionalRequestDetail>
             <recipient>
-                <recipientId>BP12345</recipientId>
+                <recipientId>111223333</recipientId>
                 <idQualifier>BrokerIDType</idQualifier>
                 <deliveryMethod1>Mailed</deliveryMethod1>
                 <deliveryMethod2></deliveryMethod2>

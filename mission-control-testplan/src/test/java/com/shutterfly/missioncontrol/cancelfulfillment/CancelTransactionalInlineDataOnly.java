@@ -66,6 +66,6 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_CTIDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "Cancel");
 	}
 }
