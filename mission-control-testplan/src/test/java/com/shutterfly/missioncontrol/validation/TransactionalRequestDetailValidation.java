@@ -10,6 +10,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.testng.annotations.Test;
 import com.google.common.io.Resources;
@@ -19,7 +20,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import junit.framework.Assert;
+
 
 /**
  * @author dgupta
@@ -30,8 +31,8 @@ public class TransactionalRequestDetailValidation extends ConfigLoader {
 	 * 
 	 */
 	private String uri = "";
-	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	UUID uuid = UUID.randomUUID();
+	String record = "Test_qa_" + uuid.toString();
 
 	private String getProperties() {
 		basicConfigNonWeb();

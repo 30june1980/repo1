@@ -100,10 +100,25 @@
 			<class
 				name="com.shutterfly.missioncontrol.validation.BusinessSegmentIdValidation" />
 			<class
+
 				name="com.shutterfly.missioncontrol.validation.OrganizationAndPersonPresent" />
 			<class
 				name="com.shutterfly.missioncontrol.validation.InvalidRequestCategoryValidation" />
-		</classes>
 
+			<class
+				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadySingleItem" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postfulfillment.PostBulkPrintReady" />
+			<!-- <class name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlinePrintReadySingleItem" 
+				/> -->
+		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

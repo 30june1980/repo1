@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.equalTo;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.testng.annotations.Test;
 
@@ -34,8 +35,8 @@ public class BulkDataOnly extends ConfigLoader {
 
 	private String uri = "";
 
-	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	UUID uuid = UUID.randomUUID();
+	String record = "Test_qa_" + uuid.toString();
 
 	private String getProperties() {
 		basicConfigNonWeb();

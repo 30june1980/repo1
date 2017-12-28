@@ -10,8 +10,10 @@ import static org.testng.Assert.assertEquals;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.testng.annotations.Test;
+
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 
@@ -29,8 +31,9 @@ public class BulkRequestDetailValidation extends ConfigLoader {
 	 * 
 	 */
 	private String uri = "";
-	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+
+	UUID uuid = UUID.randomUUID();
+	String record = "Test_qa_" + uuid.toString();
 
 	private String getProperties() {
 		basicConfigNonWeb();
@@ -39,10 +42,10 @@ public class BulkRequestDetailValidation extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/Validation/BulkRequestDetailValidation.xml");		
+		URL file = Resources.getResource("XMLPayload/Validation/BulkRequestDetailValidation.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		return payload = payload.replaceAll("REQUEST_101", record);
-		
+
 	}
 
 	@Test
@@ -56,7 +59,7 @@ public class BulkRequestDetailValidation extends ConfigLoader {
 		EncoderConfig encoderconfig = new EncoderConfig();
 		Response response = given()
 				.config(RestAssured.config()
-						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(true)))
 				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
 				.body(this.buildPayload()).when().post(this.getProperties());
 
@@ -71,7 +74,7 @@ public class BulkRequestDetailValidation extends ConfigLoader {
 
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("If the request category is ‘BulkDataOnly’ or ‘BulkPrintReady’, then the RequestDetail must contain the BulkRequestDetail element."));
+				equalTo("If the request category is ‘BulkDataOnly’ or ‘BulkPrintReady’, then the RequestDetail must contain the BulkRequestDetail element Only."));
 
 	}
 }
