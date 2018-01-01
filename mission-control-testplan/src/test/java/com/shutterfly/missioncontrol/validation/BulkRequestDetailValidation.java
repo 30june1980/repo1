@@ -74,7 +74,7 @@ public class BulkRequestDetailValidation extends ConfigLoader {
 
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("If the request category is ‘BulkDataOnly’ or ‘BulkPrintReady’, then the RequestDetail must contain the BulkRequestDetail element Only."));
+				equalTo("If the request category is â€˜BulkDataOnlyâ€™ or â€˜BulkPrintReadyâ€™, then the RequestDetail must contain the BulkRequestDetail element only."));
 
 	}
 }

@@ -73,7 +73,7 @@ public class TransactionalRequestDetailValidation extends ConfigLoader {
 
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("If request category is ‘TransactionalInlineDataOnly’ or ‘TransactionalExternalDataOnly’ or ‘TransactionalInlinePrintReady’ or ‘TransactionalExternalPrintRead’ then RequestDetail must contain the TransactionalRequestDetail element only."));
+				equalTo("If request category is â€˜TransactionalInlineDataOnlyâ€™ or â€˜TransactionalExternalDataOnlyâ€™ or â€˜TransactionalInlinePrintReadyâ€™ or â€˜TransactionalExternalPrintReadâ€™ then RequestDetail must contain the TransactionalRequestDetail element only."));
 		
 		
 		

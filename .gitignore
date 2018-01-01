@@ -7,3 +7,5 @@
 **/test-output
 *.log
 .idea
+*.iml
+*.csv
