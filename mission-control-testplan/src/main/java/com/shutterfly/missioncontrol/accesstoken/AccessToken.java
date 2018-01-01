@@ -1,18 +1,17 @@
 package com.shutterfly.missioncontrol.accesstoken;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.trustStore;
 import static org.testng.Assert.assertNotNull;
 
-import com.shutterfly.missioncontrol.config.ConfigLoader;
+import javax.crypto.SecretKey;
 
-import com.shutterfly.missioncontrol.util.Encryption;
-import io.restassured.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.EncryptedPrivateKeyInfo;
-import javax.crypto.SecretKey;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.util.Encryption;
+
+import io.restassured.response.Response;
 
 public class AccessToken extends ConfigLoader {
 

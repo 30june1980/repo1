@@ -44,8 +44,8 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BDO");
 
-		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_invalid.xml",
-				(record + ".xml"));
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+				(record + "_Post.xml"));
 
 	}
 
@@ -55,6 +55,7 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
+		record = record + "_Post";
 		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
 				record, "bulkfile_invalid.xml");
 		
@@ -69,7 +70,9 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 
 	@Test(groups = "database", dependsOnGroups = { "Test_SABDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
+		record = record.replace("_Post", "");
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "StatusAck");
 	}
 }

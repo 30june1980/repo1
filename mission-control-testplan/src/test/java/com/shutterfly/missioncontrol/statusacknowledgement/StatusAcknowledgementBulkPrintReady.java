@@ -42,8 +42,8 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostBulkPrintReady.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BPR");
-		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_invalid.xml",
-				(record + ".xml"));
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+				(record + "_Post.xml"));
 
 	}
 
@@ -53,8 +53,9 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
-		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-				record, "bulkfile_invalid.xml");
+		record = record + "_Post";
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+				"bulkfile_invalid.xml");
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
 				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
@@ -67,6 +68,7 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_SABPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "StatusAck");
 	}
 }

@@ -1,9 +1,8 @@
 package com.shutterfly.missioncontrol.archivecode;
 
-import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 import org.testng.annotations.Test;
 
-import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 
 /**
  * @author Diptman Gupta

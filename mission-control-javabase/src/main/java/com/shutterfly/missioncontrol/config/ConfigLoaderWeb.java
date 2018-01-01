@@ -71,7 +71,8 @@ public class ConfigLoaderWeb {
         setBrowser(environment, operatingSystem, browser, url);
     }
 
-    private static void setBrowser(String environment, Platform os, String browser, URL url) {
+    @SuppressWarnings("deprecation")
+	private static void setBrowser(String environment, Platform os, String browser, URL url) {
         DesiredCapabilities desiredCapabilities = null;
         switch (browser) {
 

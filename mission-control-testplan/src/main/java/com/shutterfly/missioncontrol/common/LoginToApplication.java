@@ -3,13 +3,12 @@
  */
 package com.shutterfly.missioncontrol.common;
 
-import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
-import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 import com.shutterfly.missioncontrol.config.CustomWebDriverWait;
 
 /**
