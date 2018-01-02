@@ -45,7 +45,7 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BDO");
 		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-				(record + ".xml"));
+				(record + "_Archive.xml"));
 	}
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
@@ -54,6 +54,7 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
+		 record = record + "_Archive";
 		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
 				record, "bulkfile_all_valid.xml");
 		EncoderConfig encoderconfig = new EncoderConfig();
@@ -71,6 +72,7 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 
 	@Test(groups = "database", dependsOnGroups = { "Test_PABDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
+		record = record.replace("_Archive", "");
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record,"AcceptedByArchivalSystem", "Archive");
 	}

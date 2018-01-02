@@ -43,7 +43,7 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BPR");
 		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-				(record + "_Post.xml"));
+				(record + "_StatusAck.xml"));
 
 	}
 
@@ -53,7 +53,7 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
-		record = record + "_Post";
+		record = record + "_StatusAck";
 		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
 				"bulkfile_invalid.xml");
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
@@ -68,6 +68,7 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_SABPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+		record = record.replace("_StatusAck", "");
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "StatusAck");
 	}
