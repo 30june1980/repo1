@@ -47,12 +47,12 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
 		for (int retry = 0; retry <= 7; retry++) {
 			try {
-				if ((fulfillmentTrackingRecord.find(eq(requestId, record)).first()) != null) {
-					fulfillmentTrackingRecordDoc = fulfillmentTrackingRecord.find(eq(requestId, record)).first();
+				if (getFirst(record, fulfillmentTrackingRecord, requestId) != null) {
+					fulfillmentTrackingRecordDoc = getFirst(record, fulfillmentTrackingRecord, requestId);
 					fulfillmentTrackingRecordDoc.containsKey(requestId);
 					Assert.assertEquals(record, fulfillmentTrackingRecordDoc.getString(requestId));
 
-					fulfillmentStatusTrackingDoc = fulfillmentStatusTracking.find(eq(requestId, record)).first();
+					fulfillmentStatusTrackingDoc = getFirst(record, fulfillmentStatusTracking, requestId);
 
 					if (validateRecordStatus(fulfillmentStatusTrackingDoc, record, statusToValidate , requestTypeToValidate)) {
 						break;
@@ -80,6 +80,11 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
 		connectToDatabase.closeMongoConnection();
 
+	}
+
+	private Document getFirst(String record, MongoCollection<Document> fulfillmentTrackingRecord,
+			String requestId) {
+		return fulfillmentTrackingRecord.find(eq(requestId, record)).first();
 	}
 
 	private boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record, String statusToValidate,
