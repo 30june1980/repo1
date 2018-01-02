@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class AuthorizationControllerTest extends ConfigLoader {
+public class ParticipantControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
@@ -22,16 +22,17 @@ public class AuthorizationControllerTest extends ConfigLoader {
     }
 
     @Test
-    public void getAuthorizationDetails() {
+    public void getAllUniqueLatestParticipantsLatestSortedByStatus() {
         Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/authorization");
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/participants/");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+
     @Test
-    public void getAllRolesDetails() {
+    public void getParticipantTypes() {
         Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/roles");
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/participants/types");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 }

@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class AuthorizationControllerTest extends ConfigLoader {
+public class DeadLetterControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
@@ -22,16 +22,9 @@ public class AuthorizationControllerTest extends ConfigLoader {
     }
 
     @Test
-    public void getAuthorizationDetails() {
+    public void deadLetterCount() {
         Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/authorization");
-        Assert.assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void getAllRolesDetails() {
-        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/roles");
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/dead-letter/count");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 }
