@@ -85,7 +85,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
 	}
 
-	@Test(dependsOnGroups = { "Test_TEPR_XML" })
+	@Test(groups = "database_TEPR", dependsOnGroups = { "Test_TEPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();

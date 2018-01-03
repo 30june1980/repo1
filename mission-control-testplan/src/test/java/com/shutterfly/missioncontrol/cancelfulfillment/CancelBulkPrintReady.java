@@ -64,6 +64,6 @@ public class CancelBulkPrintReady extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_CBPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySuplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySuplier", "Cancel");
 	}
 }

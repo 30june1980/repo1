@@ -124,10 +124,21 @@
 				name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkPrintReady" />
 			<!-- <class name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlinePrintReadySingleItem" 
 				/> -->
+
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady" />
 		</classes>
-		
-		
-		
-		
+
+
+
+
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
