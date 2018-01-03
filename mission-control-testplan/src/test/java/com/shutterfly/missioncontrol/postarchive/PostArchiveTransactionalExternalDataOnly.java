@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.postarchive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -44,9 +45,11 @@ public class PostArchiveTransactionalExternalDataOnly extends ConfigLoader {
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("TEDO");
 
-		return payload = payload.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+				(record + ".xml"));
 
 	}
+
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
@@ -66,6 +69,6 @@ public class PostArchiveTransactionalExternalDataOnly extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_POATEDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
 	}
 }
