@@ -1,11 +1,12 @@
 /**
- * 
+ *
  */
 package com.shutterfly.missioncontrol.cancelfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -22,49 +23,52 @@ import io.restassured.response.Response;
 
 /**
  * @author dgupta
- *
  */
 public class CancelTransactionalInlinePrintReadyMultItem extends ConfigLoader {
-	/**
-	 * 
-	 */
-	private String uri = "";
-	private String payload = "";
-	private String record = "";
 
-	private String getProperties() {
-		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
-		return uri;
+  /**
+   *
+   */
+  private String uri = "";
+  private String payload = "";
+  private String record = "";
 
-	}
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
+    return uri;
 
-	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlinePrintReadyMultItem.xml");
-		payload = Resources.toString(file, StandardCharsets.UTF_8);
-		record = cwr.getRequestIdByKeys("TIPRMI");
+  }
 
-		return payload = payload.replaceAll("REQUEST_101", record);
+  private String buildPayload() throws IOException {
+    URL file = Resources.getResource(
+        "XMLPayload/CancelFulfillment/CancelTransactionalInlinePrintReadyMultItem.xml");
+    payload = Resources.toString(file, StandardCharsets.UTF_8);
+    record = cwr.getRequestIdByKeys("TIPRMI");
 
-	}
+    return payload = payload.replaceAll("REQUEST_101", record);
 
-	CsvReaderWriter cwr = new CsvReaderWriter();
+  }
 
-	@Test(groups = "Test_CTIPRMI_XML")
-	private void getResponse() throws IOException {
-		basicConfigNonWeb();
-		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
-				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
-		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
-		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-				equalTo("Accepted"));
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
-	}
+  @Test(groups = "Test_CTIPRMI_XML")
+  private void getResponse() throws IOException {
+    basicConfigNonWeb();
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
 
-	@Test(groups = "database", dependsOnGroups = { "Test_CTIPRMI_XML" })
-	private void validateRecordsInDatabase() throws Exception {
-		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "Cancel");
-	}
+  }
+
+  @Test(groups = "database", dependsOnGroups = {"Test_CTIPRMI_XML"})
+  private void validateRecordsInDatabase() throws Exception {
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",
+        AppConstants.CANCEL);
+  }
 }

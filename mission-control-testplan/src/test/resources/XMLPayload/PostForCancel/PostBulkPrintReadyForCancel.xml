@@ -8,7 +8,7 @@
 		<sch:requestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>CIRRUS</sch:sourceID>
+			<sch:sourceID>BRMS</sch:sourceID>
 			<!--Optional: -->
 			<sch:destinationID>SBS</sch:destinationID>
 			<!--Optional: -->
@@ -20,9 +20,9 @@
 			<!--Optional: -->
 			<sch:marketSegmentCd>OXF</sch:marketSegmentCd>
 			<!--Optional: -->
-			<sch:fulfillmentType>10000</sch:fulfillmentType>
+			<sch:fulfillmentType>11300</sch:fulfillmentType>
 			<!--Optional: -->
-			<sch:requestCategory>BulkDataOnly</sch:requestCategory>
+			<sch:requestCategory>BulkPrintReady</sch:requestCategory>
 			<!--Optional: -->
 			<sch:serviceLevelCategory>String</sch:serviceLevelCategory>
 			<!--Optional: -->

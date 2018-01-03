@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.shutterfly.missioncontrol.cancelfulfillment;
+package com.shutterfly.missioncontrol.postforcancel;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
@@ -24,25 +24,22 @@ import io.restassured.response.Response;
 /**
  * @author dgupta
  */
-public class CancelTransactionalExternalPrintReady extends ConfigLoader {
+public class PostTransactionalExternalPrintReadyForCancel extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
 
   private String getProperties() {
     basicConfigNonWeb();
-    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
     return uri;
 
   }
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/CancelFulfillment/CancelTransactionalExternalPrintReady.xml");
+        .getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReady.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("TEPR");
 
@@ -52,7 +49,7 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTEPR_XML")
+  @Test(groups = "Test_CPTEPR_XML")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -66,10 +63,11 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CTEPR_XML"})
+  @Test(groups = "database", dependsOnGroups = {"Test_CPTEPR_XML"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",
-        AppConstants.CANCEL);
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+            AppConstants.POST_STATUS);
   }
 }
