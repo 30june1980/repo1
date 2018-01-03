@@ -117,8 +117,17 @@
 				name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly" />
 			<class
 				name="com.shutterfly.missioncontrol.postfulfillment.PostBulkPrintReady" />
+
+			<class
+				name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkPrintReady" />
 			<!-- <class name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlinePrintReadySingleItem" 
 				/> -->
 		</classes>
+		
+		
+		
+		
 	</test> <!-- Test -->
 </suite> <!-- Suite -->
