@@ -1,12 +1,13 @@
 /**
  *
  */
-package com.shutterfly.missioncontrol.cancelfulfillment;
+package com.shutterfly.missioncontrol.postforcancel;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -24,37 +25,40 @@ import io.restassured.response.Response;
 /**
  * @author dgupta
  */
-public class CancelTransactionalExternalPrintReady extends ConfigLoader {
+public class PostBulkPrintReadyForCancel extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
 
   private String getProperties() {
     basicConfigNonWeb();
-    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
     return uri;
 
   }
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/CancelFulfillment/CancelTransactionalExternalPrintReady.xml");
+        .getResource("XMLPayload/PostForCancel/PostBulkPrintReadyForCancel.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("TEPR");
+    record = cwr.getRequestIdByKeys("BPR");
 
-    return payload = payload.replaceAll("REQUEST_101", record);
+    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+        (record + AppConstants.POST_FOR_CANCEL_SUFFIX + ".xml"));
 
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTEPR_XML")
+  @Test(groups = "Test_CPBPR_XML")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
+    String payload = this.buildPayload();
+    record = record + AppConstants.POST_FOR_CANCEL_SUFFIX;
+
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+        "bulkfile_all_valid.xml");
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -66,10 +70,12 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CTEPR_XML"})
+  @Test(groups = "database", dependsOnGroups = {"Test_CPBPR_XML"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",
-        AppConstants.CANCEL);
+    record = record.replace(AppConstants.POST_FOR_CANCEL_SUFFIX, "");
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+            AppConstants.POST_STATUS);
   }
 }

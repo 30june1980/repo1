@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.cancelfulfillment;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -66,6 +67,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_CTIDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "Cancel");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",
+				AppConstants.CANCEL);
 	}
 }

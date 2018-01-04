@@ -3,8 +3,8 @@
  */
 package com.shutterfly.missioncontrol.processfulfillment;
 
-import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,11 +14,9 @@ import java.util.UUID;
 import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
-import com.mongodb.MongoClient;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.ConnectToDatabase;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
 import io.restassured.RestAssured;
@@ -75,8 +73,7 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 
 	}
 
-	ConnectToDatabase connectToDatabase = new ConnectToDatabase();
-	MongoClient client;
+
 
 	@Test(groups = "database", dependsOnGroups = { "Test_TIPRM_XML" })
 	private void validateRecordsInDatabase() throws Exception {
