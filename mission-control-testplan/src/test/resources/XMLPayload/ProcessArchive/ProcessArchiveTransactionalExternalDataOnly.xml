@@ -6,7 +6,7 @@
 		<sch:archiveRequestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>EMPORTAL</sch:sourceID>
+			<sch:sourceID>CIRRUS</sch:sourceID>
 			<!--Optional: -->
 			<sch:destinationID>RRD</sch:destinationID>
 			<!--Optional: -->
@@ -16,9 +16,9 @@
 			<!--Optional: -->
 			<sch:businessSegmentID>EI</sch:businessSegmentID>
 			<!--Optional: -->
-			<sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+			<sch:marketSegmentCd>LRG</sch:marketSegmentCd>
 			<!--Optional: -->
-			<sch:fulfillmentType>10700</sch:fulfillmentType>
+			<sch:fulfillmentType>10100</sch:fulfillmentType>
 			<!--Optional: -->
 			<sch:requestCategory>TransactionalExternalDataOnly</sch:requestCategory>
 			<!--Optional: -->

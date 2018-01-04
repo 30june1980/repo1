@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.postarchive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -39,13 +40,13 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
 	}
 
+
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/PostArchive/PostArchiveBulkPrintReady.xml");
-		payload = Resources.toString(file, StandardCharsets.UTF_8);
+		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BPR");
-
-		return payload = payload.replaceAll("REQUEST_101", record);
-
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+				(record + ".xml"));
 	}
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
@@ -53,6 +54,9 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 	@Test(groups = "Test_POABPR_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
+		String payload = this.buildPayload();
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+				record, "bulkfile_all_valid.xml");
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
 				.contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
@@ -67,6 +71,6 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_POABPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
 	}
 }

@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -42,12 +43,14 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
 	}
 
+
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/PostArchive/PostArchiveBulkDataOnly.xml");
-		payload = Resources.toString(file, StandardCharsets.UTF_8);
+		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("BDO");
 
-		return payload = payload.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+				(record + "_PostArchive.xml"));
 
 	}
 
@@ -56,6 +59,10 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 	@Test(groups = "Test_POABDO_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
+		String payload = this.buildPayload();
+		record = record + "_PostArchive";
+		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+				record, "bulkfile_all_valid.xml");
 		EncoderConfig encoderconfig = new EncoderConfig();
 		Response response = given()
 				.config(RestAssured.config()
@@ -72,6 +79,6 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_POABDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
 	}
 }
