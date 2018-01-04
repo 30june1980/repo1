@@ -68,7 +68,8 @@ public class CancelTransactionalInlinePrintReadyMultItem extends ConfigLoader {
   @Test(groups = "database", dependsOnGroups = {"Test_CTIPRMI_XML"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",
-        AppConstants.CANCEL);
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
+            AppConstants.CANCEL);
   }
 }
