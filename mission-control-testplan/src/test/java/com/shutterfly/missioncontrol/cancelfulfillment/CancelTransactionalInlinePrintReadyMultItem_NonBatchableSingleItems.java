@@ -1,53 +1,56 @@
-package com.shutterfly.missioncontrol.postforcancel;
+/**
+ *
+ */
+package com.shutterfly.missioncontrol.cancelfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-import com.shutterfly.missioncontrol.common.AppConstants;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
-import org.testng.annotations.Test;
-
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import org.testng.annotations.Test;
 
 /**
  * @author dgupta
  */
-public class PostTransactionalInlinePrintReadySingleItemForCancel extends ConfigLoader {
+public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems extends
+    ConfigLoader {
 
+  /**
+   *
+   */
   private String uri = "";
   private String payload = "";
   private String record = "";
 
   private String getProperties() {
     basicConfigNonWeb();
-    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
     return uri;
 
   }
 
   private String buildPayload() throws IOException {
-    URL file = Resources
-        .getResource(
-            "XMLPayload/PostForCancel/PostTransactionalInlinePrintReadySingleItemForCancel.xml");
+    URL file = Resources.getResource(
+        "XMLPayload/CancelFulfillment/CancelTransactionalInlinePrintReadyMultItem.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("TIPRMI_NBSI");
-    record = record + "_2";
+
     return payload = payload.replaceAll("REQUEST_101", record);
 
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CPTIPRSI_XML")
+  @Test(groups = "Test_CTIPRMI_NBSI_XML")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -60,12 +63,19 @@ public class PostTransactionalInlinePrintReadySingleItemForCancel extends Config
 
   }
 
-
-  @Test(groups = "database", dependsOnGroups = {"Test_CPTIPRSI_XML"})
+  @Test(groups = "database", dependsOnGroups = {"Test_CTIPRMI_NBSI_XML"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, "RequestUpdatedToDB",
-            AppConstants.POST_STATUS);
+        .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
+            AppConstants.CANCEL);
+  }
+
+  @Test(dependsOnGroups = {"Test_CTIPRMI_NBSI_XML"})
+  private void validateSingleItemRecordsInDatabase() throws Exception {
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
   }
 }

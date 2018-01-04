@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sch:postFulfillmentRequestStatus xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-      
+
               <sch:fulfillmentRequestStatus>
                 <sch:requestHeader>
                     <sch:requestID>REQUEST_101</sch:requestID>
@@ -19,7 +19,7 @@
                     <!--Optional:-->
                     <sch:fulfillmentType>10000</sch:fulfillmentType>
                     <!--Optional:-->
-                    <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
+                    <sch:requestCategory>TransactionalInlinePrintReadySingleItem</sch:requestCategory>
                     <!--Optional:-->
                     <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
                     <!--Optional:-->
@@ -36,12 +36,12 @@
                 <!--1 to 7 repetitions:-->
                 <sch:requestHistory>
                     <sch:processor>PRINT_SUPPLIER_2345</sch:processor>
-                    <sch:eventType>Received</sch:eventType>
+                    <sch:eventType>Cancelled</sch:eventType>
                     <sch:receivedDate>2001-12-17T09:31:47Z</sch:receivedDate>
                     <!--Optional:-->
                     <sch:dispatchedDate>2001-12-17T09:32:47Z</sch:dispatchedDate>
                     <!--Optional:-->
-                    <sch:recipientId>111223333</sch:recipientId>
+                    <sch:recipientId>BP12345</sch:recipientId>
                     <!--Optional:-->
                     <sch:deliveryMethodCd>Mailed</sch:deliveryMethodCd>
                     <sch:statusCode>Accepted</sch:statusCode>
