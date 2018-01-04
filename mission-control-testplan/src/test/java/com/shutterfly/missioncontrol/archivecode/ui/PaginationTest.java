@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.ui;
+package com.shutterfly.missioncontrol.archivecode.ui;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;

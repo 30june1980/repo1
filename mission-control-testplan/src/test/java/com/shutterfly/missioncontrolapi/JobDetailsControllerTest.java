@@ -1,4 +1,4 @@
-package com.shutterflly.missioncontrolapi;
+package com.shutterfly.missioncontrolapi;
 
 import com.shutterfly.missioncontrol.accesstoken.AccessToken;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class RoutingRuleControllerTest extends ConfigLoader {
+public class JobDetailsControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
@@ -22,21 +22,10 @@ public class RoutingRuleControllerTest extends ConfigLoader {
     }
 
     @Test
-    public void uniqueRoutingRules() {
+    public void getAllJobDetails() {
         Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/routingrule/details/unique");
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/quartz-details");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
-
-    @Test
-    public void findAllRoutingRule() {
-        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .queryParam("pageNumber", "1").queryParam("pageSize", "1").contentType(ContentType.JSON)
-                .when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/routingrule");
-        Assert.assertEquals(response.getStatusCode(), 200);
-    }
-
-
-
 
 }

@@ -1,4 +1,4 @@
-package com.shutterflly.missioncontrolapi;
+package com.shutterfly.missioncontrolapi;
 
 import com.shutterfly.missioncontrol.accesstoken.AccessToken;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class FulfillmentStatusTrackingControllerTest extends ConfigLoader {
+public class SearchFieldMappingDocControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
@@ -22,11 +22,9 @@ public class FulfillmentStatusTrackingControllerTest extends ConfigLoader {
     }
 
     @Test
-    public void findStatusTrackingById() {
-        Response response = given().header("Accept", "application/json").header("Authorization", token)
-                .pathParam("requestID", "REQUEST_K8001_2").log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
-                        + "/api/services/v1/statustracking/{requestID}");
+    public void getAllFieldMapping() {
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/search/mappings/");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 

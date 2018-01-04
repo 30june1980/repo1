@@ -1,4 +1,4 @@
-package com.shutterflly.missioncontrolapi;
+package com.shutterfly.missioncontrolapi;
 
 import com.shutterfly.missioncontrol.accesstoken.AccessToken;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -10,11 +10,10 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class AsyncFileDownloadController extends ConfigLoader {
+public class FulfillmentMaterialTypeControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
-    private String userIdentifier = "testMsid";
 
     @BeforeClass
     public void setup() {
@@ -23,30 +22,30 @@ public class AsyncFileDownloadController extends ConfigLoader {
     }
 
     @Test
-    public void asyncFileDownloadsCount() {
+    public void findAllMaterialTypes() {
         Response response = given().header("Accept", "application/json").header("Authorization", token)
-                .pathParam("userIdentifier", userIdentifier).log().all()
+                .queryParam("pageNumber", "1").queryParam("pageSize", 1).log().all()
                 .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
-                        + "/api/services/v1/search/async/exports/download/count/{userIdentifier}");
+                        + "/api/services/v1/fulfillmentmaterialtypes");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    public void asyncFileDownloads() {
+    public void findByMaterialId() {
         Response response = given().header("Accept", "application/json").header("Authorization", token)
-                .pathParam("userIdentifier", userIdentifier).log().all()
+                .pathParam("materialId", 11900).log().all()
                 .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
-                        + "/api/services/v1/search/async/exports/{userIdentifier}");
+                        + "/api/services/v1/fulfillmentmaterialtypes/{materialId}");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
-    public void asyncFileUploads() {
+    public void findMaterialTypesByStatus() {
+        String[] statusArray = new String[]{"Active"};
         Response response = given().header("Accept", "application/json").header("Authorization", token)
-                .queryParam("query", "query").pathParam("userIdentifier", userIdentifier).log().all()
+                .queryParam("status", (Object[]) statusArray).log().all()
                 .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
-                        + "/api/services/v1/search/async/exports/{userIdentifier}/upload");
+                        + "/api/services/v1/fulfillmentmaterialtypes/bystatus");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
-
 }

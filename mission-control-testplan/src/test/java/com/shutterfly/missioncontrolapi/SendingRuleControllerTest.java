@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterflly.missioncontrolapi;
+package com.shutterfly.missioncontrolapi;
 
 import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;

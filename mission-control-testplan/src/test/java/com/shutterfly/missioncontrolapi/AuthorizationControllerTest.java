@@ -1,4 +1,4 @@
-package com.shutterflly.missioncontrolapi;
+package com.shutterfly.missioncontrolapi;
 
 import com.shutterfly.missioncontrol.accesstoken.AccessToken;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class ConstantsControllerTest extends ConfigLoader {
+public class AuthorizationControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
@@ -22,10 +22,16 @@ public class ConstantsControllerTest extends ConfigLoader {
     }
 
     @Test
-    public void portalConfigurationTests() {
+    public void getAuthorizationDetails() {
         Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
-                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/portal/configurations");
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/authorization");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+    @Test
+    public void getAllRolesDetails() {
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/roles");
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
 }
