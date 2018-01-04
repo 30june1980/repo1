@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.postarchive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -65,6 +66,6 @@ public class PostArchiveTransactionalInlinePrintReadySingleItem extends ConfigLo
 	@Test(groups = "database", dependsOnGroups = { "Test_POATIPRSI_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER, null);
 	}
 }

@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.processfulfillment;
 import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -74,6 +75,6 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 	@Test(groups = "database_TIDO", dependsOnGroups = { "Test_TIDO_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier",  "Process");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,  "Process");
 	}
 }

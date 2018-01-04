@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.statusacknowledgement;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -70,6 +71,6 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		record = record.replace("_StatusAck", "");
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", "StatusAck");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER, "StatusAck");
 	}
 }
