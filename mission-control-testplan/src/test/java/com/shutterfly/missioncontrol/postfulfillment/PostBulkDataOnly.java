@@ -51,7 +51,7 @@ public class PostBulkDataOnly extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PBDO_XML")
+	@Test(groups = "Test_PBDO_XML", dependsOnGroups = { "Test_BDO_XML" })
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();

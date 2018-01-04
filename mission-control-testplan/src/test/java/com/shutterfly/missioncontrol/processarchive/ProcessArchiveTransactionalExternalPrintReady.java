@@ -50,7 +50,7 @@ public class ProcessArchiveTransactionalExternalPrintReady extends ConfigLoader 
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PATEPR_XML")
+	@Test(groups = "Test_PATEPR_XML" ,dependsOnGroups = { "Test_PTEPR_XML" })
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();

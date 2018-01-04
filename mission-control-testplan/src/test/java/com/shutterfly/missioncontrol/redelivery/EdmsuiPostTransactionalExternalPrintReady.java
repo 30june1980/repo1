@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.postfulfillment;
+package com.shutterfly.missioncontrol.redelivery;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
@@ -24,7 +24,7 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class PostTransactionalExternalPrintReady extends ConfigLoader {
+public class EdmsuiPostTransactionalExternalPrintReady extends ConfigLoader {
 	/**
 	 * 
 	 */
@@ -40,9 +40,9 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReady.xml");
+		URL file = Resources.getResource("XMLPayload/Redelivery/EdmsuiPostTransactionalExternalPrintReady.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
-		record = cwr.getRequestIdByKeys("TEPR");
+		record = cwr.getRequestIdByKeys("EUTEPR");
 
 		return payload = payload.replaceAll("REQUEST_101", record);
 
@@ -50,7 +50,7 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PTEPR_XML" , dependsOnGroups = { "Test_TEPR_XML" })
+	@Test(groups = "Test_EUPTEPR_XML", dependsOnGroups = {"Test_EUTEPR_XML"})
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
@@ -62,7 +62,7 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
 	}
 
-	@Test(groups = "database", dependsOnGroups = { "Test_PTEPR_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_EUPTEPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record,"AcceptedByRequestor", "PostStatus");

@@ -6,7 +6,6 @@ package com.shutterfly.missioncontrol.postarchive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;

@@ -14,5 +14,6 @@ public class AppConstants {
 
   public static final String CANCEL = "Cancel";
   public static final String POST_STATUS = "PostStatus";
+  public static final String ACCEPTED_BY_ARCHIVAL_SYSTEM = "AcceptedByArchivalSystem";
 
 }

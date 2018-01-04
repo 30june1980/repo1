@@ -104,7 +104,6 @@
 				name="com.shutterfly.missioncontrol.validation.OrganizationAndPersonPresent" />
 			<class
 				name="com.shutterfly.missioncontrol.validation.InvalidRequestCategoryValidation" />
-
 			<class
 				name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadySingleItem" />
 			<class
@@ -124,7 +123,6 @@
 				name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkPrintReady" />
 			<!-- <class name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlinePrintReadySingleItem" 
 				/> -->
-
 			<class
 				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalPrintReady" />
 			<class
@@ -135,10 +133,20 @@
 				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalDataOnly" />
 			<class
 				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.redelivery.EdmsuiPostTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.redelivery.EdmsuiTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalPrintReady" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalInlineDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkDataOnly" />
+			<class
+				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkPrintReady" />
 		</classes>
-
-
-
-
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

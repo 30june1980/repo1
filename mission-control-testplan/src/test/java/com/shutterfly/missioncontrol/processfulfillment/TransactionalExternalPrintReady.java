@@ -96,4 +96,12 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER, "Process");
 		
 	}
+	
+	@Test(dependsOnGroups = { "database_TEPR" })
+	private void validateArchiveRecordStatus() throws Exception {
+
+		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+	
+	databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_ARCHIVAL_SYSTEM, "Archive");
+	}
 }

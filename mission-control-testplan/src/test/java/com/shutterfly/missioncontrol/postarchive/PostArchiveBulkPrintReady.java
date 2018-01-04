@@ -6,7 +6,6 @@ package com.shutterfly.missioncontrol.postarchive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +14,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
@@ -30,7 +30,6 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 	 * 
 	 */
 	private String uri = "";
-	private String payload = "";
 	private String record = "";
 
 	private String getProperties() {

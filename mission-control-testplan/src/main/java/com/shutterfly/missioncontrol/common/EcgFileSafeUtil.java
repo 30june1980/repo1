@@ -32,7 +32,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
 		final String direction = "INBOUND";
 		String sourceParticipantId = "";
 		final String requestorParticipantId = xmlPath.get("**.findAll { it.name() == 'sourceID' }");
-		if (requestType.equals("Process")) {
+		if (requestType.equals("Process")||requestType.equals("ReDelivery")) {
 			sourceParticipantId = xmlPath.get("**.findAll { it.name() == 'sourceID' }");
 		} else {
 			sourceParticipantId = xmlPath.get("**.findAll { it.name() == 'destinationID' }");

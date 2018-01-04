@@ -54,7 +54,7 @@ public class CancelBulkDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CBDO_XML")
+  @Test(groups = "Test_CBDO_XML", dependsOnGroups = { "Test_POABDO_XML" })
   private void getResponse() throws IOException {
     basicConfigNonWeb();
 

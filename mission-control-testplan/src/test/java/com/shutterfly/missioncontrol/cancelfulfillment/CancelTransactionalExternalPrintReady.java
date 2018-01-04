@@ -52,7 +52,7 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTEPR_XML")
+  @Test(groups = "Test_CTEPR_XML",dependsOnGroups = { "Test_POATEDO_XML" })
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()

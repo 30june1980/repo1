@@ -1,15 +1,17 @@
 /**
  * 
  */
-package com.shutterfly.missioncontrol.processarchive;
+package com.shutterfly.missioncontrol.redelivery;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
-import static io.restassured.RestAssured.given;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.testng.annotations.Test;
 
@@ -28,35 +30,48 @@ import io.restassured.response.Response;
  * @author dgupta
  *
  */
-public class ProcessArchiveBulkDataOnly extends ConfigLoader {
-
+public class EdmsuiTransactionalExternalPrintReady extends ConfigLoader {
+	/**
+	 * 
+	 */
 	private String uri = "";
-	private String record = "";
+
+	UUID uuid = UUID.randomUUID();
+	String record = "Test_qa_" + uuid.toString();
 
 	private String getProperties() {
 		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessArchive");
+		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
 		return uri;
-
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveBulkDataOnly.xml");
+		URL file = Resources.getResource("XMLPayload/Redelivery/EdmsuiTransactionalExternalPrintReady.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		record = cwr.getRequestIdByKeys("BDO");
+
 		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-				(record + "_Archive.xml"));
+				(record + ".xml"));
+
 	}
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_PABDO_XML", dependsOnGroups = { "Test_PBDO_XML" })
+	@Test(groups = "Test_EUTEPR_XML")
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
-		 record = record + "_Archive";
+
+		/*
+		 * Adding file at source location build and store source file path build and
+		 * store target file path
+		 */
 		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
 				record, "bulkfile_all_valid.xml");
+
+		/*
+		 * remove charset from content type using encoder config
+		 * build the payload
+		 */
 		EncoderConfig encoderconfig = new EncoderConfig();
 		Response response = given()
 				.config(RestAssured.config()
@@ -67,13 +82,18 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 		response.then().body(
 				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
+		cwr.writeToCsv("EUTEPR", record);
 
 	}
 
-	@Test(groups = "database", dependsOnGroups = { "Test_PABDO_XML" })
+	@Test(groups = "database", dependsOnGroups = { "Test_EUTEPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
-		record = record.replace("_Archive", "");
+
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record,"AcceptedByArchivalSystem", "Archive");
+		/*
+		 *  Supply the final status check value 
+		 */
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER, "Process");
+		
 	}
 }

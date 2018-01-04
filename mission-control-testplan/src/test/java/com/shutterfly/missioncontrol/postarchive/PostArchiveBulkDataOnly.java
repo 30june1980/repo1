@@ -33,7 +33,7 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 	 * 
 	 */
 	private String uri = "";
-	private String payload = "";
+
 	private String record = "";
 
 	private String getProperties() {
@@ -56,7 +56,7 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_POABDO_XML")
+	@Test(groups = "Test_POABDO_XML", dependsOnGroups = { "Test_PABDO_XML" })
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		String payload = this.buildPayload();

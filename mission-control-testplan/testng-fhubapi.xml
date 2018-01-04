@@ -3,21 +3,22 @@
 <suite thread-count="1" name="Suite">
 	<test name="Api-Test">
 		<classes>
-			<class name="com.shutterflly.missioncontrolapi.RoutingRuleControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.ServerConfigControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.JobDetailsControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.DeadLetterControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.ParticipantControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.SendingRuleControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.ConstantsControllerTest" />
-			<class
-				name="com.shutterflly.missioncontrolapi.FileTransferDetailsControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.CustomerControllerTest" />
-			<class
-				name="com.shutterflly.missioncontrolapi.SearchFieldMappingDocControllerTest" />
-			<class
-				name="com.shutterflly.missioncontrolapi.AuthorizationControllerTest" />
-			<class name="com.shutterflly.missioncontrolapi.FederatedControllerTest" />
+	      <class name="com.shutterfly.missioncontrolapi.FederatedControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.SearchFieldMappingDocControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.CustomerControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.FileTransferDetailsControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.RoutingRuleControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.ServerConfigControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.AsyncFileDownloadController"/>
+      <class name="com.shutterfly.missioncontrolapi.FulfillmentMaterialTypeControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.ConstantsControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.AuthorizationControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.SendingRuleControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.FulfillmentStatusTrackingControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.FulfillmentTrackingControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.DeadLetterControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.JobDetailsControllerTest"/>
+      <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
 		</classes>
 	</test> <!-- Api-Test -->
 </suite> <!-- Suite -->

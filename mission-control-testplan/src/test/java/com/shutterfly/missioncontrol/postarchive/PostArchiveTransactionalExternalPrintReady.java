@@ -51,7 +51,7 @@ public class PostArchiveTransactionalExternalPrintReady extends ConfigLoader {
 
 	CsvReaderWriter cwr = new CsvReaderWriter();
 
-	@Test(groups = "Test_POATEPR_XML")
+	@Test(groups = "Test_POATEPR_XML",dependsOnGroups = { "Test_PATEPR_XML" })
 	private void getResponse() throws IOException {
 		basicConfigNonWeb();
 		Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log().all()
