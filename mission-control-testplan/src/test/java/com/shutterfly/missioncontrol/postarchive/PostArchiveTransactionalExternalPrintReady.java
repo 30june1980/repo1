@@ -44,7 +44,8 @@ public class PostArchiveTransactionalExternalPrintReady extends ConfigLoader {
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
 		record = cwr.getRequestIdByKeys("TEPR");
 
-		return payload = payload.replaceAll("REQUEST_101", record);
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+				(record + ".xml"));
 
 	}
 
@@ -65,6 +66,8 @@ public class PostArchiveTransactionalExternalPrintReady extends ConfigLoader {
 	@Test(groups = "database", dependsOnGroups = { "Test_POATEPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedBySupplier", null);
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor" , "PostStatus");
 	}
+
+
 }

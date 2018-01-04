@@ -43,7 +43,7 @@ public class PostBulkPrintReady extends ConfigLoader {
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/PostFulfillment/PostBulkPrintReady.xml");
 		payload = Resources.toString(file, StandardCharsets.UTF_8);
-		record = cwr.getRequestIdByKeys("BPR");
+		record = cwr.getRequestIdByKeys("BDO");
 
 		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
 				(record + "_Post.xml"));
