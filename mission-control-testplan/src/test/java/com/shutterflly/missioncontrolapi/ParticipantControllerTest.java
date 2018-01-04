@@ -28,11 +28,54 @@ public class ParticipantControllerTest extends ConfigLoader {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
-
     @Test
     public void getParticipantTypes() {
         Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
                 .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/participants/types");
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void getParticipantDetail() {
+        Response res = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/participants/");
+
+        String participantId = res.getBody().path("participantId[1]");
+        String participantType = res.getBody().path("participantType[1].code");
+
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).pathParam("participantType", participantType)
+                .pathParam("participantId", participantId).when().get(config.getProperty("BaseApiUrl")
+                        + "/api/services/v1/participant/history/{participantType}/{participantId}");
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void findParticipantByIDAndType() {
+        Response res = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/participants/");
+
+        String participantId = res.getBody().path("participantId[1]");
+        String participantType = res.getBody().path("participantType[1].code");
+
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).pathParam("participantType", participantType)
+                .pathParam("participantId", participantId).when().get(config.getProperty("BaseApiUrl")
+                        + "/api/services/v1/participant/{participantId}/{participantType}");
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void getByStatus() {
+        Response res = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/participants/");
+
+        String participantType = res.getBody().path("participantType[1].code");
+
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).pathParam("participantTypeCode", participantType)
+                .queryParam("status", "Retired").when().get(config.getProperty("BaseApiUrl")
+                        + "/api/services/v1/participants/{participantTypeCode}/bystatus");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 }

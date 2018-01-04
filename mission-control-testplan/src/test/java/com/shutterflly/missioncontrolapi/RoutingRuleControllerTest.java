@@ -28,4 +28,15 @@ public class RoutingRuleControllerTest extends ConfigLoader {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+    @Test
+    public void findAllRoutingRule() {
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .queryParam("pageNumber", "1").queryParam("pageSize", "1").contentType(ContentType.JSON)
+                .when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/routingrule");
+        Assert.assertEquals(response.getStatusCode(), 200);
+    }
+
+
+
+
 }
