@@ -76,14 +76,16 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic", "Process");
+        .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
+            AppConstants.PROCESS);
   }
 
   @Test(dependsOnGroups = {"Test_DB_MultItem_NBSI"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER, "Process");
+        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.PROCESS);
   }
 
 }

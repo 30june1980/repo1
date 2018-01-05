@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.shutterfly.missioncontrol.processfulfillment;
 
@@ -27,58 +27,62 @@ import io.restassured.response.Response;
 
 /**
  * @author dgupta
- *
  */
 public class TransactionalExternalDataOnly extends ConfigLoader {
-	/**
-	 * 
-	 */
-	private String uri = "";
 
-	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
+  /**
+   *
+   */
+  private String uri = "";
 
-	private String getProperties() {
-		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
-		return uri;
-	}
+  UUID uuid = UUID.randomUUID();
+  String record = "Test_qa_" + uuid.toString();
 
-	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalExternalDataOnly.xml");
-		String payload = Resources.toString(file, StandardCharsets.UTF_8);
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+    return uri;
+  }
 
-		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml", (record + ".xml"));
+  private String buildPayload() throws IOException {
+    URL file = Resources
+        .getResource("XMLPayload/ProcessFulfillment/TransactionalExternalDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-	}
+    return payload = payload.replaceAll("REQUEST_101", record)
+        .replaceAll("bulkfile_all_valid.xml", (record + ".xml"));
 
-	CsvReaderWriter cwr = new CsvReaderWriter();
+  }
 
-	@Test(groups = "Test_TIPRM_XML")
-	private void getResponse() throws IOException, InterruptedException {
-		basicConfigNonWeb();
-		String payload = this.buildPayload();
-		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-				record, "bulkfile_all_valid.xml");
-		 EncoderConfig encoderconfig = new EncoderConfig();
-		Response response = given()
-				.config(RestAssured.config()
-						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-				.body(this.buildPayload()).when().post(this.getProperties());
-				
-		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-				equalTo("Accepted"));
-		cwr.writeToCsv("TEDO", record);
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
-	}
+  @Test(groups = "Test_TIPRM_XML")
+  private void getResponse() throws IOException, InterruptedException {
+    basicConfigNonWeb();
+    String payload = this.buildPayload();
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+        record, "bulkfile_all_valid.xml");
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayload()).when().post(this.getProperties());
+
+    response.then().body(
+        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    cwr.writeToCsv("TEDO", record);
+
+  }
 
 
-
-	@Test(groups = "database", dependsOnGroups = { "Test_TIPRM_XML" })
-	private void validateRecordsInDatabase() throws Exception {
-		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record , AppConstants.ACCEPTED_BY_SUPPLIER, "Process");
-	}
+  @Test(groups = "database", dependsOnGroups = {"Test_TIPRM_XML"})
+  private void validateRecordsInDatabase() throws Exception {
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.PROCESS);
+  }
 }

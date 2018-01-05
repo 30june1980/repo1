@@ -73,7 +73,7 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 	private void validateRecordsInDatabase() throws Exception {
 		record = record.replace("_StatusAck", "");
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByRequestor", "PostStatus");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR, AppConstants.POST_STATUS);
 		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER, "StatusAck");
 	}
 }

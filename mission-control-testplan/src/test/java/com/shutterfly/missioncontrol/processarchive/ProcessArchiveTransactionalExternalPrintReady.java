@@ -6,6 +6,7 @@ package com.shutterfly.missioncontrol.processarchive;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -73,6 +74,6 @@ public class ProcessArchiveTransactionalExternalPrintReady extends ConfigLoader 
 	@Test(groups = "database", dependsOnGroups = { "Test_PATEPR_XML" })
 	private void validateRecordsInDatabase() throws Exception {
 		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "AcceptedByArchivalSystem", "Archive");
+		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_ARCHIVAL_SYSTEM, AppConstants.ARCHIVE);
 	}
 }

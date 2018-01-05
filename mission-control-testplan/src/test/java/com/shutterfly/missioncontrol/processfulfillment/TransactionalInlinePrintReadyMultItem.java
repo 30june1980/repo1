@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.shutterfly.missioncontrol.processfulfillment;
 
@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 import static io.restassured.RestAssured.given;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -26,63 +27,68 @@ import io.restassured.response.Response;
 
 /**
  * @author dgupta
- *
  */
 public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
-	/**
-	 * 
-	 */
-	private String uri = "";
-	private String payload = "";
-	
-	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
 
-	private String getProperties() {
-		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
-		return uri;
-	}
+  /**
+   *
+   */
+  private String uri = "";
+  private String payload = "";
 
-	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlinePrintReadyMultItem.xml");
-		payload = Resources.toString(file, StandardCharsets.UTF_8);
+  UUID uuid = UUID.randomUUID();
+  String record = "Test_qa_" + uuid.toString();
 
-		return payload = payload.replaceAll("REQUEST_101", record);
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+    return uri;
+  }
 
-	}
+  private String buildPayload() throws IOException {
+    URL file = Resources
+        .getResource("XMLPayload/ProcessFulfillment/TransactionalInlinePrintReadyMultItem.xml");
+    payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-	CsvReaderWriter cwr = new CsvReaderWriter();
+    return payload = payload.replaceAll("REQUEST_101", record);
 
-	@Test(groups = "Test_TIPRMI_XML")
-	private void getResponse() throws IOException {
-		basicConfigNonWeb();
-		EncoderConfig encoderconfig = new EncoderConfig();
-		Response response = given()
-				.config(RestAssured.config()
-						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-				.body(this.buildPayload()).when().post(this.getProperties());
-		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
-		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-				equalTo("Accepted"));
-		cwr.writeToCsv("TIPRMI",record);
+  }
 
-	}
+  CsvReaderWriter cwr = new CsvReaderWriter();
+
+  @Test(groups = "Test_TIPRMI_XML")
+  private void getResponse() throws IOException {
+    basicConfigNonWeb();
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayload()).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    cwr.writeToCsv("TIPRMI", record);
+
+  }
 
 
+  @Test(groups = "Test_DB_MultItem", dependsOnGroups = {"Test_TIPRMI_XML"})
+  private void validateRecordsInDatabase() throws Exception {
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
+            AppConstants.PROCESS);
+  }
 
-	@Test(groups = "Test_DB_MultItem", dependsOnGroups = { "Test_TIPRMI_XML" })
-	private void validateRecordsInDatabase() throws Exception {
-		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",  "Process");
-	}
-	
-	@Test(dependsOnGroups = { "Test_DB_MultItem" })
-	private void validateSingleItemRecordsInDatabase() throws Exception {
-		DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record + "_2", "RequestBatched",  "Process");
-	}
-	
+  @Test(dependsOnGroups = {"Test_DB_MultItem"})
+  private void validateSingleItemRecordsInDatabase() throws Exception {
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record + "_2", "RequestBatched",
+            AppConstants.PROCESS);
+  }
+
 }

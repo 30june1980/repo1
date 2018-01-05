@@ -9,11 +9,12 @@ public class AppConstants {
   public static final String POST_SUFFIX = "_Post";
 
   public static final String ACCEPTED_BY_SUPPLIER = "AcceptedBySupplier";
-
   public static final String ACCEPTED_BY_REQUESTOR = "AcceptedByRequestor";
+  public static final String ACCEPTED_BY_ARCHIVAL_SYSTEM = "AcceptedByArchivalSystem";
 
   public static final String CANCEL = "Cancel";
   public static final String POST_STATUS = "PostStatus";
-  public static final String ACCEPTED_BY_ARCHIVAL_SYSTEM = "AcceptedByArchivalSystem";
+  public static final String PROCESS = "Process";
+  public static final String ARCHIVE = "Archive";
 
 }
