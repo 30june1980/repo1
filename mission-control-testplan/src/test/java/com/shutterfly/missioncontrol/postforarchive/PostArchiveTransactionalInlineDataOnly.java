@@ -53,7 +53,7 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_POATIDO_XML")
+  @Test(groups = "PostForArchive_TIDO_Response",dependsOnGroups = {"Archive_TIDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -67,7 +67,7 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_POATIDO_XML"})
+  @Test(groups = "PostForArchive_TIDO_DB", dependsOnGroups = {"PostForArchive_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

@@ -52,7 +52,7 @@ public class PostTransactionalInlineDataOnlyForCancel extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CPTIDO_XML")
+  @Test(groups = "PostForCancel_TIDO_Response", dependsOnGroups = {"Cancel_TIDO_Response"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -65,7 +65,7 @@ public class PostTransactionalInlineDataOnlyForCancel extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CPTIDO_XML"})
+  @Test(groups = "PostForCancel_TIDO_DB", dependsOnGroups = {"PostForCancel_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

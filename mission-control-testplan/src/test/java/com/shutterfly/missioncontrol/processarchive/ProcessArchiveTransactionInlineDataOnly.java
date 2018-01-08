@@ -54,7 +54,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PATIDO_XML")
+  @Test(groups = "Archive_TIDO_Response", dependsOnGroups = {"Post_TIDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -75,7 +75,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PATIDO_XML"})
+  @Test(groups = "Archive_TIDO_DB", dependsOnGroups = {"Archive_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

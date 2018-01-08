@@ -52,7 +52,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PTIDO_XML")
+  @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -66,7 +66,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PTIDO_XML"})
+  @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

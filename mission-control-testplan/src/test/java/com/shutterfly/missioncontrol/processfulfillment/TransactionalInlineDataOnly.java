@@ -29,9 +29,6 @@ import io.restassured.response.Response;
  */
 public class TransactionalInlineDataOnly extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
@@ -49,11 +46,11 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     return payload.replaceAll("REQUEST_101", record);
   }
 
-  @Test(groups = "Test_TIDO_XML")
+  @Test(groups = "Process_TIDO_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     /*
-		 * remove charset from content type using encoder config
+     * remove charset from content type using encoder config
 		 * 
 		 * build the payload
 		 */
@@ -74,7 +71,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database_TIDO", dependsOnGroups = {"Test_TIDO_XML"})
+  @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
