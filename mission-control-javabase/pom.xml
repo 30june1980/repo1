@@ -48,6 +48,7 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<profiles>
@@ -62,7 +63,7 @@
 								<phase>test</phase>
 								<goals>
 									<goal>run</goal>
-								</goals>a
+								</goals>
 								<configuration>
 									<tasks>
 										<delete file="${project.build.outputDirectory}/config.properties" />

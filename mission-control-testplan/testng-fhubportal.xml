@@ -7,7 +7,7 @@
 
         <classes>
             <!-- Portal Test case classes  -->
-            <class name="com.shutterfly.missioncontrolportal.pageobject.LoginTest"></class>
+            <class name="com.shutterfly.missioncontrolportal.LoginTest"/>
         </classes>
     </test> <!-- Api-Test -->
 </suite> <!-- Suite -->
