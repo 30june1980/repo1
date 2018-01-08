@@ -63,7 +63,7 @@ public class ProcessFulfillmentRequestBulkDataOnly extends ConfigLoader {
 				.contentType("application/json").body(this.buildJson()).when().post(this.getProperties());
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Accepted"));
 		cwr.writeToCsv("BDO_JSON", record);
 

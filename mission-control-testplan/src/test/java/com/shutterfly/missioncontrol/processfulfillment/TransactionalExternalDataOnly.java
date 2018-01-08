@@ -71,7 +71,7 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
         .body(this.buildPayload()).when().post(this.getProperties());
 
     response.then().body(
-        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
     cwr.writeToCsv("TEDO", record);
 

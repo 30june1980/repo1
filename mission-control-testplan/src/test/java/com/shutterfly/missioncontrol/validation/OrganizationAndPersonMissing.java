@@ -64,14 +64,14 @@ public class OrganizationAndPersonMissing extends ConfigLoader {
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		System.out.println(response.getBody().asString());
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Rejected"));
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
 				equalTo("18076"));
 
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
 				equalTo("Both Person and Organization are missing"));
 
 	}

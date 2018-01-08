@@ -56,7 +56,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_TIPRMI_XML")
+  @Test(groups = "Process_TIPRMI_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -68,14 +68,14 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
         .body(this.buildPayload()).when().post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
-        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
     cwr.writeToCsv("TIPRMI", record);
 
   }
 
 
-  @Test(groups = "Test_DB_MultItem", dependsOnGroups = {"Test_TIPRMI_XML"})
+  @Test(groups = "Process_TIPRMI_DB", dependsOnGroups = {"Process_TIPRMI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
@@ -83,7 +83,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
             AppConstants.PROCESS);
   }
 
-  @Test(dependsOnGroups = {"Test_DB_MultItem"})
+  @Test(dependsOnGroups = {"Process_TIPRMI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

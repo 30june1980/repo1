@@ -66,7 +66,7 @@ public class PostBulkPrintReady extends ConfigLoader {
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
-        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
 
   }

@@ -66,14 +66,14 @@ public class BulkRequestDetailValidation extends ConfigLoader {
 		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
 		System.out.println(response.getBody().asString());
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
 				equalTo("Rejected"));
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
 				equalTo("18408"));
 
 		response.then().body(
-				"ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
+				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
 				equalTo("If the request category is ‘BulkDataOnly’ or ‘BulkPrintReady’, then the RequestDetail must contain the BulkRequestDetail element only."));
 
 	}
