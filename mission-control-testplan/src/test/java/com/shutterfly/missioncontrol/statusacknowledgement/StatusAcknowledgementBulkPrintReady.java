@@ -42,19 +42,19 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
   private String buildPayload() throws IOException {
     URL file = Resources.getResource("XMLPayload/PostFulfillment/PostBulkPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("BPR");
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-        (record + "_StatusAck.xml"));
+    record = cwr.getRequestIdByKeys("BPR_SA");
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+        (record + AppConstants.POST_FOR_STATUS_ACK_SUFFIX + ".xml"));
 
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_SABPR_XML")
+  @Test(groups = "Post_StatusAck_BPR_Response", dependsOnGroups = {"Process_InvalidFile_BPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
-    record = record + "_StatusAck";
+    record = record + AppConstants.POST_FOR_STATUS_ACK_SUFFIX;
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
         AppConstants.BULK_FILE_INVALID);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -67,10 +67,10 @@ public class StatusAcknowledgementBulkPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_SABPR_XML"})
+  @Test(groups = "Post_StatusAck_BPR_DB", dependsOnGroups = {"Post_StatusAck_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    record = record.replace("_StatusAck", "");
+    record = record.replace(AppConstants.POST_FOR_STATUS_ACK_SUFFIX, "");
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
