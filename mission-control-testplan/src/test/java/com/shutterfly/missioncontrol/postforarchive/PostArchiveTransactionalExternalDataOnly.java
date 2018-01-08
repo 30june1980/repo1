@@ -54,7 +54,7 @@ public class PostArchiveTransactionalExternalDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_POATEDO_XML")
+  @Test(groups = "PostForArchive_TXDO_Response", dependsOnGroups = {"Archive_TXDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -68,7 +68,7 @@ public class PostArchiveTransactionalExternalDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_POATEDO_XML"})
+  @Test(groups = "PostForArchive_TXDO_DB", dependsOnGroups = {"PostForArchive_TXDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

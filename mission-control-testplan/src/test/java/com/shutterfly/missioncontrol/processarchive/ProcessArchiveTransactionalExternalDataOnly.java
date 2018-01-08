@@ -53,7 +53,7 @@ public class ProcessArchiveTransactionalExternalDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PATEDO_XML")
+  @Test(groups = "Archive_TXDO_Response", dependsOnGroups = {"Post_TXDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
 
@@ -75,7 +75,7 @@ public class ProcessArchiveTransactionalExternalDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PATEDO_XML"})
+  @Test(groups = "Archive_TXDO_DB", dependsOnGroups = {"Archive_TXDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

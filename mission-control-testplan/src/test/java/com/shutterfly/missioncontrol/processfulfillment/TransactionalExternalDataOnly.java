@@ -56,7 +56,7 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_TIPRM_XML")
+  @Test(groups = "Process_TXDO_Response")
   private void getResponse() throws IOException, InterruptedException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -78,7 +78,7 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_TIPRM_XML"})
+  @Test(groups = "Process_TXDO_DB", dependsOnGroups = {"Process_TXDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

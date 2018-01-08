@@ -52,7 +52,7 @@ public class CancelTransactionalExternalDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTEDO_XML")
+  @Test(groups = "Cancel_TXDO_Response", dependsOnGroups = {"PostForArchive_TXDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -65,10 +65,11 @@ public class CancelTransactionalExternalDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CTEDO_XML"})
+  @Test(groups = "Cancel_TXDO_DB", dependsOnGroups = {"Cancel_TXDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
-        AppConstants.CANCEL);
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
   }
 }
