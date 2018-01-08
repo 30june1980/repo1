@@ -19,10 +19,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class ConfigLoaderWeb {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigLoaderWeb.class);
 
     protected static WebDriver driver = null;
     private static Properties elements = null;
@@ -47,14 +48,14 @@ public class ConfigLoaderWeb {
         if (driver == null) {
             config = new Properties();
             try {
-                config.load(ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties"));
+                config.load(ConfigLoaderWeb.class.getClassLoader().getResourceAsStream("config.properties"));
             } catch (IOException e) {
                 logger.error("Unable to load config property file: " + e);
             }
 
             elements = new Properties();
             try {
-                elements.load(ConfigLoader.class.getClassLoader().getResourceAsStream("elements.properties"));
+                elements.load(ConfigLoaderWeb.class.getClassLoader().getResourceAsStream("elements.properties"));
             } catch (IOException e) {
                 logger.error("Unable to load element property file: " + e);
             }
@@ -119,6 +120,8 @@ public class ConfigLoaderWeb {
 
             default:
         }
+        driver.manage().timeouts().implicitlyWait(15000L, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
     }
 
     @AfterClass
