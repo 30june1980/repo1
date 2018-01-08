@@ -52,7 +52,7 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PTEPR_XML", dependsOnGroups = {"Test_TEPR_XML"})
+  @Test(groups = "Post_TEPR_Response", dependsOnGroups = {"Process_TEPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -65,7 +65,7 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PTEPR_XML"})
+  @Test(groups = "Post_TEPR_DB", dependsOnGroups = {"Post_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

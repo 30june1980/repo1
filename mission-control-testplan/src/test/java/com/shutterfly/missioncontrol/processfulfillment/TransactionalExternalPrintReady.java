@@ -57,7 +57,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_TEPR_XML")
+  @Test(groups = "Process_TEPR_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -70,7 +70,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
         record, AppConstants.BULK_FILE);
 
 		/*
-		 * remove charset from content type using encoder config
+     * remove charset from content type using encoder config
 		 * build the payload
 		 */
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -88,12 +88,12 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database_TEPR", dependsOnGroups = {"Test_TEPR_XML"})
+  @Test(groups = "Process_TEPR_DB", dependsOnGroups = {"Process_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
 
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-		/*
-		 *  Supply the final status check value 
+    /*
+     *  Supply the final status check value
 		 */
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
@@ -101,13 +101,4 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
-  @Test(dependsOnGroups = {"database_TEPR"})
-  private void validateArchiveRecordStatus() throws Exception {
-
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-
-    databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_ARCHIVAL_SYSTEM,
-            AppConstants.ARCHIVE);
-  }
 }

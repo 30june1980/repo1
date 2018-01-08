@@ -52,7 +52,7 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTEPR_XML",dependsOnGroups = { "Test_POATEDO_XML" })
+  @Test(groups = "Cancel_TEPR_Response", dependsOnGroups = {"PostForArchive_TEPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -66,10 +66,11 @@ public class CancelTransactionalExternalPrintReady extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CTEPR_XML"})
+  @Test(groups = "Cancel_TEPR_DB", dependsOnGroups = {"Cancel_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
-        AppConstants.CANCEL);
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
   }
 }
