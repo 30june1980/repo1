@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.shutterfly.missioncontrol.validation;
 
@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.testng.annotations.Test;
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -24,59 +25,60 @@ import io.restassured.response.Response;
 
 /**
  * @author dgupta
- *
  */
+@Ignore
 public class TransactionalRequestDetailValidation extends ConfigLoader {
-	/**
-	 * 
-	 */
-	private String uri = "";
-	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
 
-	private String getProperties() {
-		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
-		return uri;
-	}
+  /**
+   *
+   */
+  private String uri = "";
+  UUID uuid = UUID.randomUUID();
+  String record = "Test_qa_" + uuid.toString();
 
-	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/Validation/TransactionalRequestDetailValidation.xml");		
-		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload = payload.replaceAll("REQUEST_101", record);
-		
-	}
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+    return uri;
+  }
 
-	@Test
-	private void getResponse() throws IOException {
-		basicConfigNonWeb();
+  private String buildPayload() throws IOException {
+    URL file = Resources
+        .getResource("XMLPayload/Validation/TransactionalRequestDetailValidation.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+    return payload = payload.replaceAll("REQUEST_101", record);
+
+  }
+
+  @Test
+  private void getResponse() throws IOException {
+    basicConfigNonWeb();
 
 		/*
-		 * remove charset from content type using encoder config build the payload
+     * remove charset from content type using encoder config build the payload
 		 */
 
-		EncoderConfig encoderconfig = new EncoderConfig();
-		Response response = given()
-				.config(RestAssured.config()
-						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-				.body(this.buildPayload()).when().post(this.getProperties());
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayload()).when().post(this.getProperties());
 
-		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
-		System.out.println(response.getBody().asString());
-		response.then().body(
-				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-				equalTo("Rejected"));
-		response.then().body(
-				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
-				equalTo("18409"));
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    System.out.println(response.getBody().asString());
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Rejected"));
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+        equalTo("18409"));
 
-		response.then().body(
-				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("If request category is ‘TransactionalInlineDataOnly’ or ‘TransactionalExternalDataOnly’ or ‘TransactionalInlinePrintReady’ or ‘TransactionalExternalPrintRead’ then RequestDetail must contain the TransactionalRequestDetail element only."));
-		
-		
-		
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
+        equalTo(
+            "If request category is 'TransactionalInlineDataOnly' or 'TransactionalExternalDataOnly' or 'TransactionalInlinePrintReady' or 'TransactionalExternalPrintReady' then RequestDetail must contain the TransactionalRequestDetail element only."));
 
-	}
+  }
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.shutterfly.missioncontrol.validation;
 
@@ -12,6 +12,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
@@ -24,57 +25,59 @@ import io.restassured.response.Response;
 
 /**
  * @author dgupta
- *
  */
+@Ignore
 public class BulkRequestDetailValidation extends ConfigLoader {
-	/**
-	 * 
-	 */
-	private String uri = "";
 
-	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
+  /**
+   *
+   */
+  private String uri = "";
 
-	private String getProperties() {
-		basicConfigNonWeb();
-		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
-		return uri;
-	}
+  UUID uuid = UUID.randomUUID();
+  String record = "Test_qa_" + uuid.toString();
 
-	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/Validation/BulkRequestDetailValidation.xml");
-		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload = payload.replaceAll("REQUEST_101", record);
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+    return uri;
+  }
 
-	}
+  private String buildPayload() throws IOException {
+    URL file = Resources.getResource("XMLPayload/Validation/BulkRequestDetailValidation.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+    return payload = payload.replaceAll("REQUEST_101", record);
 
-	@Test
-	private void getResponse() throws IOException {
-		basicConfigNonWeb();
+  }
+
+  @Test
+  private void getResponse() throws IOException {
+    basicConfigNonWeb();
 
 		/*
-		 * remove charset from content type using encoder config build the payload
+     * remove charset from content type using encoder config build the payload
 		 */
 
-		EncoderConfig encoderconfig = new EncoderConfig();
-		Response response = given()
-				.config(RestAssured.config()
-						.encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(true)))
-				.header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-				.body(this.buildPayload()).when().post(this.getProperties());
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(true)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayload()).when().post(this.getProperties());
 
-		assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
-		System.out.println(response.getBody().asString());
-		response.then().body(
-				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-				equalTo("Rejected"));
-		response.then().body(
-				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
-				equalTo("18408"));
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    System.out.println(response.getBody().asString());
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Rejected"));
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+        equalTo("18408"));
 
-		response.then().body(
-				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("If the request category is ‘BulkDataOnly’ or ‘BulkPrintReady’, then the RequestDetail must contain the BulkRequestDetail element only."));
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
+        equalTo(
+            "If the request category is 'BulkDataOnly' or 'BulkPrintReady', then the RequestDetail must contain the BulkRequestDetail element only."));
 
-	}
+  }
 }
