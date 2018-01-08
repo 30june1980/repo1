@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.shutterfly.missioncontrol.postarchive;
+package com.shutterfly.missioncontrol.postforarchive;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
@@ -15,7 +15,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
-import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
@@ -25,12 +24,13 @@ import io.restassured.response.Response;
 /**
  * @author dgupta
  */
-public class PostArchiveBulkPrintReady extends ConfigLoader {
+public class PostArchiveTransactionalExternalDataOnly extends ConfigLoader {
 
   /**
    *
    */
   private String uri = "";
+  private String payload = "";
   private String record = "";
 
   private String getProperties() {
@@ -40,23 +40,23 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
   }
 
-
   private String buildPayload() throws IOException {
-    URL file = Resources.getResource("XMLPayload/PostArchive/PostArchiveBulkPrintReady.xml");
-    String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("BPR");
+    URL file = Resources
+        .getResource("XMLPayload/PostArchive/PostArchiveTransactionalExternalDataOnly.xml");
+    payload = Resources.toString(file, StandardCharsets.UTF_8);
+    record = cwr.getRequestIdByKeys("TEDO");
+
     return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
+
   }
+
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_POABPR_XML")
+  @Test(groups = "Test_POATEDO_XML")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
-    String payload = this.buildPayload();
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record, "bulkfile_all_valid.xml");
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -68,7 +68,7 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_POABPR_XML"})
+  @Test(groups = "database", dependsOnGroups = {"Test_POATEDO_XML"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

@@ -3,7 +3,7 @@
   xmlns:com="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
   xsi:schemaLocation="http://dms-fsl.uhc.com/fulfillment/schema itemStatusFile.xsd">
   <batchStatusHeader>
-    <requestID>HUB_BATCH_REQUEST_cc51dcf1-8242-4be7-829d-5f1aad609e67</requestID>
+    <requestID>Test_qa_123</requestID>
     <sourceID>RRD</sourceID>
     <destinationID>Hub</destinationID>
     <requestDate>2001-12-17T09:30:47Z</requestDate>
@@ -117,7 +117,7 @@
       </batchItemRequest>
       <batchItemEventLog>
         <processor>PRINT_SUPPLIER_545454</processor>
-        <eventType>Received</eventType>
+        <eventType>ArchiveConfirmed</eventType>
         <receivedDate>2001-12-17T09:31:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
         <statusCode>Accepted</statusCode>

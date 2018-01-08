@@ -138,15 +138,15 @@
 			<class
 				name="com.shutterfly.missioncontrol.redelivery.EdmsuiTransactionalExternalPrintReady" />
 			<class
-				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalPrintReady" />
+				name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalExternalPrintReady" />
 			<class
-				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalInlineDataOnly" />
+				name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalInlineDataOnly" />
 			<class
-				name="com.shutterfly.missioncontrol.postarchive.PostArchiveTransactionalExternalDataOnly" />
+				name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalExternalDataOnly" />
 			<class
-				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkDataOnly" />
+				name="com.shutterfly.missioncontrol.postforarchive.PostArchiveBulkDataOnly" />
 			<class
-				name="com.shutterfly.missioncontrol.postarchive.PostArchiveBulkPrintReady" />
+				name="com.shutterfly.missioncontrol.postforarchive.PostArchiveBulkPrintReady" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

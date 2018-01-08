@@ -42,19 +42,18 @@ public class BulkDataOnly extends ConfigLoader {
     URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
-
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_BDO_XML")
+  @Test(groups = "Process_BDO_Response")
   private void getResponse() throws IOException, InterruptedException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        "bulkfile_all_valid.xml");
+        AppConstants.BULK_FILE);
 
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
@@ -71,7 +70,7 @@ public class BulkDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_BDO_XML"})
+  @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
@@ -79,5 +78,4 @@ public class BulkDataOnly extends ConfigLoader {
             AppConstants.PROCESS);
   }
 
-  ;
 }

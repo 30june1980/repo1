@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.shutterfly.missioncontrol.postarchive;
+package com.shutterfly.missioncontrol.postforarchive;
 
 import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
@@ -57,13 +57,13 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_POABDO_XML", dependsOnGroups = {"Test_PABDO_XML"})
+  @Test(groups = "PostForArchive_BDO_Response", dependsOnGroups = {"Archive_BDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     record = record + "_PostArchive";
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record, "bulkfile_all_valid.xml");
+        record, AppConstants.BULK_FILE_FOR_ARCHIVE);
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
@@ -78,7 +78,7 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_POABDO_XML"})
+  @Test(groups = "PostForArchive_BDO_DB", dependsOnGroups = {"PostForArchive_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

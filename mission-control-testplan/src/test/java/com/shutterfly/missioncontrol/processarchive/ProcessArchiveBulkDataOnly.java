@@ -50,13 +50,13 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PABDO_XML", dependsOnGroups = {"Test_PBDO_XML"})
+  @Test(groups = "Archive_BDO_Response", dependsOnGroups = {"Post_BDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     record = record + "_Archive";
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record, "bulkfile_all_valid.xml");
+        record, AppConstants.BULK_FILE);
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
@@ -71,7 +71,7 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PABDO_XML"})
+  @Test(groups = "Archive_BDO_DB", dependsOnGroups = {"Archive_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     record = record.replace("_Archive", "");
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();

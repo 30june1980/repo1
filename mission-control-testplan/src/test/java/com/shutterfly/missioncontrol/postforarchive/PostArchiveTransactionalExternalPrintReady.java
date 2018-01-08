@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.shutterfly.missioncontrol.postarchive;
+package com.shutterfly.missioncontrol.postforarchive;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
@@ -24,7 +24,7 @@ import io.restassured.response.Response;
 /**
  * @author dgupta
  */
-public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
+public class PostArchiveTransactionalExternalPrintReady extends ConfigLoader {
 
   /**
    *
@@ -42,9 +42,9 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/PostArchive/PostArchiveTransactionalInlineDataOnly.xml");
+        .getResource("XMLPayload/PostArchive/PostArchiveTransactionalExternalPrintReady.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("TIDO");
+    record = cwr.getRequestIdByKeys("TEPR");
 
     return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
@@ -53,7 +53,7 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_POATIDO_XML")
+  @Test(groups = "Test_POATEPR_XML", dependsOnGroups = {"Test_PATEPR_XML"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -66,12 +66,13 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
 
   }
 
-
-  @Test(groups = "database", dependsOnGroups = {"Test_POATIDO_XML"})
+  @Test(groups = "database", dependsOnGroups = {"Test_POATEPR_XML"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
   }
+
+
 }

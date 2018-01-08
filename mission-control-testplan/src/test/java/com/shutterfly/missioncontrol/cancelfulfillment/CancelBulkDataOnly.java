@@ -54,7 +54,7 @@ public class CancelBulkDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CBDO_XML", dependsOnGroups = { "Test_POABDO_XML" })
+  @Test(groups = "Cancel_BDO_Response", dependsOnGroups = { "PostForArchive_BDO_DB" })
   private void getResponse() throws IOException {
     basicConfigNonWeb();
 
@@ -73,7 +73,7 @@ public class CancelBulkDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CBDO_XML"})
+  @Test(groups = "Cancel_BDO_DB", dependsOnGroups = {"Cancel_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,

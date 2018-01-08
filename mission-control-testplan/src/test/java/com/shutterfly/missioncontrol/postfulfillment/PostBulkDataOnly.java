@@ -52,24 +52,24 @@ public class PostBulkDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PBDO_XML", dependsOnGroups = {"Test_BDO_XML"})
+  @Test(groups = "Post_BDO_Response", dependsOnGroups = {"Process_BDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     record = record + "_Post";
 
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        "bulkfile_all_valid.xml");
+        AppConstants.BULK_FILE);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
-        "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PBDO_XML"})
+  @Test(groups = "Post_BDO_DB", dependsOnGroups = {"Post_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     record = record.replace("_Post", "");
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();

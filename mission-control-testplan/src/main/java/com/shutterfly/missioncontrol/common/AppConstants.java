@@ -16,5 +16,13 @@ public class AppConstants {
   public static final String POST_STATUS = "PostStatus";
   public static final String PROCESS = "Process";
   public static final String ARCHIVE = "Archive";
+  public static final String STATUS_ACK = "StatusAck";
+
+  public static final String BULK_FILE = "bulkfile_all_valid.xml";
+  public static final String BULK_FILE_FOR_CANCEL = "bulkfile_all_valid_cancel.xml";
+  public static final String BULK_FILE_FOR_ARCHIVE = "bulkfile_all_valid_archive.xml";
+  public static final String BULK_FILE_INVALID = "bulkfile_invalid.xml";
+
+
 
 }

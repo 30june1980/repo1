@@ -47,14 +47,14 @@ public class PostBulkDataOnlyForCancel extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CPBDO_XML")
+  @Test(groups = "PostForCancel_BDO_Response", dependsOnGroups = {"Cancel_BDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     record = record + AppConstants.POST_FOR_CANCEL_SUFFIX;
 
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        "bulkfile_all_valid.xml");
+        AppConstants.BULK_FILE_FOR_CANCEL);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -62,11 +62,10 @@ public class PostBulkDataOnlyForCancel extends ConfigLoader {
     response.then().body(
         "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
-
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CPBDO_XML"})
+  @Test(groups = "PostForCancel_BDO_DB", dependsOnGroups = {"PostForCancel_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     record = record.replace(AppConstants.POST_FOR_CANCEL_SUFFIX, "");

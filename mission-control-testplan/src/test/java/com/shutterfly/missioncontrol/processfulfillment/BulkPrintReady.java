@@ -48,7 +48,7 @@ public class BulkPrintReady extends ConfigLoader {
     URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-    return payload = payload.replaceAll("REQUEST_101", record)
+    return payload.replaceAll("REQUEST_101", record)
         .replaceAll("bulkfile_all_valid.xml", (record + ".xml"));
 
   }
@@ -62,7 +62,7 @@ public class BulkPrintReady extends ConfigLoader {
     String payload = this.buildPayload();
 
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record, "bulkfile_all_valid.xml");
+        record, AppConstants.BULK_FILE);
 
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()

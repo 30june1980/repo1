@@ -60,7 +60,7 @@ public class PostBulkPrintReady extends ConfigLoader {
     record = record + "_Post";
 
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        "bulkfile_all_valid.xml");
+        AppConstants.BULK_FILE);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());

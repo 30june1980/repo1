@@ -56,7 +56,7 @@ public class ProcessArchiveTransactionalExternalPrintReady extends ConfigLoader 
 		basicConfigNonWeb();
 		String payload = this.buildPayload();
 		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-				record, "bulkfile_all_valid.xml");
+				record, AppConstants.BULK_FILE);
 
 		EncoderConfig encoderconfig = new EncoderConfig();
 		Response response = given()

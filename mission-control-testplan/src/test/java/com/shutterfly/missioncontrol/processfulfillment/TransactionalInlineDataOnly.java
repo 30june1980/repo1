@@ -46,7 +46,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     URL file = Resources
         .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    return payload = payload.replaceAll("REQUEST_101", record);
+    return payload.replaceAll("REQUEST_101", record);
   }
 
   @Test(groups = "Test_TIDO_XML")

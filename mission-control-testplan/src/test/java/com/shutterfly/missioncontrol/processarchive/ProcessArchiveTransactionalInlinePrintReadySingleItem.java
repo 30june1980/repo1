@@ -61,7 +61,7 @@ public class ProcessArchiveTransactionalInlinePrintReadySingleItem extends Confi
     EncoderConfig encoderconfig = new EncoderConfig();
     String payload = this.buildPayload();
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        "bulkfile_all_valid.xml");
+        AppConstants.BULK_FILE);
 
     Response response = given()
         .config(RestAssured.config()

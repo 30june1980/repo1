@@ -66,7 +66,7 @@ public class EdmsuiTransactionalExternalPrintReady extends ConfigLoader {
 		 * store target file path
 		 */
 		EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-				record, "bulkfile_all_valid.xml");
+				record, AppConstants.BULK_FILE);
 
 		/*
 		 * remove charset from content type using encoder config
