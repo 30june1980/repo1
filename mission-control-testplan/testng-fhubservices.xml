@@ -12,20 +12,6 @@
 			<class
 				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalDataOnly" />
 			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnly" />
-			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly" />
-			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadySingleItem" />
-			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalPrintReady" />
-			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadyMultItem" />
-			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReady" />
-			<class
-				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalDataOnly" />
-			<class
 				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnlyBatchable" />
 			<class
 				name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnly" />
@@ -121,8 +107,7 @@
 				name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkDataOnly" />
 			<class
 				name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkPrintReady" />
-			<!-- <class name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlinePrintReadySingleItem" 
-				/> -->
+
 			<class
 				name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalPrintReady" />
 			<class
