@@ -69,6 +69,13 @@ public class XlSheetUtils {
     return excelDataToMap;
   }
 
+  /**
+   *
+   * @param fileName excel workbook
+   * @param noOfSheetsWithSameInputDataSchema number of sheets to read into list of map, sheet number starts with 1
+   * @return list of map
+   * @throws IOException
+   */
   public List<Map<Object, List<Object>>> readXlWorkBookInListOfMap(String fileName,
       int noOfSheetsWithSameInputDataSchema)
       throws IOException {
@@ -77,7 +84,7 @@ public class XlSheetUtils {
     if (noOfSheetsWithSameInputDataSchema > totalNumberOfSheets
         || noOfSheetsWithSameInputDataSchema <= 0) {
       logger.warn("Invalid noOfSheetsWithSameInputDataSchema provided, setting it to zero");
-      this.noOfSheetsWithSameInputDataSchema = 1;
+      this.noOfSheetsWithSameInputDataSchema = this.totalNumberOfSheets;
     }
 
     for (int i = 0; i < noOfSheetsWithSameInputDataSchema; i++) {
@@ -87,17 +94,32 @@ public class XlSheetUtils {
     return list;
   }
 
+  /**
+   *
+   * @param fileName
+   * @return list of map, map corresponding to excel sheet and list will have whole workbook
+   * @throws IOException
+   * will read the whole excel work book
+   */
+
   public List<Map<Object, List<Object>>> readXlWorkBookInListOfMap(String fileName)
       throws IOException {
-    return this.readXlWorkBookInListOfMap(fileName, 1);
+    return this.readXlWorkBookInListOfMap(fileName, 0);
   }
 
+  /**
+   * reads a specific sheet number  into map , if wrong sheet number is given then it reads sheet number 1
+   * @param fileName
+   * @param sheetNumberToReadFrom sheet number should start from 1
+   * @return
+   * @throws IOException
+   */
   public Map<Object, List<Object>> readSpecificSheetNumber(String fileName,
       int sheetNumberToReadFrom)
       throws IOException {
     this.totalNumberOfSheets = this.assignWbAndFindNUmberOfSheets(fileName);
     --sheetNumberToReadFrom;
-    if (sheetNumberToReadFrom > totalNumberOfSheets) {
+    if (sheetNumberToReadFrom > totalNumberOfSheets || sheetNumberToReadFrom<0) {
       logger.warn("Invalid noOfSheetsWithSameInputDataSchema provided, setting it to zero");
       sheetNumberToReadFrom = 0;
     }
@@ -139,6 +161,11 @@ public class XlSheetUtils {
     }
   }
 
+  /**
+   * checks if file exists and not directory
+   * @param file
+   * @return
+   */
   public boolean checkIfFileExistsAndNotDir(File file) {
     boolean checkIfFileExistsAndNotDir;
     checkIfFileExistsAndNotDir = (file.exists() && !file.isDirectory()) ? true : false;
