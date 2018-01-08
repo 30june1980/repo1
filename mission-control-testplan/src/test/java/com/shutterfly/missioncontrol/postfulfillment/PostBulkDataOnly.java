@@ -47,7 +47,7 @@ public class PostBulkDataOnly extends ConfigLoader {
     record = cwr.getRequestIdByKeys("BDO");
 
     return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-        (record + "_Post.xml"));
+        (record + AppConstants.POST_SUFFIX + ".xml"));
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
@@ -56,7 +56,7 @@ public class PostBulkDataOnly extends ConfigLoader {
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
-    record = record + "_Post";
+    record = record + AppConstants.POST_SUFFIX;
 
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
         AppConstants.BULK_FILE);
@@ -71,7 +71,7 @@ public class PostBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_BDO_DB", dependsOnGroups = {"Post_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    record = record.replace("_Post", "");
+    record = record.replace(AppConstants.POST_SUFFIX, "");
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
