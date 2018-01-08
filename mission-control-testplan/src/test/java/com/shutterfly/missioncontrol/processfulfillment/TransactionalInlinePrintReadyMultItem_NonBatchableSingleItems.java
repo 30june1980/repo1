@@ -80,7 +80,7 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
             AppConstants.PROCESS);
   }
 
-  @Test(dependsOnGroups = {"Test_DB_MultItem_NBSI"})
+  @Test(dependsOnGroups = {"Process_TIPRMI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
