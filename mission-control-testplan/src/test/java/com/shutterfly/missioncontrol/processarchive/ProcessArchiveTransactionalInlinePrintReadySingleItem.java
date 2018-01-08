@@ -54,7 +54,7 @@ public class ProcessArchiveTransactionalInlinePrintReadySingleItem extends Confi
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PATIPRSI_XML")
+  @Test(groups = "Archive_TIPRSI_Response", dependsOnGroups = {"Post_TIPRSI_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
 
@@ -78,7 +78,7 @@ public class ProcessArchiveTransactionalInlinePrintReadySingleItem extends Confi
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PATIPRSI_XML"})
+  @Test(groups = "Archive_TIPRSI_DB", dependsOnGroups = {"Archive_TIPRSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

@@ -55,7 +55,7 @@ public class PostTransactionalInlinePrintReadySingleItem extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PTIPRSI_XML")
+  @Test(groups = "Post_TIPRSI_Response", dependsOnGroups = {"Process_TIPRSI_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -72,11 +72,11 @@ public class PostTransactionalInlinePrintReadySingleItem extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PTIPRSI_XML"})
+  @Test(groups = "Post_TIPRSI_DB", dependsOnGroups = {"Post_TIPRSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.REQUEST_UPDATED_TO_DB,
             AppConstants.POST_STATUS);
   }
 }

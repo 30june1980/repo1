@@ -11,6 +11,7 @@ public class AppConstants {
   public static final String ACCEPTED_BY_SUPPLIER = "AcceptedBySupplier";
   public static final String ACCEPTED_BY_REQUESTOR = "AcceptedByRequestor";
   public static final String ACCEPTED_BY_ARCHIVAL_SYSTEM = "AcceptedByArchivalSystem";
+  public static final String REQUEST_UPDATED_TO_DB = "RequestUpdatedToDB";
 
   public static final String CANCEL = "Cancel";
   public static final String POST_STATUS = "PostStatus";
@@ -22,7 +23,6 @@ public class AppConstants {
   public static final String BULK_FILE_FOR_CANCEL = "bulkfile_all_valid_cancel.xml";
   public static final String BULK_FILE_FOR_ARCHIVE = "bulkfile_all_valid_archive.xml";
   public static final String BULK_FILE_INVALID = "bulkfile_invalid.xml";
-
 
 
 }

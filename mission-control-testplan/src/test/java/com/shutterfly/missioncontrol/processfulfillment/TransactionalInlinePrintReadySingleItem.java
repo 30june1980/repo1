@@ -47,7 +47,8 @@ public class TransactionalInlinePrintReadySingleItem extends ConfigLoader {
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/ProcessFulfillment/TransactionalInlinePrintReadySingleItem.xml");
+        .getResource(
+            "XMLPayload/ProcessFulfillment/TransactionalInlinePrintReadySingleItem_NonBatchable.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
 
     return payload = payload.replaceAll("REQUEST_101", record);
@@ -56,7 +57,7 @@ public class TransactionalInlinePrintReadySingleItem extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_TIPRSI_XML")
+  @Test(groups = "Process_TIPRSI_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -75,10 +76,11 @@ public class TransactionalInlinePrintReadySingleItem extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_TIPRSI_XML"})
+  @Test(groups = "Process_TIPRSI_DB", dependsOnGroups = {"Process_TIPRSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, "RequestBatched", AppConstants.PROCESS);
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.PROCESS);
   }
 }

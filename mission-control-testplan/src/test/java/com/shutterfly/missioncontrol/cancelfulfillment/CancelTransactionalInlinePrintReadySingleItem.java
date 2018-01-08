@@ -53,7 +53,7 @@ public class CancelTransactionalInlinePrintReadySingleItem extends ConfigLoader 
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTIPRSI_XML")
+  @Test(groups = "Cancel_TIPRSI_Response", dependsOnGroups = {"PostForArchive_TIPRSI_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -67,10 +67,11 @@ public class CancelTransactionalInlinePrintReadySingleItem extends ConfigLoader 
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CTIPRSI_XML"})
+  @Test(groups = "Cancel_TIPRSI_DB", dependsOnGroups = {"Cancel_TIPRSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil.validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
-        AppConstants.CANCEL);
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
   }
 }

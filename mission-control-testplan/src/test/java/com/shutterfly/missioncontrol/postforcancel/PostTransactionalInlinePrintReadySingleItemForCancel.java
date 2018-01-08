@@ -39,15 +39,14 @@ public class PostTransactionalInlinePrintReadySingleItemForCancel extends Config
         .getResource(
             "XMLPayload/PostForCancel/PostTransactionalInlinePrintReadySingleItemForCancel.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("TIPRMI_NBSI");
-    record = record + "_2";
+    record = cwr.getRequestIdByKeys("TIPRSI");
     return payload = payload.replaceAll("REQUEST_101", record);
 
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CPTIPRSI_XML")
+  @Test(groups = "PostForCancel_TIPRSI_Response", dependsOnGroups = {"Cancel_TIPRSI_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -57,15 +56,14 @@ public class PostTransactionalInlinePrintReadySingleItemForCancel extends Config
     response.then().body(
         "ackacknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
-
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CPTIPRSI_XML"})
+  @Test(groups = "PostForCancel_TIPRSI_DB", dependsOnGroups = {"PostForCancel_TIPRSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, "RequestUpdatedToDB",
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.REQUEST_UPDATED_TO_DB,
             AppConstants.POST_STATUS);
   }
 }
