@@ -2,6 +2,7 @@ package com.shutterfly.missioncontrolportal.Utils;
 
 import com.shutterfly.missioncontrol.util.Encryption;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
+import com.shutterfly.missioncontrolportal.pageobject.PortalPage;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -58,10 +59,19 @@ public class PageUtils {
         loginPage.login(url, userName, password);
     }
 
+    public static void logout(@Nonnull PortalPage portalPage) {
+        portalPage.clickOnLogout();
+    }
+
     public static void waitForLoadingToComplete(WebDriver driver, WebElement loader) {
         WebDriverWait wait = new WebDriverWait(driver, 10000L);
         wait.until(ExpectedConditions.visibilityOf(loader));
         wait.until(ExpectedConditions.invisibilityOf(loader));
+    }
+
+    public static WebElement waitUntilVisibilityIsLocated(WebDriver driver, WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, 10000L);
+        return wait.until(ExpectedConditions.visibilityOf(element));
     }
 
 }

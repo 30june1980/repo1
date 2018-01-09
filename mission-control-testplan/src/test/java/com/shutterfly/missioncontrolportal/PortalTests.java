@@ -12,28 +12,28 @@ import org.testng.annotations.Test;
 public class PortalTests extends ConfigLoaderWeb {
 
     private String portalUrl;
+    private String loginPageUrl;
+    private String userName;
     private PortalPage portalPage;
 
     @BeforeClass
-    public void loginTest() {
+    public void setup() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
-        PageUtils.login(loginPage, config);
-        Assert.assertEquals("FulfillmenthubWeb", driver.getTitle()); // login test
-
-        portalUrl = config.getProperty("QaPortalUrl");
         portalPage = PageFactory.initElements(driver, PortalPage.class);
+        userName = config.getProperty("QaPortalUserName");
+        portalUrl = config.getProperty("QaPortalUrl");
+        loginPageUrl = config.getProperty("QaPortalLoginUrl");
+
+        PageUtils.login(loginPage, config);
+
+        Assert.assertEquals("FulfillmenthubWeb", driver.getTitle()); // login test
+        Assert.assertTrue(portalPage.getUserName().contains(userName.toLowerCase()));
     }
 
     @Test
     public void headerTest() {
-        String userName = config.getProperty("QaPortalUserName");
-        if (userName == null) {
-            throw new RuntimeException("QaPortalUserName property not found");
-        }
-
         driver.get(portalUrl);
         Assert.assertTrue(portalPage.isUhcLogoPresent());
-        Assert.assertTrue(portalPage.getUserName().contains(userName.toLowerCase()));
     }
 
     @Test
@@ -42,4 +42,9 @@ public class PortalTests extends ConfigLoaderWeb {
         Assert.assertTrue(portalPage.getFooterLbl().contains("unitedhealth"));
     }
 
+    @Test
+    public void logoutTest() {
+        PageUtils.logout(portalPage);
+        Assert.assertEquals(loginPageUrl, driver.getCurrentUrl());
+    }
 }

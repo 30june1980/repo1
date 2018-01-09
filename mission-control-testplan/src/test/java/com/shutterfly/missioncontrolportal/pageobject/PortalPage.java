@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,19 +43,22 @@ public class PortalPage {
 
     private WebElement searchResultCountLbl;
 
-    private WebDriverWait wait;
-
+    private WebElement logoutLbl;
 
     public PortalPage(WebDriver edriver) {
         this.driver = edriver;
-        wait = new WebDriverWait(driver, 20);
     }
 
     public String getUserName() {
         if (PageUtils.isWebElementPresent(activeUserNameLbl)) {
-            return activeUserNameLbl.getText().toLowerCase();
+            return activeUserNameLbl.getText();
         }
         throw new RuntimeException("Active user name not found on the page");
+    }
+
+    public WebElement getActiveUserNameLbl() {
+        activeUserNameLbl = driver.findElement(By.xpath("//ul/div/div[1]/div/a"));
+        return activeUserNameLbl;
     }
 
     public List<String> getTabLblList() {
@@ -74,7 +76,13 @@ public class PortalPage {
     }
 
     private WebElement getLoader() {
-        return driver.findElement(By.xpath("//div[@class='loader']"));
+        loader = driver.findElement(By.xpath("//div[@class='loader']"));
+        return loader;
+    }
+
+    private WebElement getLogoutLbl() {
+        logoutLbl = driver.findElement(By.xpath("//a[text()='Logout']"));
+        return logoutLbl;
     }
 
     public boolean isUhcLogoPresent() {
@@ -92,13 +100,22 @@ public class PortalPage {
     public void clickSubmitBtn() {
         if (PageUtils.isWebElementPresent(submitBtn)) {
             submitBtn.click();
+            PageUtils.waitForLoadingToComplete(driver, getLoader());
             return;
         }
         throw new RuntimeException("Submit button not found on the page");
     }
 
+    public void clickOnLogout() {
+        if (PageUtils.isWebElementPresent(getActiveUserNameLbl())) {
+            activeUserNameLbl.click();
+            getLogoutLbl().click();
+            return;
+        }
+        throw new RuntimeException("Logout button not found on the page");
+    }
+
     public boolean areSearchResultsVisible() {
-        PageUtils.waitForLoadingToComplete(driver, getLoader());
         searchResultCountLbl = driver.findElement(By.cssSelector("h4 > div > div:nth-child(1)"));
         return PageUtils.isWebElementPresent(searchResultCountLbl);
     }
