@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,12 +40,16 @@ public class PortalPage {
     @CacheLookup
     private WebElement submitBtn;
 
+    private WebElement loader;
+
+    private WebElement searchResultCountLbl;
+
+    private WebDriverWait wait;
+
+
     public PortalPage(WebDriver edriver) {
         this.driver = edriver;
-    }
-
-    public boolean isUhcLogoPresent() {
-        return PageUtils.isWebElementPresent(uhcLogoImg);
+        wait = new WebDriverWait(driver, 20);
     }
 
     public String getUserName() {
@@ -68,6 +73,14 @@ public class PortalPage {
         throw new RuntimeException("Footer not found on the page");
     }
 
+    private WebElement getLoader() {
+        return driver.findElement(By.xpath("//div[@class='loader']"));
+    }
+
+    public boolean isUhcLogoPresent() {
+        return PageUtils.isWebElementPresent(uhcLogoImg);
+    }
+
     public void setRequestIdTxt(String requestId) {
         if (PageUtils.isWebElementPresent(requestIdTxt)) {
             requestIdTxt.sendKeys(requestId);
@@ -85,8 +98,9 @@ public class PortalPage {
     }
 
     public boolean areSearchResultsVisible() {
-        WebElement searchResultCount = driver.findElement(By.cssSelector("h4 > div > div:nth-child(1)"));
-        return PageUtils.isWebElementPresent(searchResultCount);
+        PageUtils.waitForLoadingToComplete(driver, getLoader());
+        searchResultCountLbl = driver.findElement(By.cssSelector("h4 > div > div:nth-child(1)"));
+        return PageUtils.isWebElementPresent(searchResultCountLbl);
     }
 
 }
