@@ -106,6 +106,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
     JSch jsch = new JSch();
     Session session = null;
+    File tempFile = null;
     try {
       session = jsch.getSession("auto-mc", "tmvitdmz01-lv.dmz.lab.shutterfly.com", 22);
       session.setConfig("StrictHostKeyChecking", "no");
@@ -117,7 +118,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
       ChannelSftp sftpChannel = (ChannelSftp) channel;
 
       Path sourcePath = Paths.get(LOCAL_PATH + externalFilename);
-      File tempFile = new File(record);
+      tempFile = new File(record);
       Path tempFilePath = Files.copy(sourcePath, tempFile.toPath());
 
       //edit file content
@@ -133,6 +134,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
     } catch (JSchException | SftpException | IOException e) {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
+      tempFile.delete();
       if (session != null && session.isConnected()) {
         session.disconnect();
       }
