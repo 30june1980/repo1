@@ -51,7 +51,7 @@ public class PostBulkPrintReadyForCancel extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CPBPR_XML")
+  @Test(groups = "PostForCancel_BPR_Response", dependsOnGroups = {"Cancel_BPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -70,7 +70,7 @@ public class PostBulkPrintReadyForCancel extends ConfigLoader {
   }
 
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CPBPR_XML"})
+  @Test(groups = "PostForCancel_BPR_DB", dependsOnGroups = {"PostForCancel_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     record = record.replace(AppConstants.POST_FOR_CANCEL_SUFFIX, "");

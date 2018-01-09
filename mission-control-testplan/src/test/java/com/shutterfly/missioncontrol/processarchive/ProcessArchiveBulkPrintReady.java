@@ -44,13 +44,13 @@ public class ProcessArchiveBulkPrintReady extends ConfigLoader {
     URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveBulkPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("BPR");
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PABPR_XML")
+  @Test(groups = "Archive_BPR_Response", dependsOnGroups = {"Post_BPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -70,7 +70,7 @@ public class ProcessArchiveBulkPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PABPR_XML"})
+  @Test(groups = "Archive_BPR_DB", dependsOnGroups = {"Archive_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

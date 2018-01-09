@@ -44,7 +44,7 @@ public class CancelBulkPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CBPR_XML")
+  @Test(groups = "Cancel_BPR_Response", dependsOnGroups = {"PostForArchive_BPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -57,7 +57,7 @@ public class CancelBulkPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CBPR_XML"})
+  @Test(groups = "Cancel_BPR_DB", dependsOnGroups = {"Cancel_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

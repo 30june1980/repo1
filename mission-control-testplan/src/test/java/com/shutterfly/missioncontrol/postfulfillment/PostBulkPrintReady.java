@@ -44,7 +44,7 @@ public class PostBulkPrintReady extends ConfigLoader {
   private String buildPayload() throws IOException {
     URL file = Resources.getResource("XMLPayload/PostFulfillment/PostBulkPrintReady.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("BDO");
+    record = cwr.getRequestIdByKeys("BPR");
 
     return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + AppConstants.POST_SUFFIX + ".xml"));
@@ -53,14 +53,15 @@ public class PostBulkPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_PBPR_XML")
+  @Test(groups = "Post_BPR_Response", dependsOnGroups = {"Process_BPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     record = record + AppConstants.POST_SUFFIX;
 
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        AppConstants.BULK_FILE);
+    EcgFileSafeUtil
+        .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+            AppConstants.BULK_FILE);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -71,7 +72,7 @@ public class PostBulkPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_PBPR_XML"})
+  @Test(groups = "Post_BPR_DB", dependsOnGroups = {"Post_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     record = record.replace(AppConstants.POST_SUFFIX, "");
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
