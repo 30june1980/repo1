@@ -7,8 +7,8 @@
 
         <classes>
             <!-- Portal Test case classes  -->
-            <!--<class name="com.shutterfly.missioncontrolportal.PortalTests"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.TabTests"/>-->
+            <class name="com.shutterfly.missioncontrolportal.PortalTests"/>
+            <class name="com.shutterfly.missioncontrolportal.TabTests"/>
             <class name="com.shutterfly.missioncontrolportal.RequestTests"/>
         </classes>
 

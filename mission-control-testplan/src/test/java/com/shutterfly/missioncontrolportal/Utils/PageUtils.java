@@ -2,12 +2,11 @@ package com.shutterfly.missioncontrolportal.Utils;
 
 import com.shutterfly.missioncontrol.util.Encryption;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +14,6 @@ import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 
 public class PageUtils {
 
@@ -61,13 +58,10 @@ public class PageUtils {
         loginPage.login(url, userName, password);
     }
 
-    public static WebElement waitAndFindWebElement(final By locator, final WebDriver driver) {
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                .withTimeout(10, TimeUnit.SECONDS)
-                .pollingEvery(1, TimeUnit.SECONDS)
-                .ignoring(NoSuchElementException.class);
-
-        WebElement foo = wait.until(driver1 -> driver1.findElement(locator));
-        return foo;
+    public static void waitForLoadingToComplete(WebDriver driver, WebElement loader) {
+        WebDriverWait wait = new WebDriverWait(driver, 10000L);
+        wait.until(ExpectedConditions.visibilityOf(loader));
+        wait.until(ExpectedConditions.invisibilityOf(loader));
     }
+
 }
