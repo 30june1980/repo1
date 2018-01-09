@@ -31,9 +31,11 @@ public class PortalPage {
     @CacheLookup
     private WebElement footerLbl;
 
+    @FindBy(how = How.ID, using = "requestId")
     @CacheLookup
     private WebElement requestIdTxt;
 
+    @FindBy(how = How.ID, using = "smc_search")
     @CacheLookup
     private WebElement submitBtn;
 
@@ -67,7 +69,6 @@ public class PortalPage {
     }
 
     public void setRequestIdTxt(String requestId) {
-        requestIdTxt = PageUtils.waitAndFindWebElement(By.id("requestIdTxt"), driver);
         if (PageUtils.isWebElementPresent(requestIdTxt)) {
             requestIdTxt.sendKeys(requestId);
             return;
@@ -76,7 +77,6 @@ public class PortalPage {
     }
 
     public void clickSubmitBtn() {
-        submitBtn = PageUtils.waitAndFindWebElement(By.id("smc_search"), driver);
         if (PageUtils.isWebElementPresent(submitBtn)) {
             submitBtn.click();
             return;
