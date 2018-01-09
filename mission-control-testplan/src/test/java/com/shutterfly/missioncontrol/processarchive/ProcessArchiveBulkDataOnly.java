@@ -44,8 +44,8 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
     URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveBulkDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("BDO");
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-        (record + "_Archive.xml"));
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+        (record + AppConstants.ARCHIVE_SUFFIX + ".xml"));
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
@@ -73,7 +73,7 @@ public class ProcessArchiveBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Archive_BDO_DB", dependsOnGroups = {"Archive_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    record = record.replace("_Archive", "");
+    record = record.replace(AppConstants.ARCHIVE_SUFFIX, "");
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_ARCHIVAL_SYSTEM,

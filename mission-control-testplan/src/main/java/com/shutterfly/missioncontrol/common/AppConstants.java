@@ -8,6 +8,7 @@ public class AppConstants {
   public static final String POST_FOR_CANCEL_SUFFIX = "_PostForCancel";
   public static final String POST_FOR_STATUS_ACK_SUFFIX = "_StatusAck";
   public static final String POST_SUFFIX = "_Post";
+  public static final String ARCHIVE_SUFFIX = "_Archive";
 
   public static final String ACCEPTED_BY_SUPPLIER = "AcceptedBySupplier";
   public static final String ACCEPTED_BY_REQUESTOR = "AcceptedByRequestor";
