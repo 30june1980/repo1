@@ -35,7 +35,7 @@
       <class
         name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems"/>
       <class name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReady"/>
-      <class name="com.shutterfly.missioncontrol.validation.TransactionalRequestDetailValidation"/>
+      <!--<class name="com.shutterfly.missioncontrol.validation.TransactionalRequestDetailValidation"/>-->
       <class name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly"/>
       <class name="com.shutterfly.missioncontrol.postfulfillment.PostBulkPrintReady"/>
       <class
@@ -111,7 +111,7 @@
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadyMultItem"/>
       <class name="com.shutterfly.missioncontrol.validation.FileSizeValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.BulkRequestDetailValidation"/>
+<!--      <class name="com.shutterfly.missioncontrol.validation.BulkRequestDetailValidation"/>-->
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolportal.PortalTests"/>
@@ -126,7 +126,7 @@
       <class name="com.shutterfly.missioncontrolportal.RequestTests"/>
       <class
         name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalPrintReady"/>
-      <class name="com.shutterfly.missioncontrolportal.LoginTest"/>
+      <!--<class name="com.shutterfly.missioncontrolportal.LoginTest"/>-->
       <class
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalInlinePrintReadySingleItemForCancel"/>
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>

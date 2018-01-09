@@ -53,7 +53,7 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Process_TIPRMI_Response")
+  @Test(groups = "Process_TIPRMI_NBSI_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -72,7 +72,7 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
   }
 
 
-  @Test(groups = "Process_TIPRMI_DB", dependsOnGroups = {"Process_TIPRMI_Response"})
+  @Test(groups = "Process_TIPRMI_NBSI_DB", dependsOnGroups = {"Process_TIPRMI_NBSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
@@ -80,7 +80,7 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
             AppConstants.PROCESS);
   }
 
-  @Test(dependsOnGroups = {"Process_TIPRMI_DB"})
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

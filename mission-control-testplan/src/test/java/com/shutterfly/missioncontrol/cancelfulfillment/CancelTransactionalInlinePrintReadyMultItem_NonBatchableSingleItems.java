@@ -50,7 +50,7 @@ public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_CTIPRMI_NBSI_XML")
+  @Test(groups = "Cancel_TIPRMI_NBSI_Response", dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -63,7 +63,7 @@ public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_CTIPRMI_NBSI_XML"})
+  @Test(groups = "Cancel_TIPRMI_NBSI_DB", dependsOnGroups = {"Cancel_TIPRMI_NBSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
@@ -71,7 +71,7 @@ public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems
             AppConstants.CANCEL);
   }
 
-  @Test(dependsOnGroups = {"Test_CTIPRMI_NBSI_XML"})
+  @Test(dependsOnGroups = {"Cancel_TIPRMI_NBSI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
