@@ -58,8 +58,9 @@ public class PostBulkDataOnly extends ConfigLoader {
     String payload = this.buildPayload();
     record = record + AppConstants.POST_SUFFIX;
 
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        AppConstants.BULK_FILE);
+    EcgFileSafeUtil
+        .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+            AppConstants.BULK_FILE);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());

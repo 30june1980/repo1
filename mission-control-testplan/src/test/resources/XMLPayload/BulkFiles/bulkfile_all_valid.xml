@@ -23,7 +23,7 @@
     <batchItemStatusDetail>
       <batchItemRequest>
         <requestHeader>
-          <requestID>REQUEST_101_1</requestID>
+          <requestID>VALID_REQUEST_101_1</requestID>
           <sourceID>CIRRUS</sourceID>
           <destinationID>SBS</destinationID>
           <requestDate>2017-09-15T09:30:47Z</requestDate>
@@ -175,7 +175,7 @@
     <batchItemStatusDetail>
       <batchItemRequest>
         <requestHeader>
-          <requestID>REQUEST_101_2</requestID>
+          <requestID>VALID_REQUEST_101_2</requestID>
           <sourceID>BRMS</sourceID>
           <destinationID>SBS</destinationID>
           <requestDate>2017-09-15T09:30:47Z</requestDate>
