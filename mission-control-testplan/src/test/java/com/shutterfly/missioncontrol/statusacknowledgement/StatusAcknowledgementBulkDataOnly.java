@@ -43,16 +43,16 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
   private String buildPayload() throws IOException {
     URL file = Resources.getResource("XMLPayload/PostFulfillment/PostBulkDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("BDO");
+    record = cwr.getRequestIdByKeys("BDO_SA");
 
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + "_StatusAck.xml"));
 
   }
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_SABDO_XML")
+  @Test(groups = "Post_StatusAck_BDO_Response", dependsOnGroups = {"Process_InvalidFile_BDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -70,7 +70,7 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_SABDO_XML"})
+  @Test(groups = "Post_StatusAck_BDO_DB", dependsOnGroups = {"Post_StatusAck_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     record = record.replace("_StatusAck", "");
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();

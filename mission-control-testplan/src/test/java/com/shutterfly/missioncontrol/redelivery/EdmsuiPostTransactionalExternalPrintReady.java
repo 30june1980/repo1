@@ -52,7 +52,7 @@ public class EdmsuiPostTransactionalExternalPrintReady extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Test_EUPTEPR_XML", dependsOnGroups = {"Test_EUTEPR_XML"})
+  @Test(groups = "Post_EUTEPR_Response", dependsOnGroups = {"Process_EUTEPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -65,7 +65,7 @@ public class EdmsuiPostTransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "database", dependsOnGroups = {"Test_EUPTEPR_XML"})
+  @Test(groups = "Post_EUTEPR_DB", dependsOnGroups = {"Post_EUTEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil

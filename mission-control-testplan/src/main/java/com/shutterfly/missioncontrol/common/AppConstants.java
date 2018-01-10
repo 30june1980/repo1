@@ -9,7 +9,7 @@ public class AppConstants {
   public static final String POST_FOR_STATUS_ACK_SUFFIX = "_StatusAck";
   public static final String POST_SUFFIX = "_Post";
   public static final String ARCHIVE_SUFFIX = "_Archive";
-
+  public static final String POST_FOR_ARCHIVE_SUFFIX ="_PostForArchive";
   public static final String ACCEPTED_BY_SUPPLIER = "AcceptedBySupplier";
   public static final String ACCEPTED_BY_REQUESTOR = "AcceptedByRequestor";
   public static final String ACCEPTED_BY_ARCHIVAL_SYSTEM = "AcceptedByArchivalSystem";

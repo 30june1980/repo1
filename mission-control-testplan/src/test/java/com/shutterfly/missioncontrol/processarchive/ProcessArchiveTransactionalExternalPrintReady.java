@@ -46,8 +46,8 @@ public class ProcessArchiveTransactionalExternalPrintReady extends ConfigLoader 
         .getResource("XMLPayload/ProcessArchive/ProcessArchiveTransactionalExternalPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("TEPR");
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-        (record + ".xml"));
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+        (record + AppConstants.ARCHIVE_SUFFIX + ".xml"));
 
   }
 
