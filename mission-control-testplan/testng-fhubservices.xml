@@ -33,6 +33,10 @@
       <class
         name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkDataOnly"/>
       <class
+        name="com.shutterfly.missioncontrol.statusacknowledgement.BulkDataOnlyForStatusAck"/>
+      <class
+        name="com.shutterfly.missioncontrol.statusacknowledgement.BulkPrintReadyForStatusAck"/>
+      <class
         name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems"/>
       <class name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReady"/>
       <!--<class name="com.shutterfly.missioncontrol.validation.TransactionalRequestDetailValidation"/>-->
@@ -62,7 +66,7 @@
       <class
         name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
-      <class name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReadyForStatusAck"/>
+      <class name="com.shutterfly.missioncontrol.statusacknowledgement.BulkPrintReadyForStatusAck"/>
       <class name="com.shutterfly.missioncontrol.validation.RequestTypeValidation"/>
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.AsyncFileDownloadController"/>
