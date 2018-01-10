@@ -1,5 +1,6 @@
 package com.shutterfly.missioncontrol.config;
 
+import com.google.common.io.Resources;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -36,7 +37,8 @@ public class ConfigLoaderWeb {
     private static final String geckoDriver = "webdriver.gecko.driver";
     private static final String ieDriver = "webdriver.ie.driver";
     private static final String nodeUrl = "nodeUrl";
-
+    private static final String testingScenariosXlPathProp="testingScenariosXlPath";
+    protected static String testingScenariosXlPath = null;
 
     /*
  *  To get basic configurations from property files
@@ -64,6 +66,7 @@ public class ConfigLoaderWeb {
         URL url;
         try {
             url = new URL(config.getProperty(nodeUrl));
+            testingScenariosXlPath=config.getProperty(testingScenariosXlPathProp);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Malformed URL specified in property file");
         }

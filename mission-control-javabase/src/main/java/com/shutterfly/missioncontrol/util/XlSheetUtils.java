@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,7 @@ public class XlSheetUtils {
 
   private Map<Object, List<Object>> readSheetFromXlFile(int readSheetNumber) throws IOException {
 
-    Map<Object, List<Object>> excelDataToMap = new HashMap<>(6);
+    Map<Object, List<Object>> excelDataToMap = new LinkedHashMap<>(6);
 
     Sheet sheet = wb.getSheetAt(readSheetNumber);
     Row row;
@@ -51,7 +53,7 @@ public class XlSheetUtils {
         isFirstRow = false;
         while (cellIterator.hasNext()) {
           cell = cellIterator.next();
-          excelDataToMap.put(getCellValue(cell), new ArrayList<>(10));
+          excelDataToMap.put(getCellValue(cell), new LinkedList<>());
 
         }
         excelDataToMapKeys = excelDataToMap.keySet().toArray();
