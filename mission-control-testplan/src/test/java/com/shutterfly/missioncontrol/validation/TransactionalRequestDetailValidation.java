@@ -26,7 +26,6 @@ import io.restassured.response.Response;
 /**
  * @author dgupta
  */
-@Ignore
 public class TransactionalRequestDetailValidation extends ConfigLoader {
 
   /**
