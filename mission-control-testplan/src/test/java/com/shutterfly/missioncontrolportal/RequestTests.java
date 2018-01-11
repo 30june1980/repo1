@@ -27,11 +27,47 @@ public class RequestTests extends ConfigLoaderWeb {
     }
 
     @Test
-    public void requestIdTest() {
+    public void searchTest() {
         driver.get(portalUrl);
         portalPage.setRequestIdTxt("1");
-        portalPage.clickSubmitBtn();
+        portalPage.clickOnSearchBtn();
         Assert.assertTrue(portalPage.areSearchResultsVisible());
+    }
+
+    @Test
+    public void paginationTest() {
+        searchTest();
+        int results = portalPage.getSearchResultCount();
+        int possiblePagesForPagination = (results / 20);
+
+        Assert.assertTrue(results > 0);
+        testPagination(possiblePagesForPagination, true);
+        testPagination(possiblePagesForPagination, false);
+    }
+
+    private void testPagination(int possiblePagesForPagination, boolean moveAhead) {
+        assertThatButtonIsNotClickable(moveAhead);
+
+        int count = 0;
+
+        while (count < possiblePagesForPagination) {
+            ++count;
+            if (moveAhead) {
+                portalPage.clickOnNextLbl();
+            } else {
+                portalPage.clickOnBackLbl();
+            }
+        }
+        Assert.assertEquals(count, possiblePagesForPagination);
+
+        assertThatButtonIsNotClickable(!moveAhead);
+    }
+
+
+    private void assertThatButtonIsNotClickable(boolean moveAhead) {
+        turnOffImplicitWaits(driver);
+        Assert.assertFalse(moveAhead ? portalPage.isPrevLblClickable() : portalPage.isNextLblClickable());
+        turnOnImplicitWaits(driver);
     }
 
 }

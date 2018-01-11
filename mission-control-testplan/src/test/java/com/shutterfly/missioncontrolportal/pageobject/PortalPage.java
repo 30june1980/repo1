@@ -2,9 +2,9 @@ package com.shutterfly.missioncontrolportal.pageobject;
 
 import com.shutterfly.missioncontrolportal.Utils.PageUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -13,111 +13,111 @@ import java.util.stream.Collectors;
 
 public class PortalPage {
 
+    private final String loaderXpath = "//div[@class='loader']";
+    private final String nextLblId = "smc-pagination_next";
+    private final String prevLblId = "smc-pagination_prev";
+
     private WebDriver driver;
-
     @FindBy(how = How.CSS, using = "img[alt='United Health Care logo']")
-    @CacheLookup
     private WebElement uhcLogoImg;
-
     @FindBy(how = How.XPATH, using = "//ul/div/div[1]/div/a")
-    @CacheLookup
     private WebElement activeUserNameLbl;
-
     @FindBy(how = How.CSS, using = "body > app-root > nav.nav.navbar.nav2 > div > ul > li")
-    @CacheLookup
     private List<WebElement> tabLblList;
-
     @FindBy(how = How.CSS, using = "body > app-root > div")
-    @CacheLookup
     private WebElement footerLbl;
-
     @FindBy(how = How.ID, using = "requestId")
-    @CacheLookup
     private WebElement requestIdTxt;
-
     @FindBy(how = How.ID, using = "smc_search")
-    @CacheLookup
-    private WebElement submitBtn;
-
-    private WebElement loader;
-
+    private WebElement searchBtn;
+    @FindBy(how = How.CSS, using = "h4 > div > div:nth-child(1)")
     private WebElement searchResultCountLbl;
-
+    @FindBy(how = How.XPATH, using = "//a[text()='Logout']")
     private WebElement logoutLbl;
 
     public PortalPage(WebDriver edriver) {
         this.driver = edriver;
     }
 
-    public String getUserName() {
-        if (PageUtils.isWebElementPresent(activeUserNameLbl)) {
-            return activeUserNameLbl.getText();
-        }
-        throw new RuntimeException("Active user name not found on the page");
-    }
-
-    public WebElement getActiveUserNameLbl() {
-        activeUserNameLbl = driver.findElement(By.xpath("//ul/div/div[1]/div/a"));
-        return activeUserNameLbl;
-    }
-
-    public List<String> getTabLblList() {
-        if (PageUtils.areWebElementsPresent(tabLblList)) {
-            return tabLblList.stream().map(x -> x.getText().trim()).collect(Collectors.toList());
-        }
-        throw new RuntimeException("One or more tabs not found on the page");
-    }
-
-    public String getFooterLbl() {
-        if (PageUtils.isWebElementPresent(footerLbl)) {
-            return footerLbl.getText().toLowerCase().trim();
-        }
-        throw new RuntimeException("Footer not found on the page");
-    }
-
     private WebElement getLoader() {
-        loader = driver.findElement(By.xpath("//div[@class='loader']"));
-        return loader;
+        return driver.findElement(By.xpath(loaderXpath));
     }
 
-    private WebElement getLogoutLbl() {
-        logoutLbl = driver.findElement(By.xpath("//a[text()='Logout']"));
-        return logoutLbl;
+    private WebElement getNextLbl() {
+        return driver.findElement(By.id(nextLblId));
     }
 
-    public boolean isUhcLogoPresent() {
-        return PageUtils.isWebElementPresent(uhcLogoImg);
+    private WebElement getPrevLbl() {
+        return driver.findElement(By.id(prevLblId));
     }
+
 
     public void setRequestIdTxt(String requestId) {
-        if (PageUtils.isWebElementPresent(requestIdTxt)) {
-            requestIdTxt.sendKeys(requestId);
-            return;
-        }
-        throw new RuntimeException("RequestId input not found on the page");
+        requestIdTxt.sendKeys(requestId);
     }
 
-    public void clickSubmitBtn() {
-        if (PageUtils.isWebElementPresent(submitBtn)) {
-            submitBtn.click();
-            PageUtils.waitForLoadingToComplete(driver, getLoader());
-            return;
-        }
-        throw new RuntimeException("Submit button not found on the page");
+    public void clickOnSearchBtn() {
+        searchBtn.click();
+        PageUtils.waitForLoadingToComplete(driver, getLoader());
+    }
+
+    public void clickOnNextLbl() {
+        getNextLbl().click();
+        PageUtils.waitForLoadingToComplete(driver, getLoader());
+    }
+
+    public void clickOnBackLbl() {
+        getPrevLbl().click();
+        PageUtils.waitForLoadingToComplete(driver, getLoader());
     }
 
     public void clickOnLogout() {
-        if (PageUtils.isWebElementPresent(getActiveUserNameLbl())) {
-            activeUserNameLbl.click();
-            getLogoutLbl().click();
-            return;
+        activeUserNameLbl.click();
+        logoutLbl.click();
+    }
+
+
+    public boolean isNextLblClickable() {
+        try {
+            getNextLbl().isDisplayed();
+            return true;
+        } catch (NoSuchElementException ne) {
+            return false;
         }
-        throw new RuntimeException("Logout button not found on the page");
+    }
+
+    public boolean isPrevLblClickable() {
+        try {
+            getPrevLbl().isDisplayed();
+            return true;
+        } catch (NoSuchElementException ne) {
+            return false;
+        }
     }
 
     public boolean areSearchResultsVisible() {
-        searchResultCountLbl = driver.findElement(By.cssSelector("h4 > div > div:nth-child(1)"));
-        return PageUtils.isWebElementPresent(searchResultCountLbl);
+        return searchResultCountLbl.isDisplayed();
     }
+
+    public int getSearchResultCount() {
+        return Integer.parseInt(searchResultCountLbl.getText().trim().split(" ")[0]);
+    }
+
+    public boolean isUhcLogoPresent() {
+        return uhcLogoImg.isDisplayed();
+    }
+
+    public List<String> getTabLblList() {
+        return tabLblList.stream().map(x -> x.getText().trim()).collect(Collectors.toList());
+    }
+
+    public String getFooter() {
+        return footerLbl.getText().toLowerCase().trim();
+    }
+
+    public String getUserName() {
+        return activeUserNameLbl.getText();
+    }
+
 
 }

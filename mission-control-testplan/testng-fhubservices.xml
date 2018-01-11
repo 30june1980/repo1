@@ -5,22 +5,22 @@
     <classes>
       <class name="com.shutterfly.missioncontrol.findfulfillmenthistory.FindFulfillmentHistory"/>
       <class name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalDataOnly"/>
-      <class name="com.shutterfly.missioncontrol.validation.IdQualifierValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.IdQualifierValidation"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.DomesticAndInternationalAddressPresent"/>
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.DomesticAndInternationalAddressPresent"/>
       <class
         name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkPrintReady"/>
-      <class name="com.shutterfly.missioncontrol.validation.MarketSegmentCodeValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.DeliveryMethod1Invalid"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.MarketSegmentCodeValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.DeliveryMethod1Invalid"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.DomesticAndInternationalReturnAddressPresent"/>
-      <class name="com.shutterfly.missioncontrol.validation.FulfillmentTypeValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.DeliveryMethod2Invalid"/>
-      <class name="com.shutterfly.missioncontrol.validation.SourceIdValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.DeliveryMethod1Validation"/>
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.DomesticAndInternationalReturnAddressPresent"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.FulfillmentTypeValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.DeliveryMethod2Invalid"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.SourceIdValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.DeliveryMethod1Validation"/>
       <class
         name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadyMultItem"/>
-      <class name="com.shutterfly.missioncontrol.validation.RequestDateValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestDateValidation"/>
       <class name="com.shutterfly.missioncontrolapi.DeadLetterControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.JobDetailsControllerTest"/>
       <class
@@ -28,8 +28,8 @@
       <class
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalInlineDataOnlyForCancel"/>
       <class name="com.shutterfly.missioncontrolapi.FederatedControllerTest"/>
-      <class name="com.shutterfly.missioncontrol.validation.RecipientIDValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.TemplateIDValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RecipientIDValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.TemplateIDValidation"/>
       <class
         name="com.shutterfly.missioncontrol.statusacknowledgement.StatusAcknowledgementBulkDataOnly"/>
       <class
@@ -39,13 +39,13 @@
       <class
         name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems"/>
       <class name="com.shutterfly.missioncontrol.processfulfillment.BulkPrintReady"/>
-      <class name="com.shutterfly.missioncontrol.validation.TransactionalRequestDetailValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.TransactionalRequestDetailValidation"/>
       <class name="com.shutterfly.missioncontrol.processfulfillment.BulkDataOnly"/>
       <class name="com.shutterfly.missioncontrol.postfulfillment.PostBulkPrintReady"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.DomesticAndInternationalReturnAddressMissing"/>
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.DomesticAndInternationalReturnAddressMissing"/>
       <class name="com.shutterfly.missioncontrolapi.FulfillmentMaterialTypeControllerTest"/>
-      <class name="com.shutterfly.missioncontrol.validation.OrganizationAndPersonPresent"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.OrganizationAndPersonPresent"/>
       <class name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkPrintReady"/>
       <class name="com.shutterfly.missioncontrolportal.TabTests"/>
       <class name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkDataOnly"/>
@@ -59,36 +59,36 @@
         name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlineDataOnly"/>
       <class
         name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadySingleItem"/>
-      <class name="com.shutterfly.missioncontrol.validation.RequestDetailValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestDetailValidation"/>
       <class name="com.shutterfly.missioncontrolapi.FulfillmentStatusTrackingControllerTest"/>
-      <class name="com.shutterfly.missioncontrol.validation.FileNameValidation"/>
-      <class name="com.shutterfly.missioncontrol.redelivery.EdmsuiTransactionalExternalPrintReady"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.FileNameValidation"/>
+      <class name="com.shutterfly.missioncontrol.redelivery.EdmsUiTransactionalExternalPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
       <class name="com.shutterfly.missioncontrol.statusacknowledgement.BulkPrintReadyForStatusAck"/>
-      <class name="com.shutterfly.missioncontrol.validation.RequestTypeValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestTypeValidation"/>
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.AsyncFileDownloadController"/>
       <class name="com.shutterfly.missioncontrol.postforarchive.PostArchiveBulkPrintReady"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.DomesticAndInternationalAddressMissing"/>
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.DomesticAndInternationalAddressMissing"/>
       <class
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalExternalDataOnlyForCancel"/>
       <class name="com.shutterfly.missioncontrolapi.ConstantsControllerTest"/>
-      <class name="com.shutterfly.missioncontrol.validation.InvalidRequestCategoryValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.InvalidRequestCategoryValidation"/>
       <class name="com.shutterfly.missioncontrolapi.AuthorizationControllerTest"/>
       <class name="com.shutterfly.missioncontrol.postfulfillment.PostBulkDataOnly"/>
-      <class name="com.shutterfly.missioncontrol.validation.RequestIdValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestIdValidation"/>
       <class name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalInlineDataOnly"/>
       <class
         name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnlyBatchable"/>
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkPrintReadyForCancel"/>
-      <class name="com.shutterfly.missioncontrol.validation.DataFormatValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.DataFormatValidation"/>
       <class
         name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems"/>
       <class name="com.shutterfly.missioncontrolapi.SendingRuleControllerTest"/>
-      <class name="com.shutterfly.missioncontrol.validation.RequestTrailerValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestTrailerValidation"/>
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionInlineDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.FileTransferDetailsControllerTest"/>
@@ -98,8 +98,8 @@
         name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalInlinePrintReadySingleItem"/>
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalPrintReady"/>
-      <class name="com.shutterfly.missioncontrol.validation.RecipientTypeValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.BusinessSegmentIdValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RecipientTypeValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.BusinessSegmentIdValidation"/>
       <class
         name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalInlinePrintReadySingleItem"/>
       <class name="com.shutterfly.missioncontrol.postforarchive.PostArchiveBulkDataOnly"/>
@@ -109,21 +109,21 @@
         name="com.shutterfly.missioncontrol.cancelfulfillment.CancelTransactionalExternalDataOnly"/>
       <class
         name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalExternalPrintReady"/>
-      <class name="com.shutterfly.missioncontrol.validation.RequestCategoryValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestCategoryValidation"/>
       <class name="com.shutterfly.missioncontrolapi.CustomerControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.RoutingRuleControllerTest"/>
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalInlinePrintReadyMultItem"/>
-      <class name="com.shutterfly.missioncontrol.validation.FileSizeValidation"/>
-      <class name="com.shutterfly.missioncontrol.validation.BulkRequestDetailValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.FileSizeValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.BulkRequestDetailValidation"/>
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolportal.PortalTests"/>
-      <class name="com.shutterfly.missioncontrol.validation.OrganizationAndPersonMissing"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.OrganizationAndPersonMissing"/>
       <class
         name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrol.processfulfillment.TransactionalInlineDataOnly"/>
-      <class name="com.shutterfly.missioncontrol.validation.InvalidRequestTypeValidation"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.InvalidRequestTypeValidation"/>
       <class
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalExternalPrintReadyForCancel"/>
       <class name="com.shutterfly.missioncontrolapi.SearchFieldMappingDocControllerTest"/>
@@ -135,8 +135,9 @@
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalInlinePrintReadySingleItemForCancel"/>
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
       <class
-        name="com.shutterfly.missioncontrol.redelivery.EdmsuiPostTransactionalExternalPrintReady"/>
+        name="com.shutterfly.missioncontrol.redelivery.EdmsUiPostTransactionalExternalPrintReady"/>
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
+      <class name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
