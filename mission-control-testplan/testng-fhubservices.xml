@@ -47,7 +47,7 @@
       <class name="com.shutterfly.missioncontrolapi.FulfillmentMaterialTypeControllerTest"/>
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.OrganizationAndPersonPresent"/>
       <class name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkPrintReady"/>
-      <class name="com.shutterfly.missioncontrolportal.TabTests"/>
+
       <class name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveBulkDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.FulfillmentTrackingControllerTest"/>
       <class
@@ -118,7 +118,7 @@
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.BulkRequestDetailValidation"/>
       <class
         name="com.shutterfly.missioncontrol.processarchive.ProcessArchiveTransactionalExternalDataOnly"/>
-      <class name="com.shutterfly.missioncontrolportal.PortalTests"/>
+
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.OrganizationAndPersonMissing"/>
       <class
         name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalExternalDataOnly"/>
@@ -127,10 +127,10 @@
       <class
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalExternalPrintReadyForCancel"/>
       <class name="com.shutterfly.missioncontrolapi.SearchFieldMappingDocControllerTest"/>
-      <class name="com.shutterfly.missioncontrolportal.RequestTests"/>
+
       <class
         name="com.shutterfly.missioncontrol.processfulfillment.TransactionalExternalPrintReady"/>
-      <!--<class name="com.shutterfly.missioncontrolportal.LoginTest"/>-->
+
       <class
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalInlinePrintReadySingleItemForCancel"/>
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
