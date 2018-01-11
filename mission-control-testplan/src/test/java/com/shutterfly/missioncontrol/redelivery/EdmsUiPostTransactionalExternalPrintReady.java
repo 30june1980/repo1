@@ -24,7 +24,7 @@ import io.restassured.response.Response;
 /**
  * @author dgupta
  */
-public class EdmsuiPostTransactionalExternalPrintReady extends ConfigLoader {
+public class EdmsUiPostTransactionalExternalPrintReady extends ConfigLoader {
 
   /**
    *
