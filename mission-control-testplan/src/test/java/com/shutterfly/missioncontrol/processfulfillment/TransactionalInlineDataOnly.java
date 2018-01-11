@@ -3,26 +3,23 @@
  */
 package com.shutterfly.missioncontrol.processfulfillment;
 
-import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
-
-import com.shutterfly.missioncontrol.common.AppConstants;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-
-import org.testng.annotations.Test;
+import static org.hamcrest.Matchers.equalTo;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+import org.testng.annotations.Test;
 
 /**
  * @author dgupta
