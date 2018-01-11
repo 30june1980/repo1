@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="1" name="Suite">
     <test name="Api-Test">
-        <parameter name="platform" value="linux"/>
+        <parameter name="platform" value="WIN10"/>
         <parameter name="browser" value="chrome"/>
 
         <classes>
