@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite thread-count="1" name="Suite">
+    <test name="Api-Test">
+        <parameter name="platform" value="linux"/>
+        <parameter name="browser" value="chrome"/>
+
+        <classes>
+            <!-- Portal Test case classes  -->
+            <class name="com.shutterfly.missioncontrolportal.LoginTest"/>
+            <class name="com.shutterfly.missioncontrolportal.PortalTests"/>
+            <class name="com.shutterfly.missioncontrolportal.TabTests"/>
+            <class name="com.shutterfly.missioncontrolportal.RequestTests"/>
+        </classes>
+
+    </test> <!-- Api-Test -->
+</suite> <!-- Suite -->

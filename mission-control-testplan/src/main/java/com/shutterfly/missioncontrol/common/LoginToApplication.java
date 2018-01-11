@@ -8,19 +8,18 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
-import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 import com.shutterfly.missioncontrol.config.CustomWebDriverWait;
 
 /**
  * @author Diptman Gupta
  *
  */
-public class LoginToApplication extends ConfigLoader {
+public class LoginToApplication extends ConfigLoaderWeb {
 
 	@Test
 	public void loginToUHCFulfillmentHub() {
 
-		basicConfigLoaderWeb();
 		driver.get(config.getProperty("ApplicationUrl"));
 		WebDriverWait wait = new CustomWebDriverWait().universalWait();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("userName"))).sendKeys("MC_DEV_OPS");

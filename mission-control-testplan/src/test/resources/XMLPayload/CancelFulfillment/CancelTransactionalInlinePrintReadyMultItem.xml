@@ -1,65 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sch:cancelFulfillmentRequest xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<sch:cancelFulfillmentRequest xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema"
+  xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-       <sch:cancelRequestHeader>
+  <sch:cancelRequestHeader>
 
-         <sch:requestID>REQUEST_101</sch:requestID>
+    <sch:requestID>REQUEST_101</sch:requestID>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:sourceID>ACET</sch:sourceID>
+    <sch:sourceID>ACET</sch:sourceID>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:destinationID>RRD</sch:destinationID>
+    <sch:destinationID>RRD</sch:destinationID>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
+    <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:requestType>Cancel</sch:requestType>
+    <sch:requestType>Cancel</sch:requestType>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:businessSegmentID>EI</sch:businessSegmentID>
+    <sch:businessSegmentID>EI</sch:businessSegmentID>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
+    <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:fulfillmentType>10200</sch:fulfillmentType>
+    <sch:fulfillmentType>10700</sch:fulfillmentType>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:requestCategory>CancelTransactionalInlinePrintReadyMultItem</sch:requestCategory>
+    <sch:requestCategory>TransactionalInlinePrintReadyMultItem</sch:requestCategory>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
+    <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:dataFormat>XML</sch:dataFormat>
+    <sch:dataFormat>XML</sch:dataFormat>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:requestorRefNo>REQ_REFNO_9876</sch:requestorRefNo>
+    <sch:requestorRefNo>REQ_REFNO_9876</sch:requestorRefNo>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:supplierRefNo>String</sch:supplierRefNo>
+    <sch:supplierRefNo>String</sch:supplierRefNo>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:bulkRequestHeaderID>String</sch:bulkRequestHeaderID>
+    <sch:bulkRequestHeaderID>String</sch:bulkRequestHeaderID>
 
-         <!--Optional:-->
+    <!--Optional:-->
 
-         <sch:docCompositionEngineID></sch:docCompositionEngineID>
+    <sch:docCompositionEngineID></sch:docCompositionEngineID>
 
-       </sch:cancelRequestHeader>
-   </sch:cancelFulfillmentRequest>
+  </sch:cancelRequestHeader>
+</sch:cancelFulfillmentRequest>
