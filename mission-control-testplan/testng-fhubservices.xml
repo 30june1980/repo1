@@ -62,7 +62,7 @@
       <class name="com.shutterfly.missioncontrol.validation.RequestDetailValidation"/>
       <class name="com.shutterfly.missioncontrolapi.FulfillmentStatusTrackingControllerTest"/>
       <class name="com.shutterfly.missioncontrol.validation.FileNameValidation"/>
-      <class name="com.shutterfly.missioncontrol.redelivery.EdmsuiTransactionalExternalPrintReady"/>
+      <class name="com.shutterfly.missioncontrol.redelivery.EdmsUiTransactionalExternalPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
@@ -135,7 +135,7 @@
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalInlinePrintReadySingleItemForCancel"/>
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
       <class
-        name="com.shutterfly.missioncontrol.redelivery.EdmsuiPostTransactionalExternalPrintReady"/>
+        name="com.shutterfly.missioncontrol.redelivery.EdmsUiPostTransactionalExternalPrintReady"/>
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
     </classes>
   </test> <!-- Test -->
