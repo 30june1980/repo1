@@ -7,20 +7,18 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.testng.annotations.Test;
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
-
+import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+import org.testng.annotations.Test;
 
 
 /**
@@ -33,7 +31,7 @@ public class TransactionalRequestDetailValidation extends ConfigLoader {
    */
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = Utils.getQARandomId();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -80,4 +78,5 @@ public class TransactionalRequestDetailValidation extends ConfigLoader {
             "If request category is 'TransactionalInlineDataOnly' or 'TransactionalExternalDataOnly' or 'TransactionalInlinePrintReady' or 'TransactionalExternalPrintReady' then RequestDetail must contain the TransactionalRequestDetail element only."));
 
   }
+
 }

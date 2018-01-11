@@ -25,6 +25,8 @@ public class AppConstants {
   public static final String BULK_FILE_FOR_CANCEL = "bulkfile_all_valid_cancel.xml";
   public static final String BULK_FILE_FOR_ARCHIVE = "bulkfile_all_valid_archive.xml";
   public static final String BULK_FILE_INVALID = "bulkfile_invalid.xml";
+  public static final String REQUEST_ID_PREPEND= "Test_qa_";
+  public static final String REJECTED="Rejected";
 
 
 }

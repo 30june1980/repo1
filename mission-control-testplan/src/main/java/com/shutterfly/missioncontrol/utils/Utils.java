@@ -1,5 +1,7 @@
 package com.shutterfly.missioncontrol.utils;
+import java.util.UUID;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.util.Encryption;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -17,5 +19,9 @@ public class Utils {
 
   public static SecretKey getSecretKey() {
     return Encryption.keyGenerator();
+  }
+
+  public static String getQARandomId(){
+    return AppConstants.REQUEST_ID_PREPEND.concat(String.valueOf(UUID.randomUUID()));
   }
 }
