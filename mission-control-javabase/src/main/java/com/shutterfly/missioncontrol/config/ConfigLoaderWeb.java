@@ -1,6 +1,6 @@
 package com.shutterfly.missioncontrol.config;
 
-import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +16,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,7 +38,7 @@ public class ConfigLoaderWeb {
     private static final String geckoDriver = "webdriver.gecko.driver";
     private static final String ieDriver = "webdriver.ie.driver";
     private static final String nodeUrl = "nodeUrl";
-    private static final String testingScenariosXlPathProp="testingScenariosXlPath";
+    private static final String testingScenariosXlPathProp = "testingScenariosXlPath";
     protected static String testingScenariosXlPath = null;
 
     /*
@@ -66,7 +67,7 @@ public class ConfigLoaderWeb {
         URL url;
         try {
             url = new URL(config.getProperty(nodeUrl));
-            testingScenariosXlPath=config.getProperty(testingScenariosXlPathProp);
+            testingScenariosXlPath = config.getProperty(testingScenariosXlPathProp);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Malformed URL specified in property file");
         }
@@ -123,7 +124,8 @@ public class ConfigLoaderWeb {
 
             default:
         }
-        driver.manage().timeouts().implicitlyWait(15000L, TimeUnit.SECONDS);
+
+        turnOnImplicitWaits(driver);
         driver.manage().window().maximize();
     }
 
@@ -133,4 +135,13 @@ public class ConfigLoaderWeb {
             driver.quit();
         }
     }
+
+    protected static void turnOnImplicitWaits(@Nonnull WebDriver driver) {
+        driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    protected static void turnOffImplicitWaits(@Nonnull WebDriver driver) {
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+    }
+
 }

@@ -1,16 +1,15 @@
 /**
  *
  */
-package com.shutterfly.missioncontrol.processfulfillment;
+package com.shutterfly.missioncontrol.validation.processfulfillment;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
@@ -21,14 +20,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.testng.annotations.Test;
 
+
 /**
  * @author dgupta
  */
-public class TransactionalInlineDataOnly extends ConfigLoader {
+public class TransactionalRequestDetailValidation extends ConfigLoader {
 
+  /**
+   *
+   */
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = Utils.getQARandomId();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -38,18 +41,18 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
+        .getResource("XMLPayload/Validation/TransactionalRequestDetailValidation.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    return payload.replaceAll("REQUEST_101", record);
+    return payload = payload.replaceAll("REQUEST_101", record);
+
   }
 
-  @Test(groups = "Process_TIDO_Response")
+  @Test
   private void getResponse() throws IOException {
     basicConfigNonWeb();
-    /*
-     * remove charset from content type using encoder config
-		 * 
-		 * build the payload
+
+		/*
+     * remove charset from content type using encoder config build the payload
 		 */
 
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -60,19 +63,20 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
         .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
         .body(this.buildPayload()).when().post(this.getProperties());
 
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    System.out.println(response.getBody().asString());
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-        equalTo("Accepted"));
-    CsvReaderWriter cwr = new CsvReaderWriter();
-    cwr.writeToCsv("TIDO", record);
+        equalTo("Rejected"));
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+        equalTo("18409"));
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
+        equalTo(
+            "If request category is 'TransactionalInlineDataOnly' or 'TransactionalExternalDataOnly' or 'TransactionalInlinePrintReady' or 'TransactionalExternalPrintReady' then RequestDetail must contain the TransactionalRequestDetail element only."));
 
   }
 
-  @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
-            AppConstants.PROCESS);
-  }
 }

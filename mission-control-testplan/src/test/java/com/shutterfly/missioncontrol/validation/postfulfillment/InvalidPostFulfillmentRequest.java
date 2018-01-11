@@ -1,7 +1,4 @@
-/**
- *
- */
-package com.shutterfly.missioncontrol.postfulfillment;
+package com.shutterfly.missioncontrol.validation.postfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
@@ -16,23 +13,13 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import org.bson.Document;
 import org.testng.annotations.Test;
 
-/**
- * @author dgupta
- */
-public class PostTransactionalInlineDataOnly extends ConfigLoader {
+public class InvalidPostFulfillmentRequest extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
-  DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -43,7 +30,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
+        .getResource("XMLPayload/Validation/InvalidPostTransactionalInlineDataOnly.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("TIDO");
 
@@ -53,7 +40,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   CsvReaderWriter cwr = new CsvReaderWriter();
 
-  @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_DB"})
+  @Test(groups = "Post_TIDO_Response_invalid", dependsOnGroups = {"Process_TIDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -62,23 +49,8 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-        equalTo("Accepted"));
+        equalTo("Rejected"));
 
   }
 
-
-  @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-    databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
-            AppConstants.POST_STATUS);
-  }
-
-  @Test(groups = "Post_TIDO_DB_RequestHistory", dependsOnGroups = {"Post_TIDO_Response"})
-  private void validateRequestHistoryInDatabase() throws Exception {
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
-    List<Document> eventHistory = (ArrayList<Document>) fulfillmentTrackingRecordDoc
-        .get("eventHistory");
-    assertEquals(eventHistory.get(1).get("eventType").toString(), "Received");
-  }
 }
