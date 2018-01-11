@@ -39,7 +39,7 @@ public class PortalTests extends ConfigLoaderWeb {
     @Test
     public void footerTest() {
         driver.get(portalUrl);
-        Assert.assertTrue(portalPage.getFooterLbl().contains("unitedhealth"));
+        Assert.assertTrue(portalPage.getFooter().contains("unitedhealth"));
     }
 
     @Test
