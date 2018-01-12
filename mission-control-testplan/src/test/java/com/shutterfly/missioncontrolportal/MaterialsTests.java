@@ -10,29 +10,30 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class RequestTests extends ConfigLoaderWeb {
+public class MaterialsTests extends ConfigLoaderWeb {
 
     private PortalPage portalPage;
-    private String portalUrl;
+    private String materialsTabUrl;
 
     @BeforeClass
     public void setup() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         PageUtils.login(loginPage, config);
 
-        portalUrl = config.getProperty(AppConstants.QA_PORTAL_URL);
-        if (portalUrl == null) {
-            throw new RuntimeException("QaPortalUrl property not found");
+        materialsTabUrl = config.getProperty(AppConstants.APPLICATION_URL);
+        if (materialsTabUrl == null) {
+            throw new RuntimeException("ApplicationUrl property not found");
         }
+
+        materialsTabUrl += "#/materials";
         portalPage = PageFactory.initElements(driver, PortalPage.class);
     }
 
     @Test
     public void paginationTest() {
-        driver.get(portalUrl);
-        portalPage.setRequestIdTxt("1");
-        portalPage.clickOnSearchBtn();
+        driver.get(materialsTabUrl);
         Assert.assertTrue(portalPage.areSearchResultsVisible());
+
         int results = portalPage.getSearchResultCount();
         int possiblePagesForPagination = (results / 20);
 

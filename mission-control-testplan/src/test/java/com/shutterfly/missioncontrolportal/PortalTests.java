@@ -1,6 +1,7 @@
 package com.shutterfly.missioncontrolportal;
 
 import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrolportal.Utils.PageUtils;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
 import com.shutterfly.missioncontrolportal.pageobject.PortalPage;
@@ -20,9 +21,9 @@ public class PortalTests extends ConfigLoaderWeb {
     public void setup() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         portalPage = PageFactory.initElements(driver, PortalPage.class);
-        userName = config.getProperty("QaPortalUserName");
-        portalUrl = config.getProperty("QaPortalUrl");
-        loginPageUrl = config.getProperty("QaPortalLoginUrl");
+        userName = config.getProperty(AppConstants.QA_PORTAL_USERNAME);
+        portalUrl = config.getProperty(AppConstants.QA_PORTAL_URL);
+        loginPageUrl = config.getProperty(AppConstants.QA_PORTAL_LOGIN_URL);
 
         PageUtils.login(loginPage, config);
 

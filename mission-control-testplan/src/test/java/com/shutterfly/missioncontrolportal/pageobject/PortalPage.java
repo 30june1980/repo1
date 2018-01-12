@@ -16,12 +16,13 @@ public class PortalPage {
     private final String loaderXpath = "//div[@class='loader']";
     private final String nextLblId = "smc-pagination_next";
     private final String prevLblId = "smc-pagination_prev";
+    private final String searchResultCountLblXpath = "//app-pagination/div/div[2]/span[2]/span";
+    private final String activeUserNameLblXpath = "//text()[contains(.,'TestUserFirstName')]//ancestor::a[1]";
+    private final String logoutLblXpath = "//a[text()='Logout']";
 
     private WebDriver driver;
     @FindBy(how = How.CSS, using = "img[alt='United Health Care logo']")
     private WebElement uhcLogoImg;
-    @FindBy(how = How.XPATH, using = "//ul/div/div[1]/div/a")
-    private WebElement activeUserNameLbl;
     @FindBy(how = How.CSS, using = "body > app-root > nav.nav.navbar.nav2 > div > ul > li")
     private List<WebElement> tabLblList;
     @FindBy(how = How.CSS, using = "body > app-root > div")
@@ -30,10 +31,6 @@ public class PortalPage {
     private WebElement requestIdTxt;
     @FindBy(how = How.ID, using = "smc_search")
     private WebElement searchBtn;
-    @FindBy(how = How.CSS, using = "h4 > div > div:nth-child(1)")
-    private WebElement searchResultCountLbl;
-    @FindBy(how = How.XPATH, using = "//a[text()='Logout']")
-    private WebElement logoutLbl;
 
     public PortalPage(WebDriver edriver) {
         this.driver = edriver;
@@ -43,14 +40,25 @@ public class PortalPage {
         return driver.findElement(By.xpath(loaderXpath));
     }
 
-    private WebElement getNextLbl() {
-        return driver.findElement(By.id(nextLblId));
-    }
-
     private WebElement getPrevLbl() {
         return driver.findElement(By.id(prevLblId));
     }
 
+    private WebElement getActiveUserNameLbl() {
+        return driver.findElement(By.xpath(activeUserNameLblXpath));
+    }
+
+    private WebElement getSearchResultCountLbl() {
+        return driver.findElement(By.xpath(searchResultCountLblXpath));
+    }
+
+    private WebElement getNextLbl() {
+        return driver.findElement(By.id(nextLblId));
+    }
+
+    private WebElement getLogoutLbl() {
+        return driver.findElement(By.xpath(logoutLblXpath));
+    }
 
     public void setRequestIdTxt(String requestId) {
         requestIdTxt.sendKeys(requestId);
@@ -63,17 +71,23 @@ public class PortalPage {
 
     public void clickOnNextLbl() {
         getNextLbl().click();
-        PageUtils.waitForLoadingToComplete(driver, getLoader());
+        try {
+            PageUtils.waitForLoadingToComplete(driver, getLoader());
+        } catch (NoSuchElementException ignored) {
+        }
     }
 
     public void clickOnBackLbl() {
         getPrevLbl().click();
-        PageUtils.waitForLoadingToComplete(driver, getLoader());
+        try {
+            PageUtils.waitForLoadingToComplete(driver, getLoader());
+        } catch (NoSuchElementException ignored) {
+        }
     }
 
     public void clickOnLogout() {
-        activeUserNameLbl.click();
-        logoutLbl.click();
+        getActiveUserNameLbl().click();
+        getLogoutLbl().click();
     }
 
 
@@ -96,11 +110,12 @@ public class PortalPage {
     }
 
     public boolean areSearchResultsVisible() {
-        return searchResultCountLbl.isDisplayed();
+        return getSearchResultCountLbl().isDisplayed();
     }
 
     public int getSearchResultCount() {
-        return Integer.parseInt(searchResultCountLbl.getText().trim().split(" ")[0]);
+        String[] tokens = getSearchResultCountLbl().getText().trim().split(" ");
+        return Integer.parseInt(tokens[tokens.length - 1]);
     }
 
     public boolean isUhcLogoPresent() {
@@ -116,8 +131,7 @@ public class PortalPage {
     }
 
     public String getUserName() {
-        return activeUserNameLbl.getText();
+        return getActiveUserNameLbl().getText();
     }
-
 
 }

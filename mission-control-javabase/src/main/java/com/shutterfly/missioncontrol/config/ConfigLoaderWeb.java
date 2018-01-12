@@ -16,12 +16,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+
+import static com.shutterfly.missioncontrol.util.AppConstants.CHROME;
+import static com.shutterfly.missioncontrol.util.AppConstants.FIREFOX;
+import static com.shutterfly.missioncontrol.util.AppConstants.INTERNET_EXPLORER;
 
 public class ConfigLoaderWeb {
 
@@ -33,19 +36,14 @@ public class ConfigLoaderWeb {
 
     protected static Properties config = null;
 
-    private static final String LOCAL = "local";
-    private static final String chromeDriver = "webdriver.chrome.driver";
-    private static final String geckoDriver = "webdriver.gecko.driver";
-    private static final String ieDriver = "webdriver.ie.driver";
-    private static final String nodeUrl = "nodeUrl";
-    private static final String testingScenariosXlPathProp = "testingScenariosXlPath";
+
     protected static String testingScenariosXlPath = null;
 
     /*
  *  To get basic configurations from property files
  */
     @BeforeClass
-    @Parameters({"platform", "browser"})
+    @Parameters({AppConstants.PLATFORM, AppConstants.BROWSER})
     public static void basicConfigLoaderWeb(String platform, String browser) {
 
         if (driver == null) {
@@ -66,13 +64,13 @@ public class ConfigLoaderWeb {
 
         URL url;
         try {
-            url = new URL(config.getProperty(nodeUrl));
-            testingScenariosXlPath = config.getProperty(testingScenariosXlPathProp);
+            url = new URL(config.getProperty(AppConstants.NODE_URL));
+            testingScenariosXlPath = config.getProperty(AppConstants.TESTING_SCENARIOS_XL_PATH_PROP);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Malformed URL specified in property file");
         }
 
-        String environment = config.getProperty("environment").toLowerCase();
+        String environment = config.getProperty(AppConstants.ENVIRONMENT).toLowerCase();
         Platform operatingSystem = Platform.fromString(platform.toUpperCase());
         setBrowser(environment, operatingSystem, browser, url);
     }
@@ -82,9 +80,9 @@ public class ConfigLoaderWeb {
         DesiredCapabilities desiredCapabilities = null;
         switch (browser) {
 
-            case "chrome":
-                if (LOCAL.equalsIgnoreCase(environment)) {
-                    System.setProperty(chromeDriver, System.getProperty(chromeDriver));
+            case CHROME:
+                if (AppConstants.LOCAL.equalsIgnoreCase(environment)) {
+                    System.setProperty(AppConstants.CHROME_DRIVER, System.getProperty(AppConstants.CHROME_DRIVER));
                     driver = new ChromeDriver();
                 } else {
                     desiredCapabilities = DesiredCapabilities.chrome();
@@ -96,9 +94,9 @@ public class ConfigLoaderWeb {
                 }
                 break;
 
-            case "firefox":
-                if (LOCAL.equalsIgnoreCase(environment)) {
-                    System.setProperty(geckoDriver, System.getProperty(geckoDriver));
+            case FIREFOX:
+                if (AppConstants.LOCAL.equalsIgnoreCase(environment)) {
+                    System.setProperty(AppConstants.GECKO_DRIVER, System.getProperty(AppConstants.GECKO_DRIVER));
                     driver = new FirefoxDriver();
                 } else {
                     desiredCapabilities = DesiredCapabilities.firefox();
@@ -110,12 +108,12 @@ public class ConfigLoaderWeb {
                 }
                 break;
 
-            case "ie":
+            case INTERNET_EXPLORER:
                 desiredCapabilities = DesiredCapabilities.internetExplorer();
                 desiredCapabilities.setCapability("ignoreZoomSetting", true);
 
-                if (LOCAL.equalsIgnoreCase(environment)) {
-                    System.setProperty(ieDriver, System.getProperty(ieDriver));
+                if (AppConstants.LOCAL.equalsIgnoreCase(environment)) {
+                    System.setProperty(AppConstants.IE_DRIVER, System.getProperty(AppConstants.IE_DRIVER));
                     driver = new InternetExplorerDriver(desiredCapabilities);
                 } else {
                     driver = new RemoteWebDriver(url, desiredCapabilities);
@@ -125,7 +123,7 @@ public class ConfigLoaderWeb {
             default:
         }
 
-        turnOnImplicitWaits(driver);
+        driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 
@@ -134,14 +132,6 @@ public class ConfigLoaderWeb {
         if (driver != null) {
             driver.quit();
         }
-    }
-
-    protected static void turnOnImplicitWaits(@Nonnull WebDriver driver) {
-        driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
-    }
-
-    protected static void turnOffImplicitWaits(@Nonnull WebDriver driver) {
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
 }
