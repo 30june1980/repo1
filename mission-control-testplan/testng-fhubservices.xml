@@ -138,6 +138,7 @@
         name="com.shutterfly.missioncontrol.redelivery.EdmsUiPostTransactionalExternalPrintReady"/>
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
       <class name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
+      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"></class>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

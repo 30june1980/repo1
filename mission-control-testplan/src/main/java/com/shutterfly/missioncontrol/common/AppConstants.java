@@ -27,6 +27,8 @@ public class AppConstants {
   public static final String BULK_FILE_INVALID = "bulkfile_invalid.xml";
   public static final String REQUEST_ID_PREPEND= "Test_qa_";
   public static final String REJECTED="Rejected";
+  public static final String VALIDATION_FAILURE="ValidationFailure";
+  public static final String DUPLICATE_PROCESSFULFILLMENT_REQUEST="Duplicate fulfillment request.";
 
 
 }
