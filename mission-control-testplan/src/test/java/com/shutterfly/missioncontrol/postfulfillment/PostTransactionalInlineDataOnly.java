@@ -42,14 +42,22 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   }
 
   private String buildPayload() throws IOException {
-    URL file = Resources
-        .getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
-    payload = Resources.toString(file, StandardCharsets.UTF_8);
+    getPayloadFromFile();
     record = cwr.getRequestIdByKeys("TIDO");
-
     return payload = payload.replaceAll("REQUEST_101", record);
 
   }
+
+  private void getPayloadFromFile() throws IOException {
+    URL file = Resources
+        .getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
+    payload = Resources.toString(file, StandardCharsets.UTF_8);
+  }
+
+  private String buildPayloadWithEventType(String replaceString,String eventType) throws IOException {
+    return payload=payload.replaceAll("\\b"+replaceString+"\\b",eventType);
+  }
+
 
   @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_DB"})
   private void getResponse() throws IOException {
@@ -64,6 +72,49 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   }
 
+  @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {"Process_TIDO_DB"})
+  private void getResponseForGenerated() throws IOException {
+    basicConfigNonWeb();
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(this.buildPayloadWithEventType(AppConstants.RECEIVED,AppConstants.GENERATED)).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+
+  }
+
+  @Test(groups = "Post_TIDO_Response_Fulfilled", dependsOnGroups = {"Post_TIDO_DB_GENERATED"})
+  private void getResponseForFulFilled() throws IOException {
+    basicConfigNonWeb();
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(this.buildPayloadWithEventType(AppConstants.GENERATED,AppConstants.FULFILLED)).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+
+  }
+
+
+  @Test(groups = "Post_TIDO_DB_GENERATED", dependsOnGroups = {"Post_TIDO_Response_GENERATED"})
+  private void validateRecordsInDatabaseGenerated() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
+        .get("currentFulfillmentStatus");
+    assertEquals(currentFulfillmentStatus, AppConstants.IN_PROCESS);
+  }
+
+
+  @Test(groups = "Post_TIDO_DB_FulFilled", dependsOnGroups = {"Post_TIDO_DB_GENERATED"})
+  private void validateRecordsInDatabaseFulfilled() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
+        .get("currentFulfillmentStatus");
+    assertEquals(currentFulfillmentStatus, AppConstants.COMPLETE);
+  }
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
