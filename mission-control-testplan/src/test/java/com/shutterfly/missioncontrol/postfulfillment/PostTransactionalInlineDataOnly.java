@@ -5,7 +5,7 @@ package com.shutterfly.missioncontrol.postfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
@@ -95,6 +95,6 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
-    assertNotNull(databaseValidationUtil.getTrackingRecord(requestId));
+    assertNull(databaseValidationUtil.getTrackingRecord(requestId));
   }
 }
