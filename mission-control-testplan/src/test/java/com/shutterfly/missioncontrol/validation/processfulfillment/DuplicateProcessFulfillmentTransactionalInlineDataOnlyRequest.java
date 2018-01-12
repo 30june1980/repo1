@@ -58,6 +58,9 @@ public class DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest exten
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
         equalTo(AppConstants.DUPLICATE_PROCESSFULFILLMENT_REQUEST));
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+        equalTo("18419"));
   }
 
   @Test(groups = "Process_TIDO_DB_duplicate", dependsOnGroups = {"Process_TIDO_Response_duplicate"})

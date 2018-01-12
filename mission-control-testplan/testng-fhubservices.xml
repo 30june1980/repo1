@@ -139,6 +139,7 @@
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
       <class name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"></class>
+      <class name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"></class>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
