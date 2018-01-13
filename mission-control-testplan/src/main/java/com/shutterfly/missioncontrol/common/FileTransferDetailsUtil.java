@@ -22,7 +22,7 @@ public class FileTransferDetailsUtil extends ConfigLoader {
 			String requestorParticipantId, String sourceParticipantId, String targetParticipantId,
 			String materialType) {
 		AccessToken accessToken = new AccessToken();
-		final String uri = "http://missioncontrolapi-qa.internal.shutterfly.com";
+		final String uri = "http://tsbsapp32-lv.internal.shutterfly.com:8085";
 		Response response = given().contentType("application/json")
 				.header("Authorization", accessToken.getAccessToken()).param("requestType", requestType)
 				.param("requestCategory", requestCategory).param("direction", direction)
