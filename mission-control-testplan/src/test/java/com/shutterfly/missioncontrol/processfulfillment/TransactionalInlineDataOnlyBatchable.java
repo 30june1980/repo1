@@ -58,7 +58,7 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
     CsvReaderWriter cwr = new CsvReaderWriter();
-    cwr.writeToCsv("TIDO", record);
+    cwr.writeToCsv("TIDOB", record);
 
   }
 

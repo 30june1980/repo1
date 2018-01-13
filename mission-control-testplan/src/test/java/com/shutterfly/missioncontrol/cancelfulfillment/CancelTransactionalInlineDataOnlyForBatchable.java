@@ -29,25 +29,21 @@ public class CancelTransactionalInlineDataOnlyForBatchable extends ConfigLoader 
   private String uri = "";
   private String payload = "";
   private String record = "";
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
     return uri;
-
   }
 
   private String buildPayload() throws IOException {
     URL file = Resources
         .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("TIDO");
-
+    record = cwr.getRequestIdByKeys("TIDOB");
     return payload = payload.replaceAll("REQUEST_101", record);
-
   }
-
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Cancel_TIDO_Batchable_Response", dependsOnGroups = {"Process_TIDO_Batchable_DB"})
   private void getResponse() throws IOException {
@@ -59,7 +55,6 @@ public class CancelTransactionalInlineDataOnlyForBatchable extends ConfigLoader 
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
-
   }
 
 
