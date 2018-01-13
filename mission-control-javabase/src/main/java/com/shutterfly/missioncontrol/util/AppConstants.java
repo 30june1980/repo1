@@ -30,4 +30,6 @@ public class AppConstants {
     public static final String QA_PORTAL_USERNAME = "QaPortalUserName";
     public static final String QA_PORTAL_PASSWORD = "QaPortalPassword";
 
+    public static final String DATE_PATTERN = "MM/dd/yy";
+
 }

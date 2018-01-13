@@ -29,6 +29,12 @@ public class PortalPage {
     private WebElement footerLbl;
     @FindBy(how = How.ID, using = "requestId")
     private WebElement requestIdTxt;
+    @FindBy(how = How.ID, using = "from")
+    private WebElement fromDateTxt;
+    @FindBy(how = How.ID, using = "to")
+    private WebElement toDateTxt;
+    @FindBy(how = How.XPATH, using = "//div[2]/datatable-body-cell[1]")
+    private List<WebElement> requestDatesTxt;
     @FindBy(how = How.ID, using = "smc_search")
     private WebElement searchBtn;
 
@@ -62,6 +68,14 @@ public class PortalPage {
 
     public void setRequestIdTxt(String requestId) {
         requestIdTxt.sendKeys(requestId);
+    }
+
+    public void setFromDateTxt(String date) {
+        fromDateTxt.sendKeys(date);
+    }
+
+    public void setToDateTxt(String date) {
+        toDateTxt.sendKeys(date);
     }
 
     public void clickOnSearchBtn() {
@@ -132,6 +146,10 @@ public class PortalPage {
 
     public String getUserName() {
         return getActiveUserNameLbl().getText();
+    }
+
+    public List<String> getRequestDates() {
+        return requestDatesTxt.stream().map(requestDate -> requestDate.getText().trim()).collect(Collectors.toList());
     }
 
 }
