@@ -73,7 +73,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {"Process_TIDO_DB"})
+ /* @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {"Process_TIDO_DB"})
   private void getResponseForGenerated() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -119,7 +119,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
         .get("currentFulfillmentStatus");
     assertEquals(currentFulfillmentStatus, AppConstants.COMPLETE);
-  }
+  }*/
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
