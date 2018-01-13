@@ -10,7 +10,7 @@ import static org.testng.Assert.assertNotNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -33,7 +33,6 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   private String uri = "";
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
-
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
@@ -69,8 +68,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
@@ -78,8 +76,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Process_TIDO_Valid_Request_Validation", dependsOnGroups = {
       "Process_TIDO_Response"})
   private void validateRecordFieldsInDbForValidRequest() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances().getTrackingRecord(record);
     assertNotNull(fulfillmentTrackingRecordDoc.get("_id"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("_class"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"));
@@ -143,8 +141,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
 
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(requestId);
+
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances().getTrackingRecord(requestId);
     assertNotNull(fulfillmentTrackingRecordDoc.get("_id"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("_class"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"));

@@ -9,7 +9,7 @@ import static org.testng.AssertJUnit.assertNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -31,7 +31,6 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   private String uri = "";
   private String payload = "";
   private String record = "";
-  DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
   CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
@@ -123,14 +122,15 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    databaseValidationUtil
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
   }
 
   @Test(groups = "Post_TIDO_RequestHistory", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRequestHistoryInDatabase() throws Exception {
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record);
     List<Document> eventHistory = (ArrayList<Document>) fulfillmentTrackingRecordDoc
         .get("eventHistory");
     assertEquals(eventHistory.get(1).get("eventType").toString(), AppConstants.RECEIVED);
@@ -151,6 +151,6 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
-    assertNull(databaseValidationUtil.getTrackingRecord(requestId));
+    assertNull(ValidationUtilConfig.getInstances().getTrackingRecord(requestId));
   }
 }

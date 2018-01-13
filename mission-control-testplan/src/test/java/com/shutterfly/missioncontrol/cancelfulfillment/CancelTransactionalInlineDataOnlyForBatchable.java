@@ -8,7 +8,7 @@ import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -60,8 +60,8 @@ public class CancelTransactionalInlineDataOnlyForBatchable extends ConfigLoader 
 
   @Test(groups = "Cancel_TIDO_Batchable_DB", dependsOnGroups = {"Cancel_TIDO_Batchable_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+    ValidationUtilConfig
+        .getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.REQUEST_UPDATED_TO_DB,
             AppConstants.CANCEL);
   }

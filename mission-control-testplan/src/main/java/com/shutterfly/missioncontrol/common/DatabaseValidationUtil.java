@@ -19,9 +19,24 @@ import org.testng.Assert;
 /**
  * @author Diptman Gupta
  */
+
 public class DatabaseValidationUtil extends ConfigLoader {
 
   private static final String REQUEST_ID = "requestId";
+  private ConnectToDatabase connectToDatabase;
+  private MongoClient client;
+  private MongoDatabase database;
+  private MongoCollection<Document> fulfillmentTrackingRecord;
+  private MongoCollection<Document> fulfillmentStatusTracking;
+
+  public DatabaseValidationUtil() {
+    connectToDatabase = new ConnectToDatabase();
+    client = connectToDatabase.getMongoConnection();
+    database = client.getDatabase("missioncontrol");
+    fulfillmentTrackingRecord = database.getCollection("fulfillment_tracking_record");
+    fulfillmentStatusTracking = database.getCollection("fulfillment_status_tracking");
+  }
+
 
   public void validateRecordsAvailabilityAndStatusCheck(String record, String statusToValidate,
       String requestTypeToValidate) throws Exception {
@@ -63,25 +78,11 @@ public class DatabaseValidationUtil extends ConfigLoader {
   }
 
   public Document getTrackingRecord(String record) {
-    ConnectToDatabase connectToDatabase = new ConnectToDatabase();
-    MongoClient client = connectToDatabase.getMongoConnection();
-    MongoDatabase database = client.getDatabase("missioncontrol");
-    MongoCollection<Document> fulfillmentTrackingRecord = database
-        .getCollection("fulfillment_tracking_record");
-    Document document = fulfillmentTrackingRecord.find(eq(REQUEST_ID, record)).first();
-    connectToDatabase.closeMongoConnection();
-    return document;
+    return fulfillmentTrackingRecord.find(eq(REQUEST_ID, record)).first();
   }
 
   public Document getStatusTrackingRecord(String record) {
-    ConnectToDatabase connectToDatabase = new ConnectToDatabase();
-    MongoClient client = connectToDatabase.getMongoConnection();
-    MongoDatabase database = client.getDatabase("missioncontrol");
-    MongoCollection<Document> fulfillmentStatusTracking = database
-        .getCollection("fulfillment_status_tracking");
-    Document document =  fulfillmentStatusTracking.find(eq(REQUEST_ID, record)).first();
-    connectToDatabase.closeMongoConnection();
-    return document;
+    return fulfillmentStatusTracking.find(eq(REQUEST_ID, record)).first();
   }
 
   private boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record,

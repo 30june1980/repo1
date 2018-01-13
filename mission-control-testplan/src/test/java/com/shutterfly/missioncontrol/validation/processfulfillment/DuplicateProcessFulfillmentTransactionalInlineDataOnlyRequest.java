@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -65,8 +65,8 @@ public class DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest exten
 
   @Test(groups = "Process_TIDO_DB_duplicate", dependsOnGroups = {"Process_TIDO_Response_duplicate"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.VALIDATION_FAILURE,
             AppConstants.PROCESS);
   }

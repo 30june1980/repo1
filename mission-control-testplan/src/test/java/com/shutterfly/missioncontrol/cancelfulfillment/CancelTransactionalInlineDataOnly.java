@@ -10,8 +10,10 @@ import static org.testng.Assert.assertNull;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +24,6 @@ import org.bson.Document;
 import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 
@@ -38,7 +39,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   private String payload = "";
   private String record = "";
   CsvReaderWriter cwr = new CsvReaderWriter();
-  DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
