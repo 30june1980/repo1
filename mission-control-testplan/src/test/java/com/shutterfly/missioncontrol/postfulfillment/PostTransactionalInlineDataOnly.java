@@ -54,8 +54,9 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     payload = Resources.toString(file, StandardCharsets.UTF_8);
   }
 
-  private String buildPayloadWithEventType(String replaceString,String eventType) throws IOException {
-    return payload=payload.replaceAll("\\b"+replaceString+"\\b",eventType);
+  private String buildPayloadWithEventType(String replaceString, String eventType)
+      throws IOException {
+    return payload = payload.replaceAll("\\b" + replaceString + "\\b", eventType);
   }
 
 
@@ -77,7 +78,9 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
-        .contentType("application/xml").body(this.buildPayloadWithEventType(AppConstants.RECEIVED,AppConstants.GENERATED)).when().post(this.getProperties());
+        .contentType("application/xml")
+        .body(this.buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.GENERATED)).when()
+        .post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -90,7 +93,9 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
-        .contentType("application/xml").body(this.buildPayloadWithEventType(AppConstants.GENERATED,AppConstants.FULFILLED)).when().post(this.getProperties());
+        .contentType("application/xml")
+        .body(this.buildPayloadWithEventType(AppConstants.GENERATED, AppConstants.FULFILLED)).when()
+        .post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -128,7 +133,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     List<Document> eventHistory = (ArrayList<Document>) fulfillmentTrackingRecordDoc
         .get("eventHistory");
-    assertEquals(eventHistory.get(1).get("eventType").toString(), "Received");
+    assertEquals(eventHistory.get(1).get("eventType").toString(), AppConstants.RECEIVED);
   }
 
   @Test(groups = "Post_TIDO_For_No_Process")

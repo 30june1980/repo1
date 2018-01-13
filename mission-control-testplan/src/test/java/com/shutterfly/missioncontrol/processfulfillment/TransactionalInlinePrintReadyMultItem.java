@@ -87,7 +87,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
   private void validateSingleItemRecordsInDatabase() throws Exception {
     DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record + "_2", "RequestBatched",
+        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.REQUEST_BATCHED,
             AppConstants.PROCESS);
   }
 
