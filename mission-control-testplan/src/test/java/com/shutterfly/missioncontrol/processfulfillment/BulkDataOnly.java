@@ -64,12 +64,10 @@ public class BulkDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
     cwr.writeToCsv("BDO", record);
-
   }
 
   @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
