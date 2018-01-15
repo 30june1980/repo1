@@ -2,6 +2,7 @@ package com.shutterfly.missioncontrol.processfulfillment;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertNotNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 /**
@@ -73,4 +75,15 @@ public class BulkDataOnly extends ConfigLoader {
             AppConstants.PROCESS);
   }
 
+  @Test(groups = "Process_BDO_Valid_Request_Validation", dependsOnGroups = {
+      "Process_BDO_Response"})
+  private void validateRecordFieldsInDbForValidBDORequest() throws Exception {
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record);
+    Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
+    Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
+    assertNotNull(requestDetail.get("bulkRequestDetail"));
+  }
 }

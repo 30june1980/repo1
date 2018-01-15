@@ -20,7 +20,6 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.UUID;
 import org.bson.Document;
 import org.testng.annotations.Test;
@@ -33,6 +32,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   private String uri = "";
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
+
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
@@ -76,47 +76,16 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Process_TIDO_Valid_Request_Validation", dependsOnGroups = {
       "Process_TIDO_Response"})
   private void validateRecordFieldsInDbForValidRequest() throws Exception {
-
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances().getTrackingRecord(record);
-    assertNotNull(fulfillmentTrackingRecordDoc.get("_id"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("_class"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"));
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record);
     assertEquals(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"), "SENT_TO_SUPPLIER");
-    assertNotNull(fulfillmentTrackingRecordDoc.get("requestId"));
-    assertEquals(fulfillmentTrackingRecordDoc.get("requestId"), record);
-
-    Document auditHistory = (Document) fulfillmentTrackingRecordDoc.get("auditHistory");
-    assertNotNull(auditHistory);
-    assertNotNull(auditHistory.get("createdBy"));
-    assertNotNull(auditHistory.get("createdDate"));
-    assertNotNull(auditHistory.get("updatedBy"));
-    assertNotNull(auditHistory.get("updatedDate"));
-
-    ArrayList eventHistoryList = (ArrayList<Document>) fulfillmentTrackingRecordDoc
-        .get("eventHistory");
-    Document eventHistory = (Document) eventHistoryList.get(0);
-    assertEquals(eventHistory.get("processor"), "MC");
-    assertEquals(eventHistory.get("eventType"), "ReceivedPending");
-    assertNotNull(eventHistory.get("receivedDate"));
-    assertEquals(eventHistory.get("statusCode"), "Accepted");
-    assertEquals(eventHistory.get("successCount"), "1");
-    assertEquals(eventHistory.get("exceptionCount"), "0");
-    assertNotNull(eventHistory.get("exceptionDetailList"));
-
-    ArrayList fulfillmentMetaDataList = (ArrayList<Document>) fulfillmentTrackingRecordDoc
-        .get("fulfillmentMetaData");
-
-    Document fulfillmentMetaData = (Document) fulfillmentMetaDataList.get(0);
-    assertNotNull(fulfillmentMetaData);
-    assertNotNull(fulfillmentMetaData.get("name"));
-    assertNotNull(fulfillmentMetaData.get("value"));
-
     Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
-    assertNotNull(fulfillmentRequest);
-    assertNotNull(fulfillmentRequest.get("requestHeader"));
-    assertNotNull(fulfillmentRequest.get("requestDetail"));
-    assertNotNull(fulfillmentRequest.get("requestTrailer"));
+    Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
+    assertNotNull(requestDetail.get("transactionalRequestDetail"));
   }
+
 
   @Test(groups = "Process_TIDO_InValid_Request_Validation")
   private void validateRecordFieldsInDbForInValidRequest() throws Exception {
@@ -141,8 +110,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
 
-
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances().getTrackingRecord(requestId);
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(requestId);
     assertNotNull(fulfillmentTrackingRecordDoc.get("_id"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("_class"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"));
