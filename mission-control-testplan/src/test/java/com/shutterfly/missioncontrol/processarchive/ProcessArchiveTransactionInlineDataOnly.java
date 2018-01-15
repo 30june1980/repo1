@@ -13,6 +13,7 @@ import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
@@ -69,6 +70,26 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
 
+  }
+
+
+  @Test()
+  private void getResponseForInvalidRequestType() throws IOException {
+    basicConfigNonWeb();
+    EncoderConfig encoderconfig = new EncoderConfig();
+    String payload = Utils.replaceExactMatch(this.buildPayload(),"Archive","Anything");
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+        AppConstants.BULK_FILE);
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayload()).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode",
+        equalTo("18011"));
   }
 
 

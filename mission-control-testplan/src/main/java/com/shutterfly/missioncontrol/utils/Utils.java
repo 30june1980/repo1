@@ -24,4 +24,8 @@ public class Utils {
   public static String getQARandomId(){
     return AppConstants.REQUEST_ID_PREPEND.concat(String.valueOf(UUID.randomUUID()));
   }
+
+  public static String replaceExactMatch(String toBeModified,String exactSearch,String toBeModifiedWith){
+    return toBeModified.replaceAll("\\b"+exactSearch+"\\b",toBeModifiedWith);
+  }
 }
