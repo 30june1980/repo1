@@ -3,6 +3,7 @@
  */
 package com.shutterfly.missioncontrol.postfulfillment;
 
+import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNull;
@@ -12,7 +13,10 @@ import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
@@ -31,6 +35,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   private String uri = "";
   private String payload = "";
   private String record = "";
+  private String record1=Utils.getQARandomId();
   CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
@@ -44,7 +49,6 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     getPayloadFromFile();
     record = cwr.getRequestIdByKeys("TIDO");
     return payload = payload.replaceAll("REQUEST_101", record);
-
   }
 
   private void getPayloadFromFile() throws IOException {
@@ -57,6 +61,39 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
       throws IOException {
     return payload = payload.replaceAll("\\b" + replaceString + "\\b", eventType);
   }
+
+
+
+
+  private String buildPayloadForProcess() throws IOException {
+    URL file = Resources
+        .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+    return payload.replaceAll("REQUEST_101", record1);
+  }
+
+  @Test(groups = "Process_TIDO_Response_ForPOst")
+  private void getResponseForProcess() throws IOException {
+    basicConfigNonWeb();
+    //remove charset from content type using encoder config, build the payload
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayloadForProcess()).when().post(config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment"));
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+  }
+
+
+
+
+
+
 
 
   @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_DB"})
@@ -72,28 +109,33 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   }
 
- /* @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {"Process_TIDO_DB"})
+  @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {"Process_TIDO_Response_ForPOst"})
   private void getResponseForGenerated() throws IOException {
+    this.getPayloadFromFile();
+    String innerPayload=this.buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.GENERATED);
+    String innerPayload1=innerPayload.replaceAll("\\b"+"REQUEST_101"+"\\b",record1);
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml")
-        .body(this.buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.GENERATED)).when()
+        .body(innerPayload1).when()
         .post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
-
   }
 
   @Test(groups = "Post_TIDO_Response_Fulfilled", dependsOnGroups = {"Post_TIDO_DB_GENERATED"})
   private void getResponseForFulFilled() throws IOException {
+    this.getPayloadFromFile();
+    String innerPayload=this.buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.FULFILLED);
+    String innerPayload1=innerPayload.replaceAll("\\bREQUEST_101\\b",record1);
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml")
-        .body(this.buildPayloadWithEventType(AppConstants.GENERATED, AppConstants.FULFILLED)).when()
+        .body(innerPayload1).when()
         .post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
@@ -105,20 +147,22 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_TIDO_DB_GENERATED", dependsOnGroups = {"Post_TIDO_Response_GENERATED"})
   private void validateRecordsInDatabaseGenerated() throws Exception {
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record1);
     String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
         .get("currentFulfillmentStatus");
     assertEquals(currentFulfillmentStatus, AppConstants.IN_PROCESS);
   }
 
 
-  @Test(groups = "Post_TIDO_DB_FulFilled", dependsOnGroups = {"Post_TIDO_DB_GENERATED"})
+  @Test(groups = "Post_TIDO_DB_FulFilled", dependsOnGroups = {"Post_TIDO_Response_Fulfilled"})
   private void validateRecordsInDatabaseFulfilled() throws Exception {
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record1);
     String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
         .get("currentFulfillmentStatus");
     assertEquals(currentFulfillmentStatus, AppConstants.COMPLETE);
-  }*/
+  }
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
