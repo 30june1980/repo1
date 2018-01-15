@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import static io.restassured.RestAssured.given;
@@ -10,6 +7,7 @@ import static org.testng.AssertJUnit.assertNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
@@ -35,8 +33,9 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   private String uri = "";
   private String payload = "";
   private String record = "";
-  private String record1=Utils.getQARandomId();
+  private String record1 = Utils.getQARandomId();
   CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -62,9 +61,6 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     return payload = payload.replaceAll("\\b" + replaceString + "\\b", eventType);
   }
 
-
-
-
   private String buildPayloadForProcess() throws IOException {
     URL file = Resources
         .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
@@ -82,19 +78,13 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
             .encoderConfig(
                 encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
         .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-        .body(this.buildPayloadForProcess()).when().post(config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment"));
+        .body(this.buildPayloadForProcess()).when()
+        .post(config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment"));
 
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
   }
-
-
-
-
-
-
-
 
   @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_DB"})
   private void getResponse() throws IOException {
@@ -109,11 +99,13 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   }
 
-  @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {"Process_TIDO_Response_ForPOst"})
+  @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {
+      "Process_TIDO_Response_ForPOst"})
   private void getResponseForGenerated() throws IOException {
     this.getPayloadFromFile();
-    String innerPayload=this.buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.GENERATED);
-    String innerPayload1=innerPayload.replaceAll("\\b"+"REQUEST_101"+"\\b",record1);
+    String innerPayload = this
+        .buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.GENERATED);
+    String innerPayload1 = innerPayload.replaceAll("\\b" + "REQUEST_101" + "\\b", record1);
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
@@ -129,8 +121,9 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Post_TIDO_Response_Fulfilled", dependsOnGroups = {"Post_TIDO_DB_GENERATED"})
   private void getResponseForFulFilled() throws IOException {
     this.getPayloadFromFile();
-    String innerPayload=this.buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.FULFILLED);
-    String innerPayload1=innerPayload.replaceAll("\\bREQUEST_101\\b",record1);
+    String innerPayload = this
+        .buildPayloadWithEventType(AppConstants.RECEIVED, AppConstants.FULFILLED);
+    String innerPayload1 = innerPayload.replaceAll("\\bREQUEST_101\\b", record1);
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
@@ -147,8 +140,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_TIDO_DB_GENERATED", dependsOnGroups = {"Post_TIDO_Response_GENERATED"})
   private void validateRecordsInDatabaseGenerated() throws Exception {
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
-        .getTrackingRecord(record1);
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record1);
     String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
         .get("currentFulfillmentStatus");
     assertEquals(currentFulfillmentStatus, AppConstants.IN_PROCESS);
@@ -157,8 +149,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_TIDO_DB_FulFilled", dependsOnGroups = {"Post_TIDO_Response_Fulfilled"})
   private void validateRecordsInDatabaseFulfilled() throws Exception {
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
-        .getTrackingRecord(record1);
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record1);
     String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
         .get("currentFulfillmentStatus");
     assertEquals(currentFulfillmentStatus, AppConstants.COMPLETE);
@@ -166,15 +157,14 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
   }
 
   @Test(groups = "Post_TIDO_RequestHistory", dependsOnGroups = {"Post_TIDO_Response"})
   private void validateRequestHistoryInDatabase() throws Exception {
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
-        .getTrackingRecord(record);
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     List<Document> eventHistory = (ArrayList<Document>) fulfillmentTrackingRecordDoc
         .get("eventHistory");
     assertEquals(eventHistory.get(1).get("eventType").toString(), AppConstants.RECEIVED);
@@ -195,6 +185,6 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
-    assertNull(ValidationUtilConfig.getInstances().getTrackingRecord(requestId));
+    assertNull(databaseValidationUtil.getTrackingRecord(requestId));
   }
 }
