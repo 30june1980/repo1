@@ -143,15 +143,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
         equalTo("Rejected"));
 
     //send cancel again
-    String payload = Resources.toString(cancelFile, StandardCharsets.UTF_8);
-    payload = payload.replaceAll("REQUEST_101", requestId);
-    response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
-        .all()
-        .contentType("application/xml").body(payload).when().post(this.getProperties());
-    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
-    response.then().body(
-        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-        equalTo("Accepted"));
+    sendCancel(requestId);
 
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_SUPPLIER,
@@ -162,6 +154,21 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     ArrayList cancelFulfillment = (ArrayList<Document>) trackingRecord.get("cancelFulfillment");
     assertEquals(cancelFulfillment.size(), 2);
     assertNull(trackingRecord.get("postFulfillmentStatus"));
+  }
+
+  private void sendCancel(String requestId) throws IOException {
+    Response response;
+    URL cancelFile = Resources
+        .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
+    String payload = Resources.toString(cancelFile, StandardCharsets.UTF_8);
+    payload = payload.replaceAll("REQUEST_101", requestId);
+    response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(payload).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
   }
 
   private void sendProcess(String requestId) throws Exception {
@@ -218,5 +225,41 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
     Document exceptionDetail = (Document) exceptionDetailList.get(0);
     assertEquals(exceptionDetail.get("errorCode"), "18420");
+  }
+
+  @Test(groups = "Cancel_TIDO_For_No_Process")
+  private void validationWhenProcessIsAlreadyRejected() throws Exception {
+    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    sendProcess(requestId);
+    sendPostWithRejectedEvent(requestId);
+    sendCancel(requestId);
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
+    assertNotNull(trackingRecord.get("postFulfillmentStatus"));
+    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+    Document eventHistory = (Document) eventHistoryList.get(2);
+    assertEquals(eventHistory.get("eventType"), "Cancelled");
+    assertEquals(eventHistory.get("statusCode"), "Rejected");
+    ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
+    Document exceptionDetail = (Document) exceptionDetailList.get(0);
+    assertEquals(exceptionDetail.get("errorCode"), "18044");
+  }
+
+  private void sendPostWithRejectedEvent(String requestId) throws Exception {
+    basicConfigNonWeb();
+    String uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
+
+    URL file = Resources
+        .getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId)
+        .replace(AppConstants.ACCEPTED, AppConstants.REJECTED);
+
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all().contentType("application/xml").body(payload).when().post(uri);
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
   }
 }
