@@ -244,6 +244,23 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     assertEquals(exceptionDetail.get("errorCode"), "18044");
   }
 
+  @Test(groups = "Cancel_TIDO_For_No_Process")
+  private void validationWhenProcessIsAlreadyFulfilled() throws Exception {
+    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    sendProcess(requestId);
+    sendPostWithFulfilledEvent(requestId);
+    sendCancel(requestId);
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
+    assertNotNull(trackingRecord.get("postFulfillmentStatus"));
+    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+    Document eventHistory = (Document) eventHistoryList.get(2);
+    assertEquals(eventHistory.get("eventType"), "Cancelled");
+    assertEquals(eventHistory.get("statusCode"), "Rejected");
+    ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
+    Document exceptionDetail = (Document) exceptionDetailList.get(0);
+    assertEquals(exceptionDetail.get("errorCode"), "18042");
+  }
+
   private void sendPostWithRejectedEvent(String requestId) throws Exception {
     basicConfigNonWeb();
     String uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
@@ -254,6 +271,25 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
     payload = payload.replaceAll("REQUEST_101", requestId)
         .replace(AppConstants.ACCEPTED, AppConstants.REJECTED);
+
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all().contentType("application/xml").body(payload).when().post(uri);
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+  }
+
+  private void sendPostWithFulfilledEvent(String requestId) throws Exception {
+    basicConfigNonWeb();
+    String uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
+
+    URL file = Resources
+        .getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId)
+        .replace(AppConstants.RECEIVED, AppConstants.FULFILLED);
 
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all().contentType("application/xml").body(payload).when().post(uri);
