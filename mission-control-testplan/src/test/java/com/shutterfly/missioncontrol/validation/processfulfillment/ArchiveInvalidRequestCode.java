@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
@@ -44,8 +42,6 @@ public class ArchiveInvalidRequestCode extends ConfigLoader {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
     String payload = this.buildPayload();
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        AppConstants.BULK_FILE);
     Response response = given()
         .config(RestAssured.config()
             .encoderConfig(
@@ -58,5 +54,45 @@ public class ArchiveInvalidRequestCode extends ConfigLoader {
         equalTo("18005"));
 
   }
+
+  @Test()
+  private void InvalidRequestDetails() throws IOException {
+    basicConfigNonWeb();
+    EncoderConfig encoderconfig = new EncoderConfig();
+
+    String toBeReplacedWith="<sch:bulkRequestDetail>\n"
+        + " \n"
+        + "            <!--Optional:-->\n"
+        + " \n"
+        + "            <sch:filePath>/MissionControl/bulkFiles/BRMS</sch:filePath>\n"
+        + " \n"
+        + "            <sch:fileName>bulkfile_all_valid.xml</sch:fileName>\n"
+        + " \n"
+        + "            <sch:fileSize>4096</sch:fileSize>\n"
+        + " \n"
+        + "            <!--Optional:-->\n"
+        + " \n"
+        + "            <sch:ecgDetail>text</sch:ecgDetail>\n"
+        + " \n"
+        + "            <!--Optional:-->\n"
+        + " \n"
+        + "            <sch:sourceDetail>text</sch:sourceDetail>\n"
+        + " \n"
+        + "          </sch:bulkRequestDetail>";
+    String payload=Utils.relaceInStringFromTill(this.buildPayload(),"<sch:archiveTransactionalDetail>","</sch:archiveTransactionalDetail>",toBeReplacedWith);
+     Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+        equalTo("18409"));
+
+  }
+
+
 
 }
