@@ -3,6 +3,7 @@ package com.shutterfly.missioncontrol.processfulfillment;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+import com.shutterfly.missioncontrol.common.AppConstants;
 import java.util.ArrayList;
 import org.bson.Document;
 
@@ -12,7 +13,7 @@ import org.bson.Document;
 public class TrackingRecordValidationUtil {
 
   public static void validateTrackingRecordForProcessRequest(Document fulfillmentTrackingRecordDoc,
-      String record) {
+      String record, String statusCode) {
     assertNotNull(fulfillmentTrackingRecordDoc.get("_id"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("_class"));
     assertNotNull(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"));
@@ -32,9 +33,14 @@ public class TrackingRecordValidationUtil {
     assertEquals(eventHistory.get("processor"), "MC");
     assertEquals(eventHistory.get("eventType"), "ReceivedPending");
     assertNotNull(eventHistory.get("receivedDate"));
-    assertEquals(eventHistory.get("statusCode"), "Accepted");
-    assertEquals(eventHistory.get("successCount"), "1");
-    assertEquals(eventHistory.get("exceptionCount"), "0");
+    assertEquals(eventHistory.get("statusCode"), statusCode);
+    if (statusCode.equals(AppConstants.ACCEPTED)) {
+      assertEquals(eventHistory.get("successCount"), "1");
+      assertEquals(eventHistory.get("exceptionCount"), "0");
+    } else if (statusCode.equals(AppConstants.REJECTED)) {
+      assertEquals(eventHistory.get("successCount"), "0");
+      assertEquals(eventHistory.get("exceptionCount"), "1");
+    }
     assertNotNull(eventHistory.get("exceptionDetailList"));
 
     ArrayList fulfillmentMetaDataList = (ArrayList<Document>) fulfillmentTrackingRecordDoc

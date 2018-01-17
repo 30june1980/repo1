@@ -79,7 +79,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
         .getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record);
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record,
+            AppConstants.ACCEPTED);
     assertEquals(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"), "SENT_TO_SUPPLIER");
     Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
     Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");

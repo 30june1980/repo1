@@ -81,7 +81,47 @@ public class BulkDataOnly extends ConfigLoader {
     Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
         .getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record);
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record,
+            AppConstants.ACCEPTED);
+    Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
+    Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
+    assertNotNull(requestDetail.get("bulkRequestDetail"));
+  }
+
+  @Test(groups = "Process_BDO_Valid_Request_Validation")
+  private void validateRecordFieldsInDbForInValidBDORequest() throws Exception {
+    String requestId = "Test_qa" + UUID.randomUUID().toString();
+
+    //send invalid process request
+    basicConfigNonWeb();
+    URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId)
+        .replaceAll("bulkfile_all_valid.xml", (requestId + ".xml")).replace("BRMS", "");
+   /* EcgFileSafeUtil
+        .putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), requestId,
+            AppConstants.BULK_FILE);*/
+
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Rejected"));
+
+    //validate db fields
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(requestId);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, requestId,
+            AppConstants.REJECTED);
+
     Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
     Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
     assertNotNull(requestDetail.get("bulkRequestDetail"));
