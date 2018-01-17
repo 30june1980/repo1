@@ -79,7 +79,7 @@ public class ArchiveInvalidRequestCode extends ConfigLoader {
         + "            <sch:sourceDetail>text</sch:sourceDetail>\n"
         + " \n"
         + "          </sch:bulkRequestDetail>";
-    String payload=Utils.relaceInStringFromTill(this.buildPayload(),"<sch:archiveTransactionalDetail>","</sch:archiveTransactionalDetail>",toBeReplacedWith);
+    String payload=Utils.replaceInStringFromTill(this.buildPayload(),"<sch:archiveTransactionalDetail>","</sch:archiveTransactionalDetail>",toBeReplacedWith);
      Response response = given()
         .config(RestAssured.config()
             .encoderConfig(

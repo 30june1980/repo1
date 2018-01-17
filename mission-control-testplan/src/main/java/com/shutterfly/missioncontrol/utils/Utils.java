@@ -30,7 +30,7 @@ public class Utils {
     return toBeModified.replaceAll("\\b"+exactSearch+"\\b",toBeModifiedWith);
   }
 
-  public static String relaceInStringFromTill(String toBeModified,String from,String till,String replaceWith){
+  public static String replaceInStringFromTill(String toBeModified,String from,String till,String replaceWith){
 
     if(Objects.isNull(toBeModified)||Objects.isNull(from))
       throw new RuntimeException("string to be modified and from string is needed");
