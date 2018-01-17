@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import com.shutterfly.missioncontrol.common.AppConstants;
@@ -20,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import org.apache.commons.codec.binary.StringUtils;
 import org.bson.Document;
 import org.testng.annotations.Test;
 
@@ -73,6 +75,18 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.CANCEL);
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
+    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+    //Document eventHistory = (Document) eventHistoryList.get();
+    boolean cancelPending = eventHistoryList.stream()
+        .anyMatch(eventHistory -> evenHistoryIsForCancelPending((Document) eventHistory));
+    assertTrue(cancelPending);
+  }
+
+
+  private boolean evenHistoryIsForCancelPending(Document eventHistory) {
+    return StringUtils.equals(eventHistory.get("eventType").toString(), "CancelPending")
+        && StringUtils.equals(eventHistory.get("statusCode").toString(), AppConstants.ACCEPTED);
   }
 
 
@@ -218,13 +232,13 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
         equalTo("Accepted"));
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
     assertNotNull(trackingRecord.get("postFulfillmentStatus"));
-    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+   /* ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
     Document eventHistory = (Document) eventHistoryList.get(2);
     assertEquals(eventHistory.get("eventType"), "Cancelled");
     assertEquals(eventHistory.get("statusCode"), "Rejected");
     ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
     Document exceptionDetail = (Document) exceptionDetailList.get(0);
-    assertEquals(exceptionDetail.get("errorCode"), "18420");
+    assertEquals(exceptionDetail.get("errorCode"), "18420");*/
   }
 
   @Test(groups = "Cancel_TIDO_For_No_Process")

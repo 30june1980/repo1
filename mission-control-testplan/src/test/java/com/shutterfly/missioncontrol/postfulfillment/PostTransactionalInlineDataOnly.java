@@ -152,7 +152,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record1);
     String currentFulfillmentStatus = (String) fulfillmentTrackingRecordDoc
         .get("currentFulfillmentStatus");
-    assertEquals(currentFulfillmentStatus, AppConstants.COMPLETE);
+    assertEquals(currentFulfillmentStatus, "FULFILLED");
   }
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
