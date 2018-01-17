@@ -113,6 +113,13 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
             AppConstants.POST_STATUS);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
     assertNotNull(trackingRecord.get("postFulfillmentStatus"));
+    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+    Document eventHistory = (Document) eventHistoryList.get(2);
+    assertEquals(eventHistory.get("eventType"), "Cancelled");
+    assertEquals(eventHistory.get("statusCode"), "Rejected");
+    ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
+    Document exceptionDetail = (Document) exceptionDetailList.get(0);
+    assertEquals(exceptionDetail.get("errorCode"), "18041");
   }
 
   @Test(groups = "Cancel_TIDO_Duplicate_2")
@@ -183,5 +190,33 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Cancel_TIDO_For_No_Process")
+  private void validateCancelForNoProcess() throws IOException {
+    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+
+    URL file = Resources
+        .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+    payload = payload.replaceAll("REQUEST_101", requestId);
+
+    basicConfigNonWeb();
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(payload).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
+    assertNotNull(trackingRecord.get("postFulfillmentStatus"));
+    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+    Document eventHistory = (Document) eventHistoryList.get(2);
+    assertEquals(eventHistory.get("eventType"), "Cancelled");
+    assertEquals(eventHistory.get("statusCode"), "Rejected");
+    ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
+    Document exceptionDetail = (Document) exceptionDetailList.get(0);
+    assertEquals(exceptionDetail.get("errorCode"), "18420");
   }
 }
