@@ -57,6 +57,24 @@ public class ArchiveInvalidRequestCode extends ConfigLoader {
   }
 
   @Test()
+  private void nameValuePairMismatch() throws IOException {
+    basicConfigNonWeb();
+    EncoderConfig encoderconfig = new EncoderConfig();
+    String payload = Utils.replaceInStringFromTill(this.buildPayload(),"<v7:name>","</v7:name>","");
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
+        equalTo("18062"));
+
+  }
+
+  @Test()
   private void InvalidRequestDetails() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
