@@ -5,9 +5,11 @@ package com.shutterfly.missioncontrol.statusacknowledgement;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -17,6 +19,7 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 /**
@@ -24,11 +27,10 @@ import org.testng.annotations.Test;
  */
 public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String record = "";
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -47,14 +49,12 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 
   }
 
-  CsvReaderWriter cwr = new CsvReaderWriter();
-
   @Test(groups = "Post_StatusAck_BDO_Response", dependsOnGroups = {"Process_InvalidFile_BDO_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     record = record + "_StatusAck";
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+    EcgFileSafeUtil.updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
         record, AppConstants.BULK_FILE_INVALID);
 
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -70,12 +70,20 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
   @Test(groups = "Post_StatusAck_BDO_DB", dependsOnGroups = {"Post_StatusAck_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     record = record.replace("_StatusAck", "");
-
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.STATUS_ACK);
+  }
+
+  @Test(groups = "Post_StatusAck_BDO_DB_Items", dependsOnGroups = {"Post_StatusAck_BDO_DB"})
+  private void validateItemRecordsInDB() throws Exception {
+    record = record + "_StatusAck";
+    Document trackingRecord_1 = databaseValidationUtil.getTrackingRecord(record + "_1");
+    Document trackingRecord_2 = databaseValidationUtil.getTrackingRecord(record + "_2");
+    assertNotNull(trackingRecord_1);
+    assertNotNull(trackingRecord_2);
   }
 }

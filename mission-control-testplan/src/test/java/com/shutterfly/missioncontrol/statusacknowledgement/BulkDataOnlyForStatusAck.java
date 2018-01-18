@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 public class BulkDataOnlyForStatusAck extends ConfigLoader {
 
   private String uri = "";
-
+  CsvReaderWriter cwr = new CsvReaderWriter();
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
 
@@ -38,19 +38,16 @@ public class BulkDataOnlyForStatusAck extends ConfigLoader {
   private String buildPayload() throws IOException {
     URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-
     return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
   }
-
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Process_InvalidFile_BDO_Response")
   private void getResponse() throws IOException, InterruptedException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-        AppConstants.BULK_FILE);
+        AppConstants.BULK_FILE_INVALID);
 
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
@@ -67,9 +64,9 @@ public class BulkDataOnlyForStatusAck extends ConfigLoader {
 
   }
 
-  @Test(groups = "Process_InvalidFile_BDO_DB", dependsOnGroups = {"Process_InvalidFile_BDO_Response"})
+  @Test(groups = "Process_InvalidFile_BDO_DB", dependsOnGroups = {
+      "Process_InvalidFile_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
