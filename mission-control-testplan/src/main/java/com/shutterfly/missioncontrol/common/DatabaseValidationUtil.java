@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
 /**
@@ -21,6 +23,8 @@ import org.testng.Assert;
  */
 
 public class DatabaseValidationUtil extends ConfigLoader {
+
+  private static final Logger logger = LoggerFactory.getLogger(ConfigLoader.class);
 
   private static final String REQUEST_ID = "requestId";
   private ConnectToDatabase connectToDatabase;
@@ -85,23 +89,20 @@ public class DatabaseValidationUtil extends ConfigLoader {
     return fulfillmentStatusTracking.find(eq(REQUEST_ID, record)).first();
   }
 
-  private boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record,
-      String statusToValidate,
-      String requestTypeToValidate) {
+  public boolean validateRecordStatus(Document fulfillmentStatusTrackingDoc, String record,
+      String statusToValidate, String requestTypeToValidate) {
     boolean flag = false;
-
-    @SuppressWarnings("unchecked")
     List<Document> requestTrackingDoc = (ArrayList<Document>) fulfillmentStatusTrackingDoc
         .get("requestTracking");
 
     for (int i = 0; i < requestTrackingDoc.size(); i++) {
-      if (requestTrackingDoc.get(i).getString("status").equals("PutToDeadLetterTopic")) {
-        Assert.assertEquals(false, true, " Request is moved to Dead Letter Topic " + record);
+      if (requestTrackingDoc.get(i).getString("status").equals(statusToValidate)
+          && requestTrackingDoc.get(i).getString("requestType").equals(requestTypeToValidate)) {
+        logger.info("Request is successfully Processed : " + record);
         flag = true;
         break;
-      } else if (requestTrackingDoc.get(i).getString("status").equals(statusToValidate)
-          && requestTrackingDoc.get(i).getString("requestType").equals(requestTypeToValidate)) {
-        Assert.assertEquals(true, true, "Request is successfully Processed : " + record);
+      } else if (requestTrackingDoc.get(i).getString("status").equals("PutToDeadLetterTopic")) {
+        logger.info(" Request is moved to Dead Letter Topic " + record);
         flag = true;
         break;
       }

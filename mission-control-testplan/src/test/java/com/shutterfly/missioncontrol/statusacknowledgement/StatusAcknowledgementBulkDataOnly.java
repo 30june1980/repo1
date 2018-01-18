@@ -19,6 +19,7 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import org.bson.Document;
 import org.testng.annotations.Test;
 
@@ -85,5 +86,18 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
     Document trackingRecord_2 = databaseValidationUtil.getTrackingRecord(record + "_2");
     assertNotNull(trackingRecord_1);
     assertNotNull(trackingRecord_2);
+  }
+
+  @Test(groups = "Post_StatusAck_BDO_DB_Items", dependsOnGroups = {"Post_StatusAck_BDO_DB"})
+  private void validateItemStatusInDB() throws Exception {
+    Document trackingRecord_1 = databaseValidationUtil.getStatusTrackingRecord(record + "_1");
+    Document trackingRecord_2 = databaseValidationUtil.getStatusTrackingRecord(record + "_2");
+    assertNotNull(trackingRecord_1);
+    databaseValidationUtil
+        .validateRecordStatus(trackingRecord_1, record + "_1", "ItemValidationFailure",
+            AppConstants.POST_STATUS);
+    assertNotNull(trackingRecord_2);
+    databaseValidationUtil.validateRecordStatus(trackingRecord_2, record + "_2", "RequestSavedToDB",
+        AppConstants.POST_STATUS);
   }
 }
