@@ -86,7 +86,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
         equalTo("Accepted"));
   }
 
-  @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_DB"})
+  @Test(groups = "Post_TIDO_Response", dependsOnGroups = {"Process_TIDO_Valid_Request_Validation"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()

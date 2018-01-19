@@ -112,6 +112,16 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
     assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
   }
 
+  @Test(groups = "Archive_TIDO_DB_eventHistory", dependsOnGroups = {"Archive_TIDO_DB"})
+  private void validateDestinationIdInDB() throws Exception {
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
+    ArrayList fulfillmentMetaDataList = (ArrayList<Document>) trackingRecord
+        .get("fulfillmentMetaData");
+    Document metaData1 = (Document) fulfillmentMetaDataList.get(2);
+    assertEquals(metaData1.get("name"),"archiveDestinationId");
+    assertEquals(metaData1.get("value"),"EDMS");
+  }
+
 
   private String buildPayloadForInvalidArchive() throws IOException {
     URL file = Resources
