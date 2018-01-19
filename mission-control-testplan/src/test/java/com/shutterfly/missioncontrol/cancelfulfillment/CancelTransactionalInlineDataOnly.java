@@ -3,34 +3,29 @@
  */
 package com.shutterfly.missioncontrol.cancelfulfillment;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertNotNull;
 
+import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.RequestUtil;
 import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
-import io.restassured.config.EncoderConfig;
-import io.restassured.http.ContentType;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
 import java.util.ArrayList;
 import java.util.UUID;
 import org.apache.commons.codec.binary.StringUtils;
 import org.bson.Document;
 import org.testng.annotations.Test;
-
-import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 
 /**
  * @author dgupta
@@ -93,7 +88,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Cancel_TIDO_Duplicate_1")
   private void validationForDuplicateCancel_1() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
-    sendProcess(requestId);
+    RequestUtil.sendProcess(requestId);
     //send cancel request
     URL cancelFile = Resources
         .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
@@ -139,7 +134,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Cancel_TIDO_Duplicate_2")
   private void validationForDuplicateCancel_2() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
-    sendProcess(requestId);
+    RequestUtil.sendProcess(requestId);
     //send invalid cancel request
     URL cancelFile = Resources
         .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
@@ -185,33 +180,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
         equalTo("Accepted"));
   }
 
-  private void sendProcess(String requestId) throws Exception {
-    basicConfigNonWeb();
-    //send process request
-    URL file = Resources
-        .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
-    String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    payload = payload.replaceAll("REQUEST_101", requestId);
 
-    //remove charset from content type using encoder config, build the payload
-    EncoderConfig encoderconfig = new EncoderConfig();
-    Response response = given()
-        .config(RestAssured.config()
-            .encoderConfig(
-                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-        .body(payload).when()
-        .post(config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment"));
-
-    response.then().body(
-        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
-        equalTo("Accepted"));
-
-    //validate process is sent to supplier
-    databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_SUPPLIER,
-            AppConstants.PROCESS);
-  }
 
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validateCancelForNoProcess() throws IOException {
@@ -244,7 +213,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyRejected() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
-    sendProcess(requestId);
+    RequestUtil.sendProcess(requestId);
     sendPostWithRejectedEvent(requestId);
     sendCancel(requestId);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
@@ -261,7 +230,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyFulfilled() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
-    sendProcess(requestId);
+    RequestUtil.sendProcess(requestId);
     sendPostWithFulfilledEvent(requestId);
     sendCancel(requestId);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
