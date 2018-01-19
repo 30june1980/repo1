@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import javax.annotation.Nonnegative;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,14 +20,17 @@ public class PortalPage {
     private final String searchResultCountLblXpath = "//app-pagination/div/div[2]/span[2]/span";
     private final String activeUserNameLblXpath = "//text()[contains(.,'TestUserFirstName')]//ancestor::a[1]";
     private final String logoutLblXpath = "//a[text()='Logout']";
-
+    private final String dropDownOptionsXpath = "//*[@id=\"additional_fields\"]/div/div/div[1]/div/div/ng2-auto-complete";
     private WebDriver driver;
+
     @FindBy(how = How.CSS, using = "img[alt='United Health Care logo']")
     private WebElement uhcLogoImg;
     @FindBy(how = How.CSS, using = "body > app-root > nav.nav.navbar.nav2 > div > ul > li")
     private List<WebElement> tabLblList;
     @FindBy(how = How.CSS, using = "body > app-root > div")
     private WebElement footerLbl;
+
+    // Search panel
     @FindBy(how = How.ID, using = "requestId")
     private WebElement requestIdTxt;
     @FindBy(how = How.ID, using = "from")
@@ -35,13 +39,25 @@ public class PortalPage {
     private WebElement toDateTxt;
     @FindBy(how = How.XPATH, using = "//div[2]/datatable-body-cell[1]")
     private List<WebElement> requestDatesTxt;
+    @FindBy(how = How.XPATH, using = "//div[2]/datatable-body-cell[3]")
+    private List<WebElement> requestIdsTxt;
     @FindBy(how = How.ID, using = "smc_search")
     private WebElement searchBtn;
+    @FindBy(how = How.CSS, using = "app-navigating-back > h4 > a")
+    private WebElement backBtn;
+
+
+    // Search - Dynamic filters
+    @FindBy(how = How.ID, using = "smc_view_additional_details")
+    private WebElement additionalFiltersLbl;
+    @FindBy(how = How.ID, using = "smc_input_additional_filters")
+    private WebElement filterTypeDropdown;
 
     public PortalPage(WebDriver edriver) {
         this.driver = edriver;
     }
 
+    // Dynamic web element functions
     private WebElement getLoader() {
         return driver.findElement(By.xpath(loaderXpath));
     }
@@ -66,6 +82,8 @@ public class PortalPage {
         return driver.findElement(By.xpath(logoutLblXpath));
     }
 
+
+    // Action functions
     public void setRequestIdTxt(String requestId) {
         requestIdTxt.sendKeys(requestId);
     }
@@ -81,6 +99,18 @@ public class PortalPage {
     public void clickOnSearchBtn() {
         searchBtn.click();
         PageUtils.waitForLoadingToComplete(driver, getLoader());
+    }
+
+    public void clickOnBackBtn() {
+        backBtn.click();
+    }
+
+    public void clickOnAdditionalFiltersLbl() {
+        additionalFiltersLbl.click();
+    }
+
+    public void clickOnFilterDropdown() {
+        filterTypeDropdown.click();
     }
 
     public void clickOnNextLbl() {
@@ -104,7 +134,12 @@ public class PortalPage {
         getLogoutLbl().click();
     }
 
+    public void clickOnIthResult(@Nonnegative int i) {
+        requestDatesTxt.get(i).click();
+    }
 
+
+    // Utility functions
     public boolean isNextLblClickable() {
         try {
             getNextLbl().isDisplayed();
@@ -136,6 +171,10 @@ public class PortalPage {
         return uhcLogoImg.isDisplayed();
     }
 
+    public boolean isBackButtonDisplayed() {
+        return backBtn.isDisplayed();
+    }
+
     public List<String> getTabLblList() {
         return tabLblList.stream().map(x -> x.getText().trim()).collect(Collectors.toList());
     }
@@ -150,6 +189,14 @@ public class PortalPage {
 
     public List<String> getRequestDates() {
         return requestDatesTxt.stream().map(requestDate -> requestDate.getText().trim()).collect(Collectors.toList());
+    }
+
+    public List<String> getRequestIds() {
+        return requestIdsTxt.stream().map(requestId -> requestId.getText().trim()).collect(Collectors.toList());
+    }
+
+    public String getDropDownOptions() {
+        return driver.findElement(By.xpath(dropDownOptionsXpath)).getText().trim();
     }
 
 }

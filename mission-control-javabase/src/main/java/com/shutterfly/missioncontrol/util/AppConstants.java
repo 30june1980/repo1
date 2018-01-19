@@ -32,4 +32,17 @@ public class AppConstants {
 
     public static final String DATE_PATTERN = "MM/dd/yy";
 
+    public static final String TIPRSI= "TIPRSI";
+    public static final String TIPRMI = "TIPRMI";
+    public static final String TIPRMI_NBSI = "TIPRMI_NBSI";
+    public static final String TIDOB = "TIDOB";
+    public static final String TEPR = "TEPR";
+    public static final String EUTEPR = "EUTEPR";
+    public static final String BPR_SA = "BPR_SA";
+    public static final String BPR = "BPR";
+    public static final String BDO_SA = "BDO_SA";
+    public static final String TEDO = "TEDO";
+    public static final String BDO = "BDO";
+    public static final String TIDO = "TIDO";
+
 }

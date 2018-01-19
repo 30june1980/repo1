@@ -10,6 +10,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.concurrent.TimeUnit;
+
 public class PortalTests extends ConfigLoaderWeb {
 
     private String portalUrl;
@@ -48,4 +50,24 @@ public class PortalTests extends ConfigLoaderWeb {
         PageUtils.logout(portalPage);
         Assert.assertEquals(loginPageUrl, driver.getCurrentUrl());
     }
+
+    @Test
+    public void filterOrderTest() {
+        driver.get(portalUrl);
+        portalPage.clickOnAdditionalFiltersLbl();
+
+        try {
+            TimeUnit.SECONDS.sleep(2L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        portalPage.clickOnFilterDropdown();
+        String[] options = portalPage.getDropDownOptions().split("\n");
+        Assert.assertTrue(options.length > 1);
+        for (int i = 1; i < options.length - 1; i++) {
+            Assert.assertTrue(options[i].compareTo(options[i + 1]) <= 0);
+        }
+    }
+
 }

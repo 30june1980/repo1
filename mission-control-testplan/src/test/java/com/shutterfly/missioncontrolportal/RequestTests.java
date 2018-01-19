@@ -16,8 +16,11 @@ import java.time.format.DateTimeFormatter;
 
 public class RequestTests extends ConfigLoaderWeb {
 
-    private PortalPage portalPage;
     private String portalUrl;
+    private PortalPage portalPage;
+
+    public RequestTests() {
+    }
 
     @BeforeClass
     public void setup() {
@@ -31,7 +34,7 @@ public class RequestTests extends ConfigLoaderWeb {
         portalPage = PageFactory.initElements(driver, PortalPage.class);
     }
 
-    @Test
+    @Test(dependsOnMethods = "dateFilterTest")
     public void paginationTest() {
         driver.get(portalUrl);
         portalPage.setRequestIdTxt("1");
@@ -76,5 +79,31 @@ public class RequestTests extends ConfigLoaderWeb {
             portalPage.clickOnNextLbl();
         }
     }
+
+    @Test
+    public void requestIdFilterTest() {
+        driver.get(portalUrl);
+        String requestId = "1";
+        portalPage.setRequestIdTxt(requestId);
+
+        portalPage.clickOnSearchBtn();
+        Assert.assertTrue(portalPage.areSearchResultsVisible());
+
+        int results = portalPage.getSearchResultCount();
+        int possiblePagesForPagination = results / 20;
+        checkRequestIdWhilePaginating(possiblePagesForPagination, requestId);
+    }
+
+    private void checkRequestIdWhilePaginating(int possiblePagesForPagination, String requestId) {
+        int count = 0;
+        while (count < possiblePagesForPagination) {
+            ++count;
+            for (String id : portalPage.getRequestIds()) {
+                Assert.assertTrue(id.toLowerCase().contains(requestId));
+            }
+            portalPage.clickOnNextLbl();
+        }
+    }
+
 
 }
