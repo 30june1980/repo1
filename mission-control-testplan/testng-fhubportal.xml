@@ -17,6 +17,7 @@
             <class name="com.shutterfly.missioncontrolportal.RulesTests"/>
             <class name="com.shutterfly.missioncontrolportal.SchedulesTest"/>
             <class name="com.shutterfly.missioncontrolportal.ServersTests"/>
+            <class name="com.shutterfly.missioncontrolportal.SearchTests"/>
         </classes>
 
     </test> <!-- Portal-Test -->
