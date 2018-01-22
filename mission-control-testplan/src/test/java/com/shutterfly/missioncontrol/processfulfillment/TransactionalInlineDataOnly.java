@@ -5,10 +5,12 @@ package com.shutterfly.missioncontrol.processfulfillment;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 /**
@@ -46,12 +49,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Process_TIDO_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
-    /*
-     * remove charset from content type using encoder config
-		 * 
-		 * build the payload
-		 */
-
+    //remove charset from content type using encoder config, build the payload
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
@@ -70,9 +68,52 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
+
+  @Test(groups = "Process_TIDO_Valid_Request_Validation", dependsOnGroups = {
+      "Process_TIDO_DB"})
+  private void validateRecordFieldsInDbForValidRequest() throws Exception {
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record,
+            AppConstants.ACCEPTED);
+    assertEquals(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"), "SENT_TO_SUPPLIER");
+    Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
+    Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
+    assertNotNull(requestDetail.get("transactionalRequestDetail"));
+  }
+
+
+/*  @Test(groups = "Process_TIDO_InValid_Request_Validation")
+  private void validateRecordFieldsInDbForInValidRequest() throws Exception {
+    basicConfigNonWeb();
+    URL file = Resources
+        .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    //set sourceId null
+    payload = payload.replaceAll("REQUEST_101", requestId)
+        .replace("CIRRUS", "");
+    //remove charset from content type using encoder config, build the payload
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Rejected"));
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(requestId);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, requestId,
+            AppConstants.REJECTED);
+  }*/
 }

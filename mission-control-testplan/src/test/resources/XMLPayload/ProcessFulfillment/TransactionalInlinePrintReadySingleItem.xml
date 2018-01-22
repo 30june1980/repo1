@@ -24,7 +24,7 @@ xmlns="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:xsi="http://www.w3.org/2
             <recipient>
                 <recipientId>111223333</recipientId>
                 <idQualifier>BrokerIDType</idQualifier>
-                <deliveryMethod1>Mailed</deliveryMethod1>
+                <deliveryMethod1>Emailed</deliveryMethod1>
                 <deliveryMethod2></deliveryMethod2>
                 <recipientType>BrokerType</recipientType>
                 <person>

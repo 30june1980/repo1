@@ -6,24 +6,21 @@ package com.shutterfly.missioncontrol.processfulfillment;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-import com.shutterfly.missioncontrol.common.AppConstants;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-
-import org.testng.annotations.Test;
-
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+import org.testng.annotations.Test;
 
 /**
  * @author dgupta
@@ -80,8 +77,8 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 
   @Test(groups = "Process_TXDO_DB", dependsOnGroups = {"Process_TXDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
