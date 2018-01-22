@@ -182,7 +182,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
 
 
-  @Test(groups = "Cancel_TIDO_For_No_Process")
+/*  @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validateCancelForNoProcess() throws IOException {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
 
@@ -201,14 +201,14 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
         equalTo("Accepted"));
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
     assertNotNull(trackingRecord.get("postFulfillmentStatus"));
-   /* ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+   *//* ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
     Document eventHistory = (Document) eventHistoryList.get(2);
     assertEquals(eventHistory.get("eventType"), "Cancelled");
     assertEquals(eventHistory.get("statusCode"), "Rejected");
     ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
     Document exceptionDetail = (Document) exceptionDetailList.get(0);
-    assertEquals(exceptionDetail.get("errorCode"), "18420");*/
-  }
+    assertEquals(exceptionDetail.get("errorCode"), "18420");*//*
+  }*/
 
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyRejected() throws Exception {
