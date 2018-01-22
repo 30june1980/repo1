@@ -88,7 +88,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   }
 
 
-  @Test(groups = "Process_TIDO_InValid_Request_Validation")
+/*  @Test(groups = "Process_TIDO_InValid_Request_Validation")
   private void validateRecordFieldsInDbForInValidRequest() throws Exception {
     basicConfigNonWeb();
     URL file = Resources
@@ -115,5 +115,5 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     TrackingRecordValidationUtil
         .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, requestId,
             AppConstants.REJECTED);
-  }
+  }*/
 }
