@@ -72,6 +72,7 @@ public class ConfigLoaderWeb {
 
         String environment = config.getProperty(AppConstants.ENVIRONMENT).toLowerCase();
         Platform operatingSystem = Platform.fromString(platform.toUpperCase());
+        browser = browser.toLowerCase();
         setBrowser(environment, operatingSystem, browser, url);
     }
 
@@ -121,6 +122,7 @@ public class ConfigLoaderWeb {
                 break;
 
             default:
+                throw new RuntimeException("Invalid browser specified in the XML file.");
         }
 
         driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
