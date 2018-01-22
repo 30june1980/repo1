@@ -110,20 +110,10 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
-
     Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
         .getTrackingRecord(requestId);
-    assertNotNull(fulfillmentTrackingRecordDoc.get("_id"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("_class"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("requestId"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("auditHistory"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("eventHistory"));
-    assertNotNull(fulfillmentTrackingRecordDoc.get("fulfillmentMetaData"));
-    Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
-    assertNotNull(fulfillmentRequest);
-    assertNotNull(fulfillmentRequest.get("requestHeader"));
-    assertNotNull(fulfillmentRequest.get("requestDetail"));
-    assertNotNull(fulfillmentRequest.get("requestTrailer"));
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, requestId,
+            AppConstants.REJECTED);
   }
 }
