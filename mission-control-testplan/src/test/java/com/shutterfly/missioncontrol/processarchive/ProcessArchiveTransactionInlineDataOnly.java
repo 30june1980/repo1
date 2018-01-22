@@ -107,7 +107,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
     Object archiveRequest = archiveRequestList.get(0);
     assertNotNull(archiveRequest);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
-    Document eventHistory = (Document) eventHistoryList.get(2);
+    Document eventHistory = (Document) eventHistoryList.get(3);
     assertEquals(eventHistory.get("eventType"), "ArchivePending");
     assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
   }
