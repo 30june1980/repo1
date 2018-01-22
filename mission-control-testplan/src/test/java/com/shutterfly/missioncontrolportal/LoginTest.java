@@ -3,6 +3,7 @@ package com.shutterfly.missioncontrolportal;
 import com.shutterfly.missioncontrol.excelobjects.ReadDataFromDataSource;
 import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrolportal.Utils.PageUtils;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
 import com.shutterfly.missioncontrolportal.pageobject.PortalPage;
 import org.openqa.selenium.support.PageFactory;
@@ -35,6 +36,7 @@ public class LoginTest extends ConfigLoaderWeb {
         try {
             readDataFromDataSource.readLoginData(1).getPortalUsers().forEach(portalUser -> {
                 loginPage.login(url, portalUser.getUserName(), portalUser.getPassword());
+                PageUtils.logout(portalPage);
             });
         } catch (IOException e) {
             e.printStackTrace();
