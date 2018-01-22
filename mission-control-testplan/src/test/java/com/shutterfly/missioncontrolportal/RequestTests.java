@@ -34,10 +34,12 @@ public class RequestTests extends ConfigLoaderWeb {
         portalPage = PageFactory.initElements(driver, PortalPage.class);
     }
 
-    @Test(dependsOnMethods = "dateFilterTest")
+    @Test
     public void paginationTest() {
         driver.get(portalUrl);
         portalPage.setRequestIdTxt("1");
+        portalPage.setFromDateTxt("");
+        portalPage.setToDateTxt("");
         portalPage.clickOnSearchBtn();
         Assert.assertTrue(portalPage.areSearchResultsVisible());
         int results = portalPage.getSearchResultCount();
@@ -85,7 +87,8 @@ public class RequestTests extends ConfigLoaderWeb {
         driver.get(portalUrl);
         String requestId = "1";
         portalPage.setRequestIdTxt(requestId);
-
+        portalPage.setToDateTxt("");
+        portalPage.setFromDateTxt("");
         portalPage.clickOnSearchBtn();
         Assert.assertTrue(portalPage.areSearchResultsVisible());
 

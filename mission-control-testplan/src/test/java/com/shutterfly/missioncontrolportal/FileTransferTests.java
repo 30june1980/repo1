@@ -15,25 +15,25 @@ import org.testng.annotations.Test;
 public class FileTransferTests extends ConfigLoaderWeb {
 
     private PortalPage portalPage;
-    private String materialsTabUrl;
+    private String fileTransfersTabUrl;
 
     @BeforeClass
     public void setup() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         PageUtils.login(loginPage, config);
 
-        materialsTabUrl = config.getProperty(AppConstants.APPLICATION_URL);
-        if (materialsTabUrl == null) {
+        fileTransfersTabUrl = config.getProperty(AppConstants.APPLICATION_URL);
+        if (fileTransfersTabUrl == null) {
             throw new RuntimeException("ApplicationUrl property not found");
         }
 
-        materialsTabUrl += "#/filetransfer";
+        fileTransfersTabUrl += "#/filetransfer";
         portalPage = PageFactory.initElements(driver, PortalPage.class);
     }
 
     @Test
     public void paginationTest() {
-        driver.get(materialsTabUrl);
+        driver.get(fileTransfersTabUrl);
         Assert.assertTrue(portalPage.areSearchResultsVisible());
 
         int results = portalPage.getSearchResultCount();

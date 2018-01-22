@@ -15,25 +15,25 @@ import org.testng.annotations.Test;
 public class RulesTests extends ConfigLoaderWeb {
 
     private PortalPage portalPage;
-    private String materialsTabUrl;
+    private String rulesTabUrl;
 
     @BeforeClass
     public void setup() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         PageUtils.login(loginPage, config);
 
-        materialsTabUrl = config.getProperty(AppConstants.APPLICATION_URL);
-        if (materialsTabUrl == null) {
+        rulesTabUrl = config.getProperty(AppConstants.APPLICATION_URL);
+        if (rulesTabUrl == null) {
             throw new RuntimeException("ApplicationUrl property not found");
         }
 
-        materialsTabUrl += "#/rules";
+        rulesTabUrl += "#/rules";
         portalPage = PageFactory.initElements(driver, PortalPage.class);
     }
 
     @Test
     public void paginationTest() {
-        driver.get(materialsTabUrl);
+        driver.get(rulesTabUrl);
         Assert.assertTrue(portalPage.areSearchResultsVisible());
 
         int results = portalPage.getSearchResultCount();

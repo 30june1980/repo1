@@ -5,7 +5,7 @@ public class AppConstants {
     private AppConstants() {
     }
 
-    public static final long IMPLICIT_WAIT_SECONDS = 15000L;
+    public static final long IMPLICIT_WAIT_SECONDS = 15L;
 
     public static final String LOCAL = "local";
     public static final String NODE_URL = "nodeUrl";

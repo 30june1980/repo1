@@ -71,7 +71,7 @@ public class PageUtils {
     private static void assertThatButtonIsNotClickable(WebDriver driver, PortalPage portalPage, boolean moveAhead) {
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         Assert.assertFalse(moveAhead ? portalPage.isPrevLblClickable() : portalPage.isNextLblClickable());
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
     }
 
 }
