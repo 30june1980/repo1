@@ -210,7 +210,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     assertEquals(exceptionDetail.get("errorCode"), "18420");*//*
   }*/
 
-  @Test(groups = "Cancel_TIDO_For_No_Process")
+  /*@Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyRejected() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
     RequestUtil.sendProcess(requestId);
@@ -242,7 +242,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
     Document exceptionDetail = (Document) exceptionDetailList.get(0);
     assertEquals(exceptionDetail.get("errorCode"), "18042");
-  }
+  }*/
 
   private void sendPostWithRejectedEvent(String requestId) throws Exception {
     basicConfigNonWeb();
