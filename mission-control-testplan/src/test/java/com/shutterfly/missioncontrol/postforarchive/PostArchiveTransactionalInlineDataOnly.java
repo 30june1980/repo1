@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.postforarchive;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -77,7 +74,7 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
             AppConstants.POST_STATUS);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
-    Document eventHistory = (Document) eventHistoryList.get(4);
+    Document eventHistory = (Document) eventHistoryList.get(5);
     assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
     assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
   }
