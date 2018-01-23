@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -24,9 +21,6 @@ import org.testng.annotations.Test;
  */
 public class PostBulkPrintReady extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
@@ -54,11 +48,9 @@ public class PostBulkPrintReady extends ConfigLoader {
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
-    record = record + AppConstants.POST_SUFFIX;
-
     EcgFileSafeUtil
         .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-            AppConstants.BULK_FILE);
+            AppConstants.BULK_FILE, AppConstants.POST_SUFFIX);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -71,8 +63,6 @@ public class PostBulkPrintReady extends ConfigLoader {
 
   @Test(groups = "Post_BPR_DB", dependsOnGroups = {"Post_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    record = record.replace(AppConstants.POST_SUFFIX, "");
-
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);

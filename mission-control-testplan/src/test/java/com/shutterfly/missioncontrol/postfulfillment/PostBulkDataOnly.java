@@ -32,6 +32,7 @@ public class PostBulkDataOnly extends ConfigLoader {
   private String payload = "";
   private String record = "";
   CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -52,11 +53,9 @@ public class PostBulkDataOnly extends ConfigLoader {
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
-    record = record + AppConstants.POST_SUFFIX;
-
     EcgFileSafeUtil
         .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-            AppConstants.BULK_FILE);
+            AppConstants.BULK_FILE, AppConstants.POST_SUFFIX);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -68,17 +67,14 @@ public class PostBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_BDO_DB", dependsOnGroups = {"Post_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    record = record.replace(AppConstants.POST_SUFFIX, "");
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
   }
 
-  @Test(groups = "Post_BDO_DB_Items", dependsOnGroups = {"Post_BDO_Response"})
+  @Test(groups = "Post_BDO_DB_Items", dependsOnGroups = {"Post_BDO_DB"})
   private void validateBulkItemsEventHistoryInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
-    Document trackingRecord = databaseValidationUtil
-        .getTrackingRecord(record + AppConstants.POST_SUFFIX + "_1");
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record + "_1");
     assertNotNull(trackingRecord);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
     Document eventHistory = (Document) eventHistoryList.get(0);

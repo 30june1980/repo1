@@ -42,6 +42,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
   public void validateRecordsAvailabilityAndStatusCheck(String record, String statusToValidate,
       String requestTypeToValidate) throws Exception {
     basicConfigNonWeb();
+    int maxRetry = 15;
     /*
      * Verification of RequestId presence in fulfillment_tracking_record and
 		 * fulfillment_status_tracking collection Verification of
@@ -51,7 +52,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
     Document fulfillmentTrackingRecordDoc;
     Document fulfillmentStatusTrackingDoc;
 
-    for (int retry = 0; retry <= 7; retry++) {
+    for (int retry = 0; retry <= maxRetry; retry++) {
       try {
         fulfillmentTrackingRecordDoc = getTrackingRecordByRequestId(record);
         if (fulfillmentTrackingRecordDoc != null) {
@@ -69,10 +70,10 @@ public class DatabaseValidationUtil extends ConfigLoader {
           throw new Exception("Record Not Found " + record);
         }
       } catch (Exception ex) {
-        if (retry >= 7) {
+        if (retry >= maxRetry) {
           throw new Exception(ex.getMessage());
         } else {
-          TimeUnit.SECONDS.sleep(20);
+          TimeUnit.SECONDS.sleep(10);
         }
       }
     }
@@ -85,7 +86,8 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
   public Document getTrackingRecord(String record) throws Exception {
     Document fulfillmentTrackingRecordDoc = null;
-    for (int retry = 0; retry <= 7; retry++) {
+    int maxRetry = 10;
+    for (int retry = 0; retry <= maxRetry; retry++) {
       try {
         fulfillmentTrackingRecordDoc = fulfillmentTrackingRecord.find(eq(REQUEST_ID, record))
             .first();
@@ -95,10 +97,10 @@ public class DatabaseValidationUtil extends ConfigLoader {
           throw new Exception("Record Not Found " + record);
         }
       } catch (Exception ex) {
-        if (retry >= 7) {
+        if (retry >= maxRetry) {
           logger.info(ex.getMessage());
         } else {
-          TimeUnit.SECONDS.sleep(20);
+          TimeUnit.SECONDS.sleep(10);
         }
       }
     }

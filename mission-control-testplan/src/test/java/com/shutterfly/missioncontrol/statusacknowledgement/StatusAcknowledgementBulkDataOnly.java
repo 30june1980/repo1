@@ -53,9 +53,8 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
-    record = record + "_StatusAck";
     EcgFileSafeUtil.updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record, AppConstants.BULK_FILE_INVALID);
+        record, AppConstants.BULK_FILE_INVALID, "_StatusAck");
 
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
@@ -69,7 +68,6 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_StatusAck_BDO_DB", dependsOnGroups = {"Post_StatusAck_BDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    record = record.replace("_StatusAck", "");
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
@@ -80,7 +78,6 @@ public class StatusAcknowledgementBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_StatusAck_BDO_DB_Items", dependsOnGroups = {"Post_StatusAck_BDO_DB"})
   private void validateItemRecordsInDB() throws Exception {
-    record = record + "_StatusAck";
     Document trackingRecord_1 = databaseValidationUtil.getTrackingRecord(record + "_1");
     Document trackingRecord_2 = databaseValidationUtil.getTrackingRecord(record + "_2");
     assertNotNull(trackingRecord_1);

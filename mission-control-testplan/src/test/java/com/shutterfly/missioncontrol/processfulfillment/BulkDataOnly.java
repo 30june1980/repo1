@@ -27,9 +27,9 @@ import org.testng.annotations.Test;
 public class BulkDataOnly extends ConfigLoader {
 
   private String uri = "";
-
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -44,8 +44,6 @@ public class BulkDataOnly extends ConfigLoader {
     return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
   }
-
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Process_BDO_Response")
   private void getResponse() throws IOException, InterruptedException {
@@ -99,9 +97,6 @@ public class BulkDataOnly extends ConfigLoader {
 
     payload = payload.replaceAll("REQUEST_101", requestId)
         .replaceAll("bulkfile_all_valid.xml", (requestId + ".xml")).replace("BRMS", "");
-   /* EcgFileSafeUtil
-        .putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), requestId,
-            AppConstants.BULK_FILE);*/
 
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()

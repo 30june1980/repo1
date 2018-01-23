@@ -24,11 +24,9 @@ import org.testng.annotations.Test;
  */
 public class PostArchiveBulkPrintReady extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String record = "";
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -37,18 +35,15 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
   }
 
-
   private String buildPayload() throws IOException {
     URL file = Resources.getResource("XMLPayload/PostArchive/PostArchiveBulkPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("BPR");
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
-        (record + ".xml"));
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+        (record + AppConstants.POST_FOR_ARCHIVE_SUFFIX + ".xml"));
   }
 
-  CsvReaderWriter cwr = new CsvReaderWriter();
-
-  @Test(groups = "PostForArchive_BPR_Response"  , dependsOnGroups = {"Archive_BPR_DB"})
+  @Test(groups = "PostForArchive_BPR_Response", dependsOnGroups = {"Archive_BPR_DB"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -67,7 +62,6 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
   @Test(groups = "PostForArchive_BPR_DB", dependsOnGroups = {"PostForArchive_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);

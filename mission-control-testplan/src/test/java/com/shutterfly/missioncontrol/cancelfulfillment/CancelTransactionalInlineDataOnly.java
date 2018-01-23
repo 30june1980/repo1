@@ -52,7 +52,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     return payload = payload.replaceAll("REQUEST_101", record);
   }
 
-  @Test(groups = "Cancel_TIDO_Response", dependsOnGroups = {"PostForArchive_TIDO_DB_metadata"})
+  @Test(groups = "Cancel_TIDO_Response", dependsOnGroups = {"PostForArchive_BDO_DB_eventHistory"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()

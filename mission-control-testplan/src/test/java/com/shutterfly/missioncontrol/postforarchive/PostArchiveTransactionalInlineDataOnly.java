@@ -67,15 +67,13 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
             AppConstants.POST_STATUS);
   }
 
-  @Test(groups = "PostForArchive_TIDO_DB_metadata", dependsOnGroups = {"PostForArchive_TIDO_DB"})
-  private void validateMetadataInDatabase() throws Exception {
-    databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
-            AppConstants.POST_STATUS);
+  @Test(groups = "PostForArchive_TIDO_DB_eventHistory", dependsOnGroups = {"PostForArchive_TIDO_DB"})
+  private void validateEventHistoryInDatabase() throws Exception {
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
     Document eventHistory = (Document) eventHistoryList.get(5);
     assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
     assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
   }
+
 }

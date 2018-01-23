@@ -20,8 +20,6 @@
       <sch:eventType>ArchiveConfirmed</sch:eventType>
       <sch:receivedDate>2001-12-17T09:35:47Z</sch:receivedDate>
       <sch:dispatchedDate>2001-12-17T09:40:47Z</sch:dispatchedDate>
-      <sch:recipientId/>
-      <sch:deliveryMethodCd/>
       <sch:statusCode>Accepted</sch:statusCode>
       <sch:successCount>1</sch:successCount>
       <sch:exceptionCount>0</sch:exceptionCount>
