@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.common;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -56,7 +53,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
     for (int retry = 0; retry <= 7; retry++) {
       try {
-        fulfillmentTrackingRecordDoc = getTrackingRecord(record);
+        fulfillmentTrackingRecordDoc = getTrackingRecordByRequestId(record);
         if (fulfillmentTrackingRecordDoc != null) {
           fulfillmentTrackingRecordDoc.containsKey(REQUEST_ID);
           Assert.assertEquals(record, fulfillmentTrackingRecordDoc.getString(REQUEST_ID));
@@ -81,8 +78,31 @@ public class DatabaseValidationUtil extends ConfigLoader {
     }
   }
 
-  public Document getTrackingRecord(String record) {
+  //Do not make this method public instead use this getTrackingRecord public method
+  private Document getTrackingRecordByRequestId(String record) {
     return fulfillmentTrackingRecord.find(eq(REQUEST_ID, record)).first();
+  }
+
+  public Document getTrackingRecord(String record) throws Exception {
+    Document fulfillmentTrackingRecordDoc = null;
+    for (int retry = 0; retry <= 7; retry++) {
+      try {
+        fulfillmentTrackingRecordDoc = fulfillmentTrackingRecord.find(eq(REQUEST_ID, record))
+            .first();
+        if (fulfillmentTrackingRecordDoc != null) {
+          break;
+        } else {
+          throw new Exception("Record Not Found " + record);
+        }
+      } catch (Exception ex) {
+        if (retry >= 7) {
+          throw new Exception(ex.getMessage());
+        } else {
+          TimeUnit.SECONDS.sleep(20);
+        }
+      }
+    }
+    return fulfillmentTrackingRecordDoc;
   }
 
   public Document getStatusTrackingRecord(String record) {

@@ -10,6 +10,7 @@ import static org.testng.Assert.assertNotNull;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
@@ -32,6 +33,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   private String uri = "";
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -68,7 +70,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
@@ -76,8 +78,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Process_TIDO_Valid_Request_Validation", dependsOnGroups = {
       "Process_TIDO_DB"})
   private void validateRecordFieldsInDbForValidRequest() throws Exception {
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
-        .getTrackingRecord(record);
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     TrackingRecordValidationUtil
         .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record,
             AppConstants.ACCEPTED);
@@ -88,7 +89,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   }
 
 
-/*  @Test(groups = "Process_TIDO_InValid_Request_Validation")
+  @Test(groups = "Process_TIDO_InValid_Request_Validation")
   private void validateRecordFieldsInDbForInValidRequest() throws Exception {
     basicConfigNonWeb();
     URL file = Resources
@@ -110,10 +111,9 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Rejected"));
-    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
-        .getTrackingRecord(requestId);
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(requestId);
     TrackingRecordValidationUtil
         .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, requestId,
             AppConstants.REJECTED);
-  }*/
+  }
 }

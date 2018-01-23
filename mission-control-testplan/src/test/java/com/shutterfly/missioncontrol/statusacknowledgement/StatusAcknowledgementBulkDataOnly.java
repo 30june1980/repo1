@@ -19,7 +19,6 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import org.bson.Document;
 import org.testng.annotations.Test;
 
