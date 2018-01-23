@@ -1,7 +1,6 @@
 package com.shutterfly.missioncontrolportal;
 
 import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
-import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrolportal.Utils.PageUtils;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
 import com.shutterfly.missioncontrolportal.pageobject.PortalPage;
@@ -9,8 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import java.util.concurrent.TimeUnit;
 
 public class PortalTests extends ConfigLoaderWeb {
 
@@ -23,9 +20,9 @@ public class PortalTests extends ConfigLoaderWeb {
     public void setup() {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         portalPage = PageFactory.initElements(driver, PortalPage.class);
-        userName = config.getProperty(AppConstants.QA_PORTAL_USERNAME);
-        portalUrl = config.getProperty(AppConstants.QA_PORTAL_URL);
-        loginPageUrl = config.getProperty(AppConstants.QA_PORTAL_LOGIN_URL);
+        userName = config.getProperty("QaPortalUserName");
+        portalUrl = config.getProperty("QaPortalUrl");
+        loginPageUrl = config.getProperty("QaPortalLoginUrl");
 
         PageUtils.login(loginPage, config);
 
@@ -50,24 +47,4 @@ public class PortalTests extends ConfigLoaderWeb {
         PageUtils.logout(portalPage);
         Assert.assertEquals(loginPageUrl, driver.getCurrentUrl());
     }
-
-    @Test
-    public void filterOrderTest() {
-        driver.get(portalUrl);
-        portalPage.clickOnAdditionalFiltersLbl();
-
-        try {
-            TimeUnit.SECONDS.sleep(2L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        portalPage.clickOnFilterDropdown();
-        String[] options = portalPage.getDropDownOptions().split("\n");
-        Assert.assertTrue(options.length > 1);
-        for (int i = 1; i < options.length - 1; i++) {
-            Assert.assertTrue(options[i].compareTo(options[i + 1]) <= 0);
-        }
-    }
-
 }

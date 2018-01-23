@@ -25,7 +25,7 @@
 				<recipient>
 					<recipientId>BP12345</recipientId>
 					<idQualifier>BrokerIDType</idQualifier>
-					<deliveryMethod1>Emailed</deliveryMethod1>
+					<deliveryMethod1>Mailed</deliveryMethod1>
 					<deliveryMethod2></deliveryMethod2>
 					<recipientType>BrokerType</recipientType>
 					<person>

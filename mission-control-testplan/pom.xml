@@ -19,9 +19,8 @@
 				<version>${maven.surfire}</version>
 				<configuration>
 					<suiteXmlFiles>
-						<!--<suiteXmlFile>testng-fhubservices.xml</suiteXmlFile>-->
-						<!--<suiteXmlFile>testng-fhubapi.xml</suiteXmlFile>-->
-						<suiteXmlFile>testng-fhubportal.xml</suiteXmlFile>
+						<suiteXmlFile>testng-fhubservices.xml</suiteXmlFile>
+						<suiteXmlFile>testng-fhubapi.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
