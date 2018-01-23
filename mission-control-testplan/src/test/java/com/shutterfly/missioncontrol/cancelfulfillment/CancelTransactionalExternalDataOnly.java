@@ -6,17 +6,20 @@ package com.shutterfly.missioncontrol.cancelfulfillment;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
-import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+
 import org.testng.annotations.Test;
+
+import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 
 /**
  * @author dgupta
@@ -64,8 +67,8 @@ public class CancelTransactionalExternalDataOnly extends ConfigLoader {
 
   @Test(groups = "Cancel_TXDO_DB", dependsOnGroups = {"Cancel_TXDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
-    ValidationUtilConfig.getInstances()
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.CANCEL);
   }

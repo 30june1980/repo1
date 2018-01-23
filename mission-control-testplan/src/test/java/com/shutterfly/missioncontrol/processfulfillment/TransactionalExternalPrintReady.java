@@ -7,21 +7,24 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
-import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
-import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-import io.restassured.RestAssured;
-import io.restassured.config.EncoderConfig;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+
 import org.testng.annotations.Test;
+
+import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+
+import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 /**
  * @author dgupta
@@ -88,11 +91,11 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
   @Test(groups = "Process_TEPR_DB", dependsOnGroups = {"Process_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
 
-
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
     /*
      *  Supply the final status check value
 		 */
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
 

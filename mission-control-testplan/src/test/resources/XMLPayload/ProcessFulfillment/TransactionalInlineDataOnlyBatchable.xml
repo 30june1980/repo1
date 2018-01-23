@@ -41,9 +41,9 @@
                     <!--Optional:-->
                     <sch:idQualifier>SocialSecIDType</sch:idQualifier>
                     <!--Optional:-->
-                    <sch:deliveryMethod1>Emailed</sch:deliveryMethod1>
+                    <sch:deliveryMethod1>Mailed</sch:deliveryMethod1>
                     <!--Optional:-->
-                    <sch:deliveryMethod2>Mailed</sch:deliveryMethod2>
+                    <sch:deliveryMethod2>Emailed</sch:deliveryMethod2>
                     <!--Optional:-->
                     <sch:recipientType>MemberType</sch:recipientType>
                     <sch:person>

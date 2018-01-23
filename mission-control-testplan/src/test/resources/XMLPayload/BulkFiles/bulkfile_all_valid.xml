@@ -44,7 +44,7 @@
             <recipient>
               <recipientId>222334444</recipientId>
               <idQualifier>SocialSecIDType</idQualifier>
-              <deliveryMethod1>Emailed</deliveryMethod1>
+              <deliveryMethod1>Mailed</deliveryMethod1>
               <deliveryMethod2>Fax</deliveryMethod2>
               <recipientType>MemberType</recipientType>
               <person>
@@ -124,8 +124,6 @@
         <eventType>Received</eventType>
         <receivedDate>2001-12-17T09:31:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
-        <recipientId>222334444</recipientId>
-        <deliveryMethodCd>Emailed</deliveryMethodCd>
         <statusCode>Accepted</statusCode>
         <message>Some accepted message text</message>
         <successCount>1</successCount>
@@ -152,8 +150,6 @@
         <eventType>Generated</eventType>
         <receivedDate>2001-12-17T09:40:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:41:47Z</dispatchedDate>
-        <recipientId>222334444</recipientId>
-        <deliveryMethodCd>Emailed</deliveryMethodCd>
         <statusCode>Accepted</statusCode>
         <message>Some accepted message text</message>
         <successCount>1</successCount>
@@ -200,7 +196,7 @@
             <recipient>
               <recipientId>222334444</recipientId>
               <idQualifier>SocialSecIDType</idQualifier>
-              <deliveryMethod1>Emailed</deliveryMethod1>
+              <deliveryMethod1>Mailed</deliveryMethod1>
               <deliveryMethod2>Fax</deliveryMethod2>
               <recipientType>MemberType</recipientType>
               <person>
@@ -280,8 +276,6 @@
         <eventType>Received</eventType>
         <receivedDate>2001-12-17T09:31:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
-        <recipientId>222334444</recipientId>
-        <deliveryMethodCd>Emailed</deliveryMethodCd>
         <statusCode>Accepted</statusCode>
         <message>Some accepted message text</message>
         <successCount>1</successCount>
@@ -308,8 +302,6 @@
         <eventType>Generated</eventType>
         <receivedDate>2001-12-17T09:40:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:41:47Z</dispatchedDate>
-        <recipientId>222334444</recipientId>
-        <deliveryMethodCd>Emailed</deliveryMethodCd>
         <statusCode>Accepted</statusCode>
         <message>Some accepted message text</message>
         <successCount>1</successCount>
