@@ -96,7 +96,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
         }
       } catch (Exception ex) {
         if (retry >= 7) {
-          throw new Exception(ex.getMessage());
+          logger.info(ex.getMessage());
         } else {
           TimeUnit.SECONDS.sleep(20);
         }
