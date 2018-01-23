@@ -42,7 +42,7 @@ public class CancelBulkDataOnly extends ConfigLoader {
     return payload = payload.replaceAll("REQUEST_101", record);
   }
 
-  @Test(groups = "Cancel_BDO_Response", dependsOnGroups = {"PostForArchive_BDO_DB"})
+  @Test(groups = "Cancel_BDO_Response", dependsOnGroups = {"PostForArchive_BDO_DB_eventHistory"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();

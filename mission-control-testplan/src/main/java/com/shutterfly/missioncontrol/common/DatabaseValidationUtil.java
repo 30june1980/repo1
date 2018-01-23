@@ -86,7 +86,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
   public Document getTrackingRecord(String record) throws Exception {
     Document fulfillmentTrackingRecordDoc = null;
-    int maxRetry = 10;
+    int maxRetry = 5;
     for (int retry = 0; retry <= maxRetry; retry++) {
       try {
         fulfillmentTrackingRecordDoc = fulfillmentTrackingRecord.find(eq(REQUEST_ID, record))
