@@ -8,7 +8,7 @@ import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -65,16 +65,16 @@ public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems
 
   @Test(groups = "Cancel_TIPRMI_NBSI_DB", dependsOnGroups = {"Cancel_TIPRMI_NBSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
             AppConstants.CANCEL);
   }
 
   @Test(dependsOnGroups = {"Cancel_TIPRMI_NBSI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.CANCEL);
   }

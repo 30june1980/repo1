@@ -3,20 +3,17 @@ package com.shutterfly.missioncontrol.postforcancel;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
 import org.testng.annotations.Test;
-
-import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
-import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 
 /**
  * @author dgupta
@@ -61,8 +58,8 @@ public class PostTransactionalInlinePrintReadySingleItemForCancel extends Config
 
   @Test(groups = "PostForCancel_TIPRSI_DB", dependsOnGroups = {"PostForCancel_TIPRSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.REQUEST_UPDATED_TO_DB,
             AppConstants.POST_STATUS);
   }
