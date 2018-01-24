@@ -9,8 +9,8 @@ import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
-import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -80,8 +80,8 @@ public class BulkPrintReadyForStatusAck extends ConfigLoader {
   @Test(groups = "Process_InvalidFile_BPR_DB", dependsOnGroups = {
       "Process_InvalidFile_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
-    ValidationUtilConfig.getInstances()
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }

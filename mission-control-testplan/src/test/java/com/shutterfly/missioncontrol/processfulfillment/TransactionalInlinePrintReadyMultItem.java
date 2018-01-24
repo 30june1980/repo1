@@ -3,24 +3,27 @@
  */
 package com.shutterfly.missioncontrol.processfulfillment;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
+import static io.restassured.RestAssured.given;
 
-import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
-import com.shutterfly.missioncontrol.config.ConfigLoader;
-import com.shutterfly.missioncontrol.config.CsvReaderWriter;
-import io.restassured.RestAssured;
-import io.restassured.config.EncoderConfig;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+
 import org.testng.annotations.Test;
+
+import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+
+import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 /**
  * @author dgupta
@@ -74,17 +77,17 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
 
   @Test(groups = "Process_TIPRMI_DB", dependsOnGroups = {"Process_TIPRMI_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
-    ValidationUtilConfig.getInstances()
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
             AppConstants.PROCESS);
   }
 
   @Test(dependsOnGroups = {"Process_TIPRMI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
-
-    ValidationUtilConfig.getInstances()
-        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.REQUEST_BATCHED,
+    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record + "_2", "RequestBatched",
             AppConstants.PROCESS);
   }
 

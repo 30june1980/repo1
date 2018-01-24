@@ -57,6 +57,19 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
   }
 
+  public static String buildTargetFilePath(String payload) {
+    /*
+     * Get DestinationId Build Destination ECG file location
+		 */
+    XmlPath xmlPath = new XmlPath(payload);
+    String destinationId = xmlPath.get("**.findAll { it.name() == 'destinationID' }");
+
+    assertNotNull(destinationId);
+
+    return "/MissionControl/" + destinationId + "/";
+
+  }
+
   public static void putFileAtSourceLocation(String sourceEcgPath, String record,
       String externalFilename) {
 

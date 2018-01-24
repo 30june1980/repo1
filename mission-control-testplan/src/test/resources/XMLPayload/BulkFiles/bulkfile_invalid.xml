@@ -21,7 +21,7 @@
         <batchItemStatusDetail>
             <batchItemRequest>
                 <requestHeader>
-                    <requestID>VALID_REQUEST_101_1</requestID>
+                    <requestID>VALID_666</requestID>
                     <sourceID>ACET</sourceID>
                     <destinationID>RRD</destinationID>
                     <requestDate>2001-12-17T09:30:47Z</requestDate>
@@ -171,7 +171,7 @@
         <batchItemStatusDetail>
             <batchItemRequest>
                 <requestHeader>
-                    <requestID>VALID_REQUEST_101_2</requestID>
+                    <requestID>VALID_667</requestID>
                     <sourceID>ACET</sourceID>
                     <destinationID>RRD</destinationID>
                     <requestDate>2001-12-17T09:30:47Z</requestDate>
