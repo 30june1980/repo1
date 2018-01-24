@@ -98,8 +98,8 @@ public class PostArchiveInvalidFile extends ConfigLoader {
     String payload = this.buildPayloadForPost();
 
     EcgFileSafeUtil
-        .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record+AppConstants.POST_SUFFIX,
-            AppConstants.BULK_FILE_INVALID);
+        .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+            AppConstants.BULK_FILE_INVALID,AppConstants.POST_SUFFIX);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayloadForPost()).when().post(this.getProperties("UrlExtensionPostFulfillment"));
