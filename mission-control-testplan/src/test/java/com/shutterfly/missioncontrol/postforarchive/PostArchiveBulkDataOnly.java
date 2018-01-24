@@ -79,13 +79,26 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
 
-    int maxRetry = 6;
+    int maxRetry = 10;
     for (int retry = 0; retry <= maxRetry; retry++) {
       try {
         if (eventHistoryList.size()>=4) {
+          Document eventHistory = (Document) eventHistoryList.get(3);
+          assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
+          assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
+          ArrayList postFeedbackList = (ArrayList<Document>) eventHistory.get("postFeedbackList");
+          Document postFeedback1 = (Document)postFeedbackList.get(0);
+          assertEquals(postFeedback1.get("name"),"documentID");
+          assertEquals(postFeedback1.get("value"),"Letter31020_04");
+          Document postFeedback2 = (Document)postFeedbackList.get(1);
+          assertEquals(postFeedback2.get("name"),"documentType");
+          assertEquals(postFeedback2.get("value"),"pdfDocument");
+          Document postFeedback3 = (Document)postFeedbackList.get(2);
+          assertEquals(postFeedback3.get("name"),"repositoryName");
+          assertEquals(postFeedback3.get("value"),"Letter052017");
           break;
         } else {
-          throw new Exception("eventHistoryList size is less than 4" + record);
+          throw new Exception("eventHistoryList size is less than 4 : " + eventHistoryList.size());
         }
       } catch (Exception ex) {
         if (retry >= maxRetry) {
@@ -95,20 +108,6 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
         }
       }
     }
-
-    Document eventHistory = (Document) eventHistoryList.get(3);
-    assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
-    assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
-    ArrayList postFeedbackList = (ArrayList<Document>) eventHistory.get("postFeedbackList");
-    Document postFeedback1 = (Document)postFeedbackList.get(0);
-    assertEquals(postFeedback1.get("name"),"documentID");
-    assertEquals(postFeedback1.get("value"),"Letter31020_04");
-    Document postFeedback2 = (Document)postFeedbackList.get(1);
-    assertEquals(postFeedback2.get("name"),"documentType");
-    assertEquals(postFeedback2.get("value"),"pdfDocument");
-    Document postFeedback3 = (Document)postFeedbackList.get(2);
-    assertEquals(postFeedback3.get("name"),"repositoryName");
-    assertEquals(postFeedback3.get("value"),"Letter052017");
   }
 
 }

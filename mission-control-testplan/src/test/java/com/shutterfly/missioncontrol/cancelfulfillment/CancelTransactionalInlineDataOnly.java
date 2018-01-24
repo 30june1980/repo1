@@ -23,6 +23,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.codec.binary.StringUtils;
 import org.bson.Document;
 import org.testng.annotations.Test;
@@ -212,18 +213,37 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyRejected() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
+
     RequestUtil.sendProcess(requestId);
     sendPostWithRejectedEvent(requestId);
     sendCancel(requestId);
+    int maxRetry = 10;
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
     assertNotNull(trackingRecord.get("postFulfillmentStatus"));
-    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
-    Document eventHistory = (Document) eventHistoryList.get(2);
-    assertEquals(eventHistory.get("eventType"), "Cancelled");
-    assertEquals(eventHistory.get("statusCode"), "Rejected");
-    ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
-    Document exceptionDetail = (Document) exceptionDetailList.get(0);
-    assertEquals(exceptionDetail.get("errorCode"), "18044");
+    for (int retry = 0; retry <= maxRetry; retry++) {
+      try {
+        trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
+        ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+        if (eventHistoryList.size() >= 3) {
+          Document eventHistory = (Document) eventHistoryList.get(2);
+          assertEquals(eventHistory.get("eventType"), "Cancelled");
+          assertEquals(eventHistory.get("statusCode"), "Rejected");
+          ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory
+              .get("exceptionDetailList");
+          Document exceptionDetail = (Document) exceptionDetailList.get(0);
+          assertEquals(exceptionDetail.get("errorCode"), "18044");
+          break;
+        } else {
+          throw new Exception("eventHistoryList size is less than 3 : " + eventHistoryList.size());
+        }
+      } catch (Exception ex) {
+        if (retry >= maxRetry) {
+          throw new Exception(ex.getMessage());
+        } else {
+          TimeUnit.SECONDS.sleep(10);
+        }
+      }
+    }
   }
 
   @Test(groups = "Cancel_TIDO_For_No_Process")
@@ -232,15 +252,34 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     RequestUtil.sendProcess(requestId);
     sendPostWithFulfilledEvent(requestId);
     sendCancel(requestId);
+
+    int maxRetry = 10;
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
     assertNotNull(trackingRecord.get("postFulfillmentStatus"));
-    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
-    Document eventHistory = (Document) eventHistoryList.get(2);
-    assertEquals(eventHistory.get("eventType"), "Cancelled");
-    assertEquals(eventHistory.get("statusCode"), "Rejected");
-    ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory.get("exceptionDetailList");
-    Document exceptionDetail = (Document) exceptionDetailList.get(0);
-    assertEquals(exceptionDetail.get("errorCode"), "18042");
+    for (int retry = 0; retry <= maxRetry; retry++) {
+      try {
+        trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
+        ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+        if (eventHistoryList.size() >= 3) {
+          Document eventHistory = (Document) eventHistoryList.get(2);
+          assertEquals(eventHistory.get("eventType"), "Cancelled");
+          assertEquals(eventHistory.get("statusCode"), "Rejected");
+          ArrayList exceptionDetailList = (ArrayList<Document>) eventHistory
+              .get("exceptionDetailList");
+          Document exceptionDetail = (Document) exceptionDetailList.get(0);
+          assertEquals(exceptionDetail.get("errorCode"), "18042");
+          break;
+        } else {
+          throw new Exception("eventHistoryList size is less than 3 : " + eventHistoryList.size());
+        }
+      } catch (Exception ex) {
+        if (retry >= maxRetry) {
+          throw new Exception(ex.getMessage());
+        } else {
+          TimeUnit.SECONDS.sleep(10);
+        }
+      }
+    }
   }
 
   private void sendPostWithRejectedEvent(String requestId) throws Exception {
