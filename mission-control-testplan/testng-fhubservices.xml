@@ -169,6 +169,7 @@
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"></class>
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.ArchiveInvalidRequestCode"/>
+      <class name="com.shutterfly.missioncontrol.validation.postarchive.PostArchiveInvalidFile"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
