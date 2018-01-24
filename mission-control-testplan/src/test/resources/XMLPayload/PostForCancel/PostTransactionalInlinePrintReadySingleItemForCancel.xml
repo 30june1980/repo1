@@ -45,7 +45,7 @@
       <!--Optional:-->
       <sch:recipientId>111223333</sch:recipientId>
       <!--Optional:-->
-      <sch:deliveryMethodCd>Mailed</sch:deliveryMethodCd>
+      <sch:deliveryMethodCd>Emailed</sch:deliveryMethodCd>
       <sch:statusCode>Accepted</sch:statusCode>
       <sch:successCount>1</sch:successCount>
       <sch:exceptionCount>0</sch:exceptionCount>

@@ -9,7 +9,7 @@ import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.AppConstants;
-import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import io.restassured.RestAssured;
@@ -19,7 +19,11 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 /**
@@ -74,18 +78,65 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
 
   @Test(groups = "Process_TIPRMI_NBSI_DB", dependsOnGroups = {"Process_TIPRMI_NBSI_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
             AppConstants.PROCESS);
   }
 
   @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
-    DatabaseValidationUtil databaseValidationUtil = new DatabaseValidationUtil();
-    databaseValidationUtil
+
+    ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
 
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForEventHistory() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record );
+    List<Document> document= (List<Document>) fulfillmentTrackingRecordDoc.get("eventHistory");
+    List<String> lisrOfEventHistory=new ArrayList<>(10);
+    document.forEach(x-> {
+      lisrOfEventHistory.add(x.get("eventType").toString());
+    });
+    assertEquals((lisrOfEventHistory.contains("ReceivedPending")||lisrOfEventHistory.contains("cancelPending")),true);
+  }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForChildRequest() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_1");
+    Document fulfillmentTrackingRecordDoc1=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_2");
+
+   assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && Objects.nonNull(fulfillmentTrackingRecordDoc1)),true);
+  }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForChildCurrentFulfillmentStatus() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_1");
+    Document fulfillmentTrackingRecordDoc1=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_2");
+
+    assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus").toString().equals("SENT_TO_SUPPLIER"))
+        && (Objects.nonNull(fulfillmentTrackingRecordDoc1)&& fulfillmentTrackingRecordDoc1.get("currentFulfillmentStatus").toString().equals("SENT_TO_SUPPLIER")),true);
+  }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForChildMultiRequestHeaderId() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_1");
+    Document fulfillmentTrackingRecordDoc1=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_2");
+
+    assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && fulfillmentTrackingRecordDoc.get("multItemRequestHeaderId").toString().equals(record))
+        && (Objects.nonNull(fulfillmentTrackingRecordDoc1)&& fulfillmentTrackingRecordDoc1.get("multItemRequestHeaderId").toString().equals(record)),true);
+  }
 }

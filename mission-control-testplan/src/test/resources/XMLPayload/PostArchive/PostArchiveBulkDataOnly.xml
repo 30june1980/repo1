@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<sch:postFulfillmentRequestStatus xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<sch:postFulfillmentRequestStatus xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema"
+  xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <sch:fulfillmentRequestStatus>
     <sch:requestHeader>
 
@@ -20,11 +22,28 @@
       <sch:eventType>ArchiveConfirmed</sch:eventType>
       <sch:receivedDate>2001-12-17T09:35:47Z</sch:receivedDate>
       <sch:dispatchedDate>2001-12-17T09:40:47Z</sch:dispatchedDate>
-      <sch:recipientId/>
-      <sch:deliveryMethodCd/>
       <sch:statusCode>Accepted</sch:statusCode>
       <sch:successCount>1</sch:successCount>
       <sch:exceptionCount>0</sch:exceptionCount>
+      <!--0 to 20 repetitions:-->
+      <sch:postFeedback>
+        <!--Optional:-->
+        <v7:name>documentID</v7:name>
+        <!--Optional:-->
+        <v7:value>Letter31020_04</v7:value>
+      </sch:postFeedback>
+      <sch:postFeedback>
+        <!--Optional:-->
+        <v7:name>documentType</v7:name>
+        <!--Optional:-->
+        <v7:value>pdfDocument</v7:value>
+      </sch:postFeedback>
+      <sch:postFeedback>
+        <!--Optional:-->
+        <v7:name>repositoryName</v7:name>
+        <!--Optional:-->
+        <v7:value>Letter052017</v7:value>
+      </sch:postFeedback>
     </sch:requestHistory>
     <!--0 to 10 repetitions:-->
     <sch:postItemStatusBulkDetail>

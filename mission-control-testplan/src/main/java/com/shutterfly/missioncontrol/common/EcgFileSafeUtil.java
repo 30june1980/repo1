@@ -57,19 +57,6 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
   }
 
-  public static String buildTargetFilePath(String payload) {
-    /*
-     * Get DestinationId Build Destination ECG file location
-		 */
-    XmlPath xmlPath = new XmlPath(payload);
-    String destinationId = xmlPath.get("**.findAll { it.name() == 'destinationID' }");
-
-    assertNotNull(destinationId);
-
-    return "/MissionControl/" + destinationId + "/";
-
-  }
-
   public static void putFileAtSourceLocation(String sourceEcgPath, String record,
       String externalFilename) {
 
@@ -101,12 +88,13 @@ public class EcgFileSafeUtil extends ConfigLoader {
     }
   }
 
-  public static void updateAndPutFileAtSourceLocation(String sourceEcgPath, String record,
-      String externalFilename) {
+  public static void updateAndPutFileAtSourceLocation(String sourceEcgPath, String requestId,
+      String externalFilename, String fileNameSuffix) {
 
     JSch jsch = new JSch();
     Session session = null;
     File tempFile = null;
+    String destinationFileName = requestId + fileNameSuffix;
     try {
       session = jsch.getSession("auto-mc", "tmvitdmz01-lv.dmz.lab.shutterfly.com", 22);
       session.setConfig("StrictHostKeyChecking", "no");
@@ -118,17 +106,17 @@ public class EcgFileSafeUtil extends ConfigLoader {
       ChannelSftp sftpChannel = (ChannelSftp) channel;
 
       Path sourcePath = Paths.get(LOCAL_PATH + externalFilename);
-      tempFile = new File(record);
+      tempFile = new File(destinationFileName);
       Path tempFilePath = Files.copy(sourcePath, tempFile.toPath());
 
       //edit file content
       Charset charset = StandardCharsets.UTF_8;
       String content = new String(Files.readAllBytes(tempFilePath), charset);
-      content = content.replaceAll("VALID_REQUEST_101", record);
+      content = content.replaceAll("VALID_REQUEST_101", requestId);
       Files.write(tempFilePath, content.getBytes(charset));
 
       sftpChannel.put(tempFilePath.toString(),
-          (sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
+          (sourceEcgPath + "/" + destinationFileName + ".xml").replaceAll("/+", "/"));
       sftpChannel.exit();
 
     } catch (JSchException | SftpException | IOException e) {

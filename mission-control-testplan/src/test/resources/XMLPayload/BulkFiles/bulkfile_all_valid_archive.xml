@@ -23,7 +23,7 @@
     <batchItemStatusDetail>
       <batchItemRequest>
         <requestHeader>
-          <requestID>REQUEST_101_1</requestID>
+          <requestID>VALID_REQUEST_101_1</requestID>
           <sourceID>CIRRUS</sourceID>
           <destinationID>SBS</destinationID>
           <requestDate>2017-09-15T09:30:47Z</requestDate>
@@ -44,7 +44,7 @@
             <recipient>
               <recipientId>222334444</recipientId>
               <idQualifier>SocialSecIDType</idQualifier>
-              <deliveryMethod1>Mailed</deliveryMethod1>
+              <deliveryMethod1>Emailed</deliveryMethod1>
               <deliveryMethod2>Fax</deliveryMethod2>
               <recipientType>MemberType</recipientType>
               <person>
@@ -77,8 +77,8 @@
             <recipient>
               <recipientId>555443333210</recipientId>
               <idQualifier>MemberIDType</idQualifier>
-              <deliveryMethod1>Fax</deliveryMethod1>
-              <deliveryMethod2>String</deliveryMethod2>
+              <deliveryMethod1>Emailed</deliveryMethod1>
+              <deliveryMethod2>Fax</deliveryMethod2>
               <recipientType>EmployerGroupType</recipientType>
               <organization>
                 <name1>SomeOrganizationName</name1>
@@ -124,6 +124,92 @@
         <eventType>ArchiveConfirmed</eventType>
         <receivedDate>2001-12-17T09:31:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
+        <recipientId>222334444</recipientId>
+        <deliveryMethodCd>Emailed</deliveryMethodCd>
+        <statusCode>Accepted</statusCode>
+        <message>Some accepted message text</message>
+        <successCount>1</successCount>
+        <exceptionCount>0</exceptionCount>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+      </batchItemEventLog>
+      <batchItemEventLog>
+        <processor>PRINT_SUPPLIER_545454</processor>
+        <eventType>ArchiveConfirmed</eventType>
+        <receivedDate>2001-12-17T09:31:47Z</receivedDate>
+        <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
+        <recipientId>222334444</recipientId>
+        <deliveryMethodCd>Fax</deliveryMethodCd>
+        <statusCode>Accepted</statusCode>
+        <message>Some accepted message text</message>
+        <successCount>1</successCount>
+        <exceptionCount>0</exceptionCount>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+      </batchItemEventLog>
+      <batchItemEventLog>
+        <processor>PRINT_SUPPLIER_545454</processor>
+        <eventType>ArchiveConfirmed</eventType>
+        <receivedDate>2001-12-17T09:40:47Z</receivedDate>
+        <dispatchedDate>2001-12-17T09:41:47Z</dispatchedDate>
+        <recipientId>555443333210</recipientId>
+        <deliveryMethodCd>Emailed</deliveryMethodCd>
+        <statusCode>Accepted</statusCode>
+        <message>Some accepted message text</message>
+        <successCount>1</successCount>
+        <exceptionCount>0</exceptionCount>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+      </batchItemEventLog>
+      <batchItemEventLog>
+        <processor>PRINT_SUPPLIER_545454</processor>
+        <eventType>ArchiveConfirmed</eventType>
+        <receivedDate>2001-12-17T09:40:47Z</receivedDate>
+        <dispatchedDate>2001-12-17T09:41:47Z</dispatchedDate>
+        <recipientId>555443333210</recipientId>
+        <deliveryMethodCd>Fax</deliveryMethodCd>
         <statusCode>Accepted</statusCode>
         <message>Some accepted message text</message>
         <successCount>1</successCount>
@@ -149,7 +235,7 @@
     <batchItemStatusDetail>
       <batchItemRequest>
         <requestHeader>
-          <requestID>REQUEST_101_2</requestID>
+          <requestID>VALID_REQUEST_101_2</requestID>
           <sourceID>BRMS</sourceID>
           <destinationID>SBS</destinationID>
           <requestDate>2017-09-15T09:30:47Z</requestDate>
@@ -170,7 +256,7 @@
             <recipient>
               <recipientId>222334444</recipientId>
               <idQualifier>SocialSecIDType</idQualifier>
-              <deliveryMethod1>Mailed</deliveryMethod1>
+              <deliveryMethod1>Emailed</deliveryMethod1>
               <deliveryMethod2>Fax</deliveryMethod2>
               <recipientType>MemberType</recipientType>
               <person>
@@ -203,8 +289,8 @@
             <recipient>
               <recipientId>555443333210</recipientId>
               <idQualifier>MemberIDType</idQualifier>
-              <deliveryMethod1>Fax</deliveryMethod1>
-              <deliveryMethod2>String</deliveryMethod2>
+              <deliveryMethod1>Emailed</deliveryMethod1>
+              <deliveryMethod2>Fax</deliveryMethod2>
               <recipientType>EmployerGroupType</recipientType>
               <organization>
                 <name1>SomeOrganizationName</name1>
@@ -250,6 +336,92 @@
         <eventType>ArchiveConfirmed</eventType>
         <receivedDate>2001-12-17T09:31:47Z</receivedDate>
         <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
+        <recipientId>222334444</recipientId>
+        <deliveryMethodCd>Emailed</deliveryMethodCd>
+        <statusCode>Accepted</statusCode>
+        <message>Some accepted message text</message>
+        <successCount>1</successCount>
+        <exceptionCount>0</exceptionCount>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+      </batchItemEventLog>
+      <batchItemEventLog>
+        <processor>PRINT_SUPPLIER_545454</processor>
+        <eventType>ArchiveConfirmed</eventType>
+        <receivedDate>2001-12-17T09:31:47Z</receivedDate>
+        <dispatchedDate>2001-12-17T09:32:47Z</dispatchedDate>
+        <recipientId>222334444</recipientId>
+        <deliveryMethodCd>Fax</deliveryMethodCd>
+        <statusCode>Accepted</statusCode>
+        <message>Some accepted message text</message>
+        <successCount>1</successCount>
+        <exceptionCount>0</exceptionCount>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+      </batchItemEventLog>
+      <batchItemEventLog>
+        <processor>PRINT_SUPPLIER_545454</processor>
+        <eventType>ArchiveConfirmed</eventType>
+        <receivedDate>2001-12-17T09:40:47Z</receivedDate>
+        <dispatchedDate>2001-12-17T09:41:47Z</dispatchedDate>
+        <recipientId>555443333210</recipientId>
+        <deliveryMethodCd>Emailed</deliveryMethodCd>
+        <statusCode>Accepted</statusCode>
+        <message>Some accepted message text</message>
+        <successCount>1</successCount>
+        <exceptionCount>0</exceptionCount>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <exceptionDetail>
+          <errorCode>String</errorCode>
+          <message>String</message>
+        </exceptionDetail>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+        <postFeedback>
+          <com:name>String</com:name>
+          <com:value>String</com:value>
+        </postFeedback>
+      </batchItemEventLog>
+      <batchItemEventLog>
+        <processor>PRINT_SUPPLIER_545454</processor>
+        <eventType>ArchiveConfirmed</eventType>
+        <receivedDate>2001-12-17T09:40:47Z</receivedDate>
+        <dispatchedDate>2001-12-17T09:41:47Z</dispatchedDate>
+        <recipientId>555443333210</recipientId>
+        <deliveryMethodCd>Fax</deliveryMethodCd>
         <statusCode>Accepted</statusCode>
         <message>Some accepted message text</message>
         <successCount>1</successCount>
