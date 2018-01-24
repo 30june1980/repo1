@@ -19,7 +19,10 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 /**
@@ -86,6 +89,19 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForEventHistory() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record );
+    List<Document> document= (List<Document>) fulfillmentTrackingRecordDoc.get("eventHistory");
+    List<String> lisrOfEventHistory=new ArrayList<>(10);
+    document.forEach(x-> {
+      lisrOfEventHistory.add(x.get("eventType").toString());
+    });
+    assertEquals((lisrOfEventHistory.contains("ReceivedPending")||lisrOfEventHistory.contains("cancelPending")),true);
   }
 
 }
