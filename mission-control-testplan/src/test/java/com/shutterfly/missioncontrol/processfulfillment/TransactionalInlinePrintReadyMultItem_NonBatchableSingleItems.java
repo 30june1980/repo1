@@ -115,4 +115,28 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
 
    assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && Objects.nonNull(fulfillmentTrackingRecordDoc1)),true);
   }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForChildCurrentFulfillmentStatus() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_1");
+    Document fulfillmentTrackingRecordDoc1=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_2");
+
+    assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && fulfillmentTrackingRecordDoc.get("currentFulfillmentStatus").toString().equals("SENT_TO_SUPPLIER"))
+        && (Objects.nonNull(fulfillmentTrackingRecordDoc1)&& fulfillmentTrackingRecordDoc1.get("currentFulfillmentStatus").toString().equals("SENT_TO_SUPPLIER")),true);
+  }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForChildMultiRequestHeaderId() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_1");
+    Document fulfillmentTrackingRecordDoc1=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_2");
+
+    assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && fulfillmentTrackingRecordDoc.get("multItemRequestHeaderId").toString().equals(record))
+        && (Objects.nonNull(fulfillmentTrackingRecordDoc1)&& fulfillmentTrackingRecordDoc1.get("multItemRequestHeaderId").toString().equals(record)),true);
+  }
 }
