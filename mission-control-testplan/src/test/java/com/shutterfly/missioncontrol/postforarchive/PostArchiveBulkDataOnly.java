@@ -21,8 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 /**
@@ -78,9 +76,26 @@ public class PostArchiveBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "PostForArchive_BDO_DB_eventHistory", dependsOnGroups = {"PostForArchive_BDO_DB"})
   private void validateEventHistoryInDatabase() throws Exception {
-    TimeUnit.MINUTES.sleep(1);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+
+    int maxRetry = 6;
+    for (int retry = 0; retry <= maxRetry; retry++) {
+      try {
+        if (eventHistoryList.size()>=4) {
+          break;
+        } else {
+          throw new Exception("eventHistoryList size is less than 4" + record);
+        }
+      } catch (Exception ex) {
+        if (retry >= maxRetry) {
+          ex.printStackTrace();
+        } else {
+          TimeUnit.SECONDS.sleep(10);
+        }
+      }
+    }
+
     Document eventHistory = (Document) eventHistoryList.get(3);
     assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
     assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
