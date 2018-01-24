@@ -21,6 +21,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import org.bson.Document;
 import org.testng.annotations.Test;
@@ -104,4 +105,14 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
     assertEquals((lisrOfEventHistory.contains("ReceivedPending")||lisrOfEventHistory.contains("cancelPending")),true);
   }
 
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseForChildRequest() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_1");
+    Document fulfillmentTrackingRecordDoc1=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record +"_2");
+
+   assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && Objects.nonNull(fulfillmentTrackingRecordDoc1)),true);
+  }
 }
