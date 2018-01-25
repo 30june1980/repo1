@@ -12,6 +12,7 @@ import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
@@ -138,5 +139,33 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
 
     assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && fulfillmentTrackingRecordDoc.get("multItemRequestHeaderId").toString().equals(record))
         && (Objects.nonNull(fulfillmentTrackingRecordDoc1)&& fulfillmentTrackingRecordDoc1.get("multItemRequestHeaderId").toString().equals(record)),true);
+  }
+
+  @Test(dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabaseMultiRequestHeaderId() throws Exception {
+
+    Document fulfillmentTrackingRecordDoc=ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record );
+
+    assertEquals((Objects.nonNull(fulfillmentTrackingRecordDoc) && Objects.isNull(fulfillmentTrackingRecordDoc.get("multItemRequestHeaderId")))
+        ,true);
+  }
+
+
+
+  @Test()
+  private void getResponseForInvalidRequestCategory() throws IOException {
+    basicConfigNonWeb();
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(Utils.replaceExactMatch(Utils.replaceExactMatch(this.buildPayload(),"TransactionalInlinePrintReadyMultItem","BulkPrintReady"),record,Utils.getQARandomId())).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code.",
+        equalTo("18408"));
   }
 }
