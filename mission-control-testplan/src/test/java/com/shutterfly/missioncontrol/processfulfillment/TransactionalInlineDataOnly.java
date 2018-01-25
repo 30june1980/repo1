@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import static io.restassured.RestAssured.given;
@@ -73,6 +70,12 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_TIDO_DB_Rule", dependsOnGroups = {"Process_TIDO_DB"})
+  private void validateRuleInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    assertNotNull(fulfillmentTrackingRecordDoc.get("ruleId"));
   }
 
   @Test(groups = "Process_TIDO_Valid_Request_Validation", dependsOnGroups = {
