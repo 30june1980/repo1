@@ -3,34 +3,35 @@
  */
 package com.shutterfly.missioncontrol.processarchive;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertNull;
-
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.RequestUtil;
-import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.Test;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.UUID;
-import org.bson.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.testng.annotations.Test;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertNull;
 
 /**
  * @author dgupta

@@ -1,11 +1,12 @@
 package com.shutterfly.missioncontrol.processfulfillment;
 
+import com.shutterfly.missioncontrol.util.AppConstants;
+import org.bson.Document;
+
+import java.util.ArrayList;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-
-import com.shutterfly.missioncontrol.common.AppConstants;
-import java.util.ArrayList;
-import org.bson.Document;
 
 /**
  * Created by Shweta on 15-01-2018.

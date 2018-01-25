@@ -1,23 +1,24 @@
 package com.shutterfly.missioncontrol.validation.postarchive;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
-
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.testng.annotations.Test;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import org.testng.annotations.Test;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
 
 public class PostArchiveInvalidFile extends ConfigLoader {
 
@@ -69,7 +70,7 @@ public class PostArchiveInvalidFile extends ConfigLoader {
   private void getResponseForProcess() throws IOException, InterruptedException {
     basicConfigNonWeb();
     String payload = this.buildPayloadForProcess();
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record+AppConstants.PROCESS,
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record+ AppConstants.PROCESS,
         AppConstants.BULK_FILE);
 
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -99,7 +100,7 @@ public class PostArchiveInvalidFile extends ConfigLoader {
 
     EcgFileSafeUtil
         .updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
-            AppConstants.BULK_FILE_INVALID,AppConstants.POST_SUFFIX);
+            AppConstants.BULK_FILE_INVALID, AppConstants.POST_SUFFIX);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayloadForPost()).when().post(this.getProperties("UrlExtensionPostFulfillment"));
@@ -124,7 +125,7 @@ public class PostArchiveInvalidFile extends ConfigLoader {
     basicConfigNonWeb();
     String payload = this.buildPayloadForProcessArchive();
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record+AppConstants.ARCHIVE_SUFFIX , AppConstants.BULK_FILE);
+        record+ AppConstants.ARCHIVE_SUFFIX , AppConstants.BULK_FILE);
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
