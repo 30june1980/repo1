@@ -4,6 +4,9 @@ import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrol.util.Encryption;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
 import com.shutterfly.missioncontrolportal.pageobject.PortalPage;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +17,8 @@ import org.testng.Assert;
 
 import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -72,6 +77,19 @@ public class PageUtils {
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         Assert.assertFalse(moveAhead ? portalPage.isPrevLblClickable() : portalPage.isNextLblClickable());
         driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    public static void takeScreenshot(@Nonnull Properties properties, @Nonnull WebDriver driver) {
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(properties.getProperty(AppConstants.SCREENSHOT_PATH))
+                    .append("Screenshot").append(String.valueOf(System.currentTimeMillis()))
+                    .append(".png");
+            FileUtils.copyFile(screenshot, new File(stringBuilder.toString()));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write screenshot to a file", e);
+        }
     }
 
 }

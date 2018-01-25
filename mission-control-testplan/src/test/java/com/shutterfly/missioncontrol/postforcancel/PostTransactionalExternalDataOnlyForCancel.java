@@ -3,20 +3,21 @@
  */
 package com.shutterfly.missioncontrol.postforcancel;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
-
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.common.AppConstants;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.testng.annotations.Test;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import org.testng.annotations.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author dgupta

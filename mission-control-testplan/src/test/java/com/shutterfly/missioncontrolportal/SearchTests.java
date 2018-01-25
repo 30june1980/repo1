@@ -62,7 +62,7 @@ public class SearchTests extends ConfigLoaderWeb {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         PageUtils.login(loginPage, config);
 
-        portalUrl = config.getProperty(com.shutterfly.missioncontrol.util.AppConstants.QA_PORTAL_URL);
+        portalUrl = config.getProperty(AppConstants.QA_PORTAL_URL);
         if (portalUrl == null) {
             throw new RuntimeException("QaPortalUrl property not found");
         }
