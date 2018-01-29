@@ -29,6 +29,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
   private MongoDatabase database;
   private MongoCollection<Document> fulfillmentTrackingRecord;
   private MongoCollection<Document> fulfillmentStatusTracking;
+  private int maxRetry = 15;
 
   public DatabaseValidationUtil() {
     connectToDatabase = new ConnectToDatabase();
@@ -42,7 +43,6 @@ public class DatabaseValidationUtil extends ConfigLoader {
   public void validateRecordsAvailabilityAndStatusCheck(String record, String statusToValidate,
       String requestTypeToValidate) throws Exception {
     basicConfigNonWeb();
-    int maxRetry = 15;
     /*
      * Verification of RequestId presence in fulfillment_tracking_record and
 		 * fulfillment_status_tracking collection Verification of
@@ -86,7 +86,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
 
   public Document getTrackingRecord(String record) throws Exception {
     Document fulfillmentTrackingRecordDoc = null;
-    int maxRetry = 5;
+
     for (int retry = 0; retry <= maxRetry; retry++) {
       try {
         fulfillmentTrackingRecordDoc = fulfillmentTrackingRecord.find(eq(REQUEST_ID, record))
