@@ -17,13 +17,13 @@ public class FulfillmentTrackingControllerTest extends ConfigLoader {
   private AccessToken accessToken;
   private String token;
   CsvReaderWriter cwr = new CsvReaderWriter();
-  private String batchRequestId;
+  private String requestId;
 
   @BeforeClass
   public void setup() throws IOException {
     accessToken = new AccessToken();
     token = accessToken.getAccessToken();
-    batchRequestId = cwr.getRequestIdByKeys("TIDO");
+    requestId = cwr.getRequestIdByKeys("TIDO");
   }
 
   @Test
@@ -55,7 +55,7 @@ public class FulfillmentTrackingControllerTest extends ConfigLoader {
 
   @Test
   public void getFulfillmentDocsForRequestIds() {
-    String[] requestIds = new String[]{batchRequestId};
+    String[] requestIds = new String[]{requestId};
     Response response = given().header("Accept", "application/json").header("Authorization", token)
         .queryParam("requestIds", (Object[]) requestIds).log().all()
         .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
@@ -66,7 +66,7 @@ public class FulfillmentTrackingControllerTest extends ConfigLoader {
   @Test
   public void getBatchedTransactionalRecords() {
     Response response = given().header("Accept", "application/json").header("Authorization", token)
-        .pathParam("bulkRequestId", batchRequestId).log().all()
+        .pathParam("bulkRequestId", requestId).log().all()
         .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
             + "/api/services/v1/fulfillmenttracking/{bulkRequestId}/batcheditems");
     Assert.assertEquals(response.getStatusCode(), 200);
@@ -75,7 +75,7 @@ public class FulfillmentTrackingControllerTest extends ConfigLoader {
   @Test
   public void findFulfillmentDocByID() {
     Response response = given().header("Accept", "application/json").header("Authorization", token)
-        .pathParam("requestID", batchRequestId).log().all()
+        .pathParam("requestID", requestId).log().all()
         .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
             + "/api/services/v1/fulfillmenttracking/{requestID}");
     Assert.assertEquals(response.getStatusCode(), 200);
@@ -84,7 +84,7 @@ public class FulfillmentTrackingControllerTest extends ConfigLoader {
   @Test
   public void findCancelRequestByID() {
     Response response = given().header("Accept", "application/json").header("Authorization", token)
-        .pathParam("requestID", batchRequestId).log().all()
+        .pathParam("requestID", requestId).log().all()
         .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
             + "/api/services/v1/fulfillmenttracking/{requestID}/cancel");
     Assert.assertEquals(response.getStatusCode(), 200);
@@ -93,7 +93,7 @@ public class FulfillmentTrackingControllerTest extends ConfigLoader {
   @Test
   public void findFulfillmentDocMetaDataByID() {
     Response response = given().header("Accept", "application/json").header("Authorization", token)
-        .pathParam("requestID", batchRequestId).log().all()
+        .pathParam("requestID", requestId).log().all()
         .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
             + "/api/services/v1/fulfillmenttracking/{requestID}/metadata");
     Assert.assertEquals(response.getStatusCode(), 200);
