@@ -169,4 +169,23 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code.",
         equalTo("18408"));
   }
+
+  @Test(groups = "Process_TIPRMI_Cancel_MultiItem")
+  private void getResponseForCancelMultiItem() throws IOException {
+    String localRecord=Utils.getQARandomId();
+    basicConfigNonWeb();
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(Utils.replaceExactMatch(this.buildPayload(),record,localRecord)).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    cwr.writeToCsv("Process_TIPRMI_Cancel_MultiItem", localRecord);
+
+  }
 }
