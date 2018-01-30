@@ -10,6 +10,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import java.util.ArrayList;
 import org.bson.Document;
 import org.testng.annotations.Test;
 
@@ -55,7 +56,8 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
         .config(RestAssured.config()
             .encoderConfig(
                 encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
-        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .header("saml", config.getProperty("SamlValue")).header("callbackuri", "xyz")
+        .contentType(ContentType.XML).log().all()
         .body(this.buildPayload()).when().post(this.getProperties());
 
     response.then().body(
@@ -63,7 +65,6 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
         equalTo("Accepted"));
     CsvReaderWriter cwr = new CsvReaderWriter();
     cwr.writeToCsv("TIDO", record);
-
   }
 
   @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
@@ -77,6 +78,19 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   private void validateRuleInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     assertNotNull(fulfillmentTrackingRecordDoc.get("ruleId"));
+  }
+
+  @Test(groups = "Process_TIDO_DB_CallBackUri", dependsOnGroups = {"Process_TIDO_DB"})
+  private void validateCallBackUriInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    ArrayList fulfillmentMetaDataList = (ArrayList<Document>) fulfillmentTrackingRecordDoc
+        .get("fulfillmentMetaData");
+
+    Document fulfillmentMetaData = (Document) fulfillmentMetaDataList.get(1);
+    if (fulfillmentMetaData.get("name").equals("callbackuri")) {
+      assertEquals(fulfillmentMetaData.get("value"), "xyz");
+    }
+
   }
 
   @Test(groups = "Process_TIDO_Valid_Request_Validation", dependsOnGroups = {
