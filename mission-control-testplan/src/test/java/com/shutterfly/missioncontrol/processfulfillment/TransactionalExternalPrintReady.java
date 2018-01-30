@@ -1,9 +1,7 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -29,13 +27,11 @@ import static org.testng.Assert.assertEquals;
  */
 public class TransactionalExternalPrintReady extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
-
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -48,36 +44,26 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
         .getResource("XMLPayload/ProcessFulfillment/TransactionalExternalPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
 
-    return payload = payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
         (record + ".xml"));
 
   }
-
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Process_TEPR_Response")
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
 
-		/*
-     * Adding file at source location build and store source file path build and
-		 * store target file path
-		 */
     EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
         record, AppConstants.BULK_FILE);
 
-		/*
-     * remove charset from content type using encoder config
-		 * build the payload
-		 */
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
             .encoderConfig(
                 encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
         .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
-        .body(this.buildPayload()).when().post(this.getProperties());
+        .body(payload).when().post(this.getProperties());
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
@@ -88,14 +74,16 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   @Test(groups = "Process_TEPR_DB", dependsOnGroups = {"Process_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
-
-    /*
-     *  Supply the final status check value
-		 */
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_TEPR_DB_AutoArchive", dependsOnGroups = {"Process_TEPR_DB"})
+  private void validateAutoArchiveInDatabase() throws Exception {
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_ARCHIVAL_SYSTEM,
+            AppConstants.ARCHIVE);
 
   }
 

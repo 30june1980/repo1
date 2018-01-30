@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import com.google.common.io.Resources;
@@ -24,18 +21,16 @@ import static org.testng.Assert.assertEquals;
  */
 public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
+  CsvReaderWriter cwr = new CsvReaderWriter();
+
 
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
     return uri;
-
   }
 
   private String buildPayload() throws IOException {
@@ -43,14 +38,10 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
         .getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReady.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
     record = cwr.getRequestIdByKeys("TEPR");
-
     return payload = payload.replaceAll("REQUEST_101", record);
-
   }
 
-  CsvReaderWriter cwr = new CsvReaderWriter();
-
-  @Test(groups = "Post_TEPR_Response", dependsOnGroups = {"Process_TEPR_DB"})
+  @Test(groups = "Post_TEPR_Response", dependsOnGroups = {"Process_TEPR_DB_AutoArchive"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -65,7 +56,6 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
   @Test(groups = "Post_TEPR_DB", dependsOnGroups = {"Post_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);

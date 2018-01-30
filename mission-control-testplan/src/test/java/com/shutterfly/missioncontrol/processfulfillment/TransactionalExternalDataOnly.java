@@ -28,9 +28,6 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class TransactionalExternalDataOnly extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
 
   UUID uuid = UUID.randomUUID();
