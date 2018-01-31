@@ -90,8 +90,13 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
   @Test(groups = "Process_TEPR_When_File_Is_Unavailable")
   private void validateWhenFileIsUnavailable() throws Exception {
     basicConfigNonWeb();
-    String requestId = "Test_qa_" + uuid.toString();
-    String payload = this.buildPayload();
+    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    URL file = Resources
+        .getResource("XMLPayload/ProcessFulfillment/TransactionalExternalPrintReady.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId).replaceAll("bulkfile_all_valid.xml",
+        (record + ".xml"));
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
