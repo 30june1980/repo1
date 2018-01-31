@@ -126,6 +126,8 @@
       <class
         name="com.shutterfly.missioncontrol.validation.processfulfillment.RecipientTypeValidation"/>
       <class
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.RecipientInfoValidation"/>
+      <class
         name="com.shutterfly.missioncontrol.validation.processfulfillment.BusinessSegmentIdValidation"/>
       <class
         name="com.shutterfly.missioncontrol.postforarchive.PostArchiveTransactionalInlinePrintReadySingleItem"/>
