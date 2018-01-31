@@ -171,6 +171,8 @@
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
       <class
+        name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestTypeValidation"/>
+      <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.DestinationIdValidation"/>
       <class
         name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"></class>

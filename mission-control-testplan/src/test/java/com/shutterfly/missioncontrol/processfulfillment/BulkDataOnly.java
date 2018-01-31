@@ -122,4 +122,34 @@ public class BulkDataOnly extends ConfigLoader {
     Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
     assertNotNull(requestDetail.get("bulkRequestDetail"));
   }
+
+  @Test(groups = "Process_BDO_Response_2")
+  private void getResponse2() throws Exception {
+    basicConfigNonWeb();
+    String requestId = "Test_qa" + UUID.randomUUID().toString();
+
+    URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly_2.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId).replaceAll("bulkfile_all_valid.xml",
+        (requestId + ".xml"));
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), requestId,
+        AppConstants.BULK_FILE);
+
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.PROCESS);
+  }
+
 }
