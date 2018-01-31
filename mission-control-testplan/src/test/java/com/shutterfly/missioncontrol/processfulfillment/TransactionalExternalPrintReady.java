@@ -87,4 +87,26 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
+  @Test(groups = "Process_TEPR_When_File_Is_Unavailable")
+  private void validateWhenFileIsUnavailable() throws Exception {
+    basicConfigNonWeb();
+    String requestId = "Test_qa_" + uuid.toString();
+    String payload = this.buildPayload();
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.REQUEST_UPDATED_TO_DB,
+            AppConstants.PROCESS);
+  }
+
+
 }
