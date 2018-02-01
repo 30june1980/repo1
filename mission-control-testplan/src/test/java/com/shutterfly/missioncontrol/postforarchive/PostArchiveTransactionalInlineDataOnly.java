@@ -8,6 +8,7 @@ import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.util.concurrent.TimeUnit;
 import org.bson.Document;
 import org.testng.annotations.Test;
 
@@ -68,13 +69,31 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
             AppConstants.POST_STATUS);
   }
 
-  @Test(groups = "PostForArchive_TIDO_DB_eventHistory", dependsOnGroups = {"PostForArchive_TIDO_DB"})
+  @Test(groups = "PostForArchive_TIDO_DB_eventHistory", dependsOnGroups = {
+      "PostForArchive_TIDO_DB"})
   private void validateEventHistoryInDatabase() throws Exception {
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
-    Document eventHistory = (Document) eventHistoryList.get(5);
-    assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
-    assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
+
+    int maxRetry = 10;
+    for (int retry = 0; retry <= maxRetry; retry++) {
+      try {
+        if (eventHistoryList.size() >= 5) {
+          Document eventHistory = (Document) eventHistoryList.get(4);
+          assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
+          assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
+          break;
+        } else {
+          throw new Exception("eventHistoryList size is less than 5 : " + eventHistoryList.size());
+        }
+      } catch (Exception ex) {
+        if (retry >= maxRetry) {
+          throw new Exception("ArchiveConfirmed event history doesn't exist");
+        } else {
+          TimeUnit.SECONDS.sleep(10);
+        }
+      }
+    }
   }
 
 }
