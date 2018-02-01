@@ -78,13 +78,13 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
     int maxRetry = 10;
     for (int retry = 0; retry <= maxRetry; retry++) {
       try {
-        if (eventHistoryList.size() >= 5) {
-          Document eventHistory = (Document) eventHistoryList.get(4);
+        if (eventHistoryList.size() >= 6) {
+          Document eventHistory = (Document) eventHistoryList.get(5);
           assertEquals(eventHistory.get("eventType"), "ArchiveConfirmed");
           assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
           break;
         } else {
-          throw new Exception("eventHistoryList size is less than 5 : " + eventHistoryList.size());
+          throw new Exception("eventHistoryList size is less than 6 : " + eventHistoryList.size());
         }
       } catch (Exception ex) {
         if (retry >= maxRetry) {
