@@ -77,6 +77,24 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
     assertTrue(cancelPending);
   }
 
+  @Test(groups = "Cancel_TIDO_EventHistory", dependsOnGroups = {"Cancel_TIDO_DB"})
+  private void validateEventHistoryInDatabase() throws Exception {
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
+    ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
+    Document cancelPendingEvent = null;
+    for (Object eventHistory : eventHistoryList) {
+      Document eventHistory1 = (Document) eventHistory;
+      if (eventHistory1.get("eventType").equals("CancelPending") && eventHistory1.get("statusCode")
+          .equals(AppConstants.ACCEPTED)) {
+        cancelPendingEvent = eventHistory1;
+        break;
+      }
+    }
+    assertNotNull(cancelPendingEvent);
+    assertNotNull(cancelPendingEvent.get("recipientId"));
+    assertNotNull(cancelPendingEvent.get("deliveryMethodCd"));
+  }
+
 
   private boolean evenHistoryIsForCancelPending(Document eventHistory) {
     return StringUtils.equals(eventHistory.get("eventType").toString(), "CancelPending")
