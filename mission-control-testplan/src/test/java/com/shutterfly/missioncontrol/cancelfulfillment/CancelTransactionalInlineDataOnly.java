@@ -72,7 +72,6 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
             AppConstants.CANCEL);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
-    //Document eventHistory = (Document) eventHistoryList.get();
     boolean cancelPending = eventHistoryList.stream()
         .anyMatch(eventHistory -> evenHistoryIsForCancelPending((Document) eventHistory));
     assertTrue(cancelPending);

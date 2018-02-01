@@ -106,6 +106,17 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     assertNotNull(requestDetail.get("transactionalRequestDetail"));
   }
 
+  @Test(groups = "Process_TIDO_Event_History", dependsOnGroups = {
+      "Process_TIDO_DB"})
+  private void validateEventHistoryInDb() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    ArrayList eventHistoryList = (ArrayList<Document>) fulfillmentTrackingRecordDoc
+        .get("eventHistory");
+    Document eventHistory = (Document) eventHistoryList.get(0);
+    assertNotNull(eventHistory.get("recipientId"));
+    assertNotNull(eventHistory.get("deliveryMethodCd"));
+  }
+
 
   @Test(groups = "Process_TIDO_InValid_Request_Validation")
   private void validateRecordFieldsInDbForInValidRequest() throws Exception {
