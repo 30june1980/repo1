@@ -43,11 +43,10 @@ public class RequestTests extends ConfigLoaderWeb {
         portalPage.clickOnSearchBtn();
         Assert.assertTrue(portalPage.areSearchResultsVisible());
         int results = portalPage.getSearchResultCount();
-        int possiblePagesForPagination = (results / 20);
 
         Assert.assertTrue(results > 0);
-        PageUtils.testPagination(driver, portalPage, possiblePagesForPagination, true);
-        PageUtils.testPagination(driver, portalPage, possiblePagesForPagination, false);
+        PageUtils.testPagination(driver, portalPage, results, true);
+        PageUtils.testPagination(driver, portalPage, results, false);
     }
 
     @Test
@@ -107,6 +106,5 @@ public class RequestTests extends ConfigLoaderWeb {
             portalPage.clickOnNextLbl();
         }
     }
-
 
 }

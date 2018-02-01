@@ -50,7 +50,19 @@ public class SegmentsTests extends ConfigLoaderWeb {
 
         segmentPage.setEndDate(DateUtils.convertLocalDateToString(toDate));
         segmentPage.clickOnSaveSegmentBtn();
-        Assert.assertTrue(segmentPage.getSavedSegment(segmentName).isEnabled());
+        Assert.assertTrue(segmentPage.isToastDisplayed());
+    }
+
+    @Test
+    public void editSegmentTest() {
+        driver.get(segmentsTabUrl);
+        LocalDate toDate = LocalDate.now().plusDays(3);
+        String segmentDate = DateUtils.convertLocalDateToString(toDate);
+
+        segmentPage.clickOnEditSegmentBtn();
+        segmentPage.setEndDate(segmentDate);
+        segmentPage.clickOnSaveSegmentBtn();
+        Assert.assertTrue(segmentPage.isToastDisplayed());
     }
 
 }

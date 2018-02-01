@@ -19,6 +19,8 @@ import org.testng.annotations.Parameters;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -40,8 +42,8 @@ public class ConfigLoaderWeb {
     protected static String testingScenariosXlPath = null;
 
     /*
- *  To get basic configurations from property files
- */
+     *  To get basic configurations from property files
+     */
     @BeforeClass
     @Parameters({AppConstants.PLATFORM, AppConstants.BROWSER})
     public static void basicConfigLoaderWeb(String platform, String browser) {
@@ -86,11 +88,15 @@ public class ConfigLoaderWeb {
                     System.setProperty(AppConstants.CHROME_DRIVER, System.getProperty(AppConstants.CHROME_DRIVER));
                     driver = new ChromeDriver();
                 } else {
+                    ChromeOptions options = new ChromeOptions();
+                    Map<String, Object> prefs = new HashMap<>();
+                    prefs.put("credentials_enable_service", false);
+                    prefs.put("profile.password_manager_enabled", false);
+                    prefs.put("profile.default_content_settings.popups", 0);
+                    prefs.put("download.default_directory", "");
+                    options.setExperimentalOption("prefs", prefs);
                     desiredCapabilities = DesiredCapabilities.chrome();
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.setHeadless(true);
-                    desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                    desiredCapabilities.setPlatform(os);
+                    desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
                     driver = new RemoteWebDriver(url, desiredCapabilities);
                 }
                 break;
@@ -122,7 +128,7 @@ public class ConfigLoaderWeb {
                 break;
 
             default:
-                throw new RuntimeException("Invalid browser specified in the XML file.");
+                throw new IllegalArgumentException("Invalid browser specified in the XML file.");
         }
 
         driver.manage().timeouts().implicitlyWait(AppConstants.IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
