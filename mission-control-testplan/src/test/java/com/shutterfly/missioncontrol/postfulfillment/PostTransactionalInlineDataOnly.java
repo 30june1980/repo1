@@ -24,6 +24,7 @@ import java.util.UUID;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.AssertJUnit.assertNull;
 
 /**
@@ -169,6 +170,8 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     List<Document> eventHistory = (ArrayList<Document>) fulfillmentTrackingRecordDoc
         .get("eventHistory");
     assertEquals(eventHistory.get(1).get("eventType").toString(), AppConstants.RECEIVED);
+    assertNotNull(eventHistory.get(1).get("recipientId"));
+    assertNotNull(eventHistory.get(1).get("deliveryMethodCd"));
   }
 
   @Test(groups = "Post_TIDO_For_No_Process")
@@ -190,5 +193,13 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
         equalTo("18420"));
     assertNull(databaseValidationUtil.getTrackingRecord(requestId));
+  }
+
+  @Test(groups = "Post_TIDO_postItemStatusBulkDetail", dependsOnGroups = {"Post_TIDO_DB"})
+  private void validatePostItemStatusBulkDetailInDB() throws Exception {
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record );
+    ArrayList postFulfillmentStatusList = (ArrayList<Document>) trackingRecord.get("postFulfillmentStatus");
+    Document postFulfillmentStatus = (Document) postFulfillmentStatusList.get(0);
+    assertNull(postFulfillmentStatus.get("postItemStatusBulkDetails"));
   }
 }
