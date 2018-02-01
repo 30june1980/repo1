@@ -1,14 +1,14 @@
 package com.shutterfly.missioncontrolportal.pageobject;
 
-import com.shutterfly.missioncontrolportal.Utils.PageUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import javax.annotation.Nonnegative;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,8 +58,10 @@ public class PortalPage {
     }
 
     // Dynamic web element functions
-    private WebElement getLoader() {
-        return driver.findElement(By.xpath(loaderXpath));
+    private void waitForLoaderAvailability() {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+//        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(loaderXpath))));
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(loaderXpath)));
     }
 
     private WebElement getPrevLbl() {
@@ -98,7 +100,7 @@ public class PortalPage {
 
     public void clickOnSearchBtn() {
         searchBtn.click();
-        PageUtils.waitForLoadingToComplete(driver, getLoader());
+        waitForLoaderAvailability();
     }
 
     public void clickOnBackBtn() {
@@ -115,18 +117,12 @@ public class PortalPage {
 
     public void clickOnNextLbl() {
         getNextLbl().click();
-        try {
-            PageUtils.waitForLoadingToComplete(driver, getLoader());
-        } catch (NoSuchElementException ignored) {
-        }
+        waitForLoaderAvailability();
     }
 
     public void clickOnBackLbl() {
         getPrevLbl().click();
-        try {
-            PageUtils.waitForLoadingToComplete(driver, getLoader());
-        } catch (NoSuchElementException ignored) {
-        }
+        waitForLoaderAvailability();
     }
 
     public void clickOnLogout() {
@@ -134,7 +130,7 @@ public class PortalPage {
         getLogoutLbl().click();
     }
 
-    public void clickOnIthResult(@Nonnegative int i) {
+    public void clickOnIthResult(int i) {
         requestDatesTxt.get(i).click();
     }
 

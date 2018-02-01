@@ -28,7 +28,7 @@ public class AppConstants {
     public static final String QA_PORTAL_URL = "QaPortalUrl";
     public static final String QA_PORTAL_LOGIN_URL = "QaPortalLoginUrl";
     public static final String QA_PORTAL_USERNAME = "QaPortalUserName";
-    public static final String QA_PORTAL_PASSWORD = "QaPortalPassword";
+    public static final String QA_PORTAL_PASS = "QaPortalPassword";
     public static final String SCREENSHOT_PATH = "ScreenshotPath";
 
     public static final String DATE_PATTERN = "MM/dd/yy";
@@ -39,9 +39,7 @@ public class AppConstants {
     public static final String TIDOB = "TIDOB";
     public static final String TEPR = "TEPR";
     public static final String EUTEPR = "EUTEPR";
-    public static final String BPR_SA = "BPR_SA";
     public static final String BPR = "BPR";
-    public static final String BDO_SA = "BDO_SA";
     public static final String TEDO = "TEDO";
     public static final String BDO = "BDO";
     public static final String TIDO = "TIDO";
