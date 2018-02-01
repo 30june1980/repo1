@@ -96,7 +96,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
 
     payload = payload.replaceAll("REQUEST_101", requestId).replaceAll("bulkfile_all_valid.xml",
-        (record + ".xml"));
+        (requestId + ".xml"));
     EncoderConfig encoderconfig = new EncoderConfig();
     Response response = given()
         .config(RestAssured.config()
