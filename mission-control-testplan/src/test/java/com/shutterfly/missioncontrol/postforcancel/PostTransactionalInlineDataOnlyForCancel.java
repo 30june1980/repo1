@@ -80,15 +80,15 @@ public class PostTransactionalInlineDataOnlyForCancel extends ConfigLoader {
     int maxRetry = 10;
     for (int retry = 0; retry <= maxRetry; retry++) {
       try {
-        if (eventHistoryList.size() >= 7) {
-          Document eventHistory = (Document) eventHistoryList.get(6);
+        if (eventHistoryList.size() >= 8) {
+          Document eventHistory = (Document) eventHistoryList.get(7);
           assertEquals(eventHistory.get("eventType"), "Cancelled");
           assertEquals(eventHistory.get("statusCode"), AppConstants.ACCEPTED);
           assertNotNull(eventHistory.get("recipientId"));
           assertNotNull(eventHistory.get("deliveryMethodCd"));
           break;
         } else {
-          throw new Exception("eventHistoryList size is less than 7 : " + eventHistoryList.size());
+          throw new Exception("eventHistoryList size is less than 8 : " + eventHistoryList.size());
         }
       } catch (Exception ex) {
         if (retry >= maxRetry) {
