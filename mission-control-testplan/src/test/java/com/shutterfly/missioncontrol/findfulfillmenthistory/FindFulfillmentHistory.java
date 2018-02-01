@@ -1,6 +1,7 @@
 package com.shutterfly.missioncontrol.findfulfillmenthistory;
 
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
@@ -49,5 +50,20 @@ public class FindFulfillmentHistory extends ConfigLoader {
     assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
     response.then().body(anything("Non empty response"));
   }
+
+  @Test
+  public void findFulfillmentHistoryWithoutSearchSourceId() throws IOException {
+    URL file = Resources.getResource("JSONPayload/FindFulfillmentHistory.json");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+    payload=payload.replace("CIRRUS","");
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all().contentType("application/json").accept("application/json")
+        .body(payload).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "responseExceptionDetail.errorCode",
+        equalTo("18049"));
+  }
+
 
 }
