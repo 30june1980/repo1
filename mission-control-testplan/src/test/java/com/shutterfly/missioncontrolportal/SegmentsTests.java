@@ -32,7 +32,7 @@ public class SegmentsTests extends ConfigLoaderWeb {
         segmentPage = PageFactory.initElements(driver, SegmentPage.class);
     }
 
-    @Test
+     @Test
     public void addSegmentTest() {
         driver.get(segmentsTabUrl);
 
