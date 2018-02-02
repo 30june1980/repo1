@@ -191,7 +191,7 @@ public class TransactionalInlineDataOnlyPage {
         return archiveStatusTxt.getText();
     }
 
-    public String marketSegment() {
+    public String getMarketSegment() {
         return marketSegmentTxt.getText();
     }
 
