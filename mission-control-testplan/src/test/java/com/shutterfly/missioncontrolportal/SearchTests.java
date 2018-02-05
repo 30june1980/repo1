@@ -1,5 +1,6 @@
 package com.shutterfly.missioncontrolportal;
 
+import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
@@ -288,8 +289,7 @@ public class SearchTests extends ConfigLoaderWeb {
         Assert.assertTrue(tiprsi.equals(transactionalInlinePrintReadySingleItemPage.getRequestType()));
     }
 
-
-//    @Test
+    @Test
     public void verifyTransactionalInlineDataOnlyPage() {
         driver.get(portalUrl);
         String record;
@@ -306,8 +306,26 @@ public class SearchTests extends ConfigLoaderWeb {
         Assert.assertTrue(portalPage.areSearchResultsVisible());
 
         portalPage.clickOnIthResult(0);
-        Map<String, String> map = XmlUtils.readXml("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
-        map.put("a", "REQUEST_101");
+        String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml").getPath();
+        Map<String, String> map = XmlUtils.readXml(filePath);
+        Assert.assertTrue(map.get("sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
+        Assert.assertTrue(map.get("destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
+        Assert.assertTrue(map.get("businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
+        Assert.assertTrue(map.get("requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
+        Assert.assertTrue(map.get("marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
+        Assert.assertTrue(map.get("fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
+        Assert.assertTrue(map.get("dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(map.get("deliveryMethod1")));
+        Assert.assertTrue(map.get("emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
+        Assert.assertTrue(map.get("faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("lastName")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("firstName")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address1")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address2")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address3")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("City")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("State")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Zip")));
     }
 
 }
