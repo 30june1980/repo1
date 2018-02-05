@@ -81,4 +81,12 @@ public class PostBulkDataOnly extends ConfigLoader {
     Document eventHistory = (Document) eventHistoryList.get(0);
     assertEquals(eventHistory.get("eventType"), AppConstants.RECEIVED);
   }
+
+  @Test(groups = "Post_BDO_postItemStatusBulkDetail", dependsOnGroups = {"Post_BDO_DB"})
+  private void validatePostItemStatusBulkDetailInDB() throws Exception {
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record );
+    ArrayList postFulfillmentStatusList = (ArrayList<Document>) trackingRecord.get("postFulfillmentStatus");
+    Document postFulfillmentStatus = (Document) postFulfillmentStatusList.get(0);
+    assertNotNull(postFulfillmentStatus.get("postItemStatusBulkDetails"));
+  }
 }

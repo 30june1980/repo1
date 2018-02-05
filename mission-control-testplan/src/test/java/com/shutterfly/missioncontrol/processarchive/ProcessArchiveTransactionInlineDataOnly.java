@@ -118,7 +118,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     ArrayList fulfillmentMetaDataList = (ArrayList<Document>) trackingRecord
         .get("fulfillmentMetaData");
-    Document metaData1 = (Document) fulfillmentMetaDataList.get(2);
+    Document metaData1 = (Document) fulfillmentMetaDataList.get(3);
     assertEquals(metaData1.get("name"),"archiveDestinationId");
     assertEquals(metaData1.get("value"),"EDMS");
   }

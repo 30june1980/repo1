@@ -7,6 +7,7 @@ import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
+import com.shutterfly.missioncontrol.utils.Utils;
 import com.shutterfly.missioncontrol.util.AppConstants;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -79,4 +80,33 @@ public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems
         .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.CANCEL);
   }
+
+
+  @Test(groups = "Cancel_TIPRMI_For_Children", dependsOnGroups = {"Process_TIPRMI_Cancel_MultiItem"})
+  private void getResponseForCancel() throws IOException {
+    basicConfigNonWeb();
+    String localRecord=cwr.getRequestIdByKeys("Process_TIPRMI_Cancel_MultiItem");
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(Utils.replaceExactMatch(this.buildPayload(),record,localRecord)).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+
+  }
+
+  @Test(dependsOnGroups = {"Cancel_TIPRMI_For_Children"})
+  private void validateRecordsInDatabaseForCancel() throws Exception {
+    String localRecord=cwr.getRequestIdByKeys("Process_TIPRMI_Cancel_MultiItem");
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(localRecord + "_1", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
+
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(localRecord + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
+  }
+
+
 }
