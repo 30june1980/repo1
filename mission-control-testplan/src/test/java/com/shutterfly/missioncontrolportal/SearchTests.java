@@ -23,6 +23,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Map;
 
@@ -308,24 +309,41 @@ public class SearchTests extends ConfigLoaderWeb {
         portalPage.clickOnIthResult(0);
         String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml").getPath();
         Map<String, String> map = XmlUtils.readXml(filePath);
-        Assert.assertTrue(map.get("sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
-        Assert.assertTrue(map.get("destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
-        Assert.assertTrue(map.get("businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
-        Assert.assertTrue(map.get("requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
-        Assert.assertTrue(map.get("marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
-        Assert.assertTrue(map.get("fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
-        Assert.assertTrue(map.get("dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(map.get("deliveryMethod1")));
-        Assert.assertTrue(map.get("emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
-        Assert.assertTrue(map.get("faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("lastName")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("firstName")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address1")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address2")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address3")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("City")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("State")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Zip")));
+        Assert.assertTrue(map.get("sch:sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
+        Assert.assertTrue(map.get("sch:destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
+        Assert.assertTrue(map.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
+        Assert.assertTrue(map.get("sch:requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
+        Assert.assertTrue(map.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
+        Assert.assertTrue(map.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
+        Assert.assertTrue(map.get("sch:dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(map.get("sch:deliveryMethod1")));
+        Assert.assertTrue(map.get("sch:emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
+        Assert.assertTrue(map.get("sch:faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("sch:lastName")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("sch:firstName")));
+        String returnAddressXml = XmlUtils.readXmlElement(filePath, "sch:ReturnToAddress");
+        String returnAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getReturnToAddress());
+        Assert.assertEquals(returnAddressXml, returnAddressPage);
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("sch:Zip")));
+        String mailToAddressXml = XmlUtils.readXmlElement(filePath, "sch:MailToAddress");
+        String mailToAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getMailToAddress());
+        Assert.assertEquals(mailToAddressXml, mailToAddressPage);
+
     }
 
+    private String removeNewLines(@Nonnull String line) {
+        if (line.isEmpty()) {
+            return line;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] words = line.split(",");
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            stringBuilder.append(word.replaceAll("\n", "").trim());
+            if (i != words.length - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        return stringBuilder.toString();
+    }
 }
