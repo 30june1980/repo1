@@ -230,6 +230,27 @@ public class SearchTests extends ConfigLoaderWeb {
 
         portalPage.clickOnIthResult(0);
         Assert.assertTrue(tido.equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
+
+        String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnlyBatchable.xml").getPath();
+
+
+        Map<String, String> map = XmlUtils.readXml(filePath);
+        Assert.assertTrue(map.get("sourceID").equals(transactionalInlineDataOnlyBatchablePage.getRequestor()));
+        Assert.assertTrue(map.get("destinationID").equals(transactionalInlineDataOnlyBatchablePage.getVendor()));
+        Assert.assertTrue(map.get("businessSegmentID").equals(transactionalInlineDataOnlyBatchablePage.getBs()));
+        Assert.assertTrue(map.get("requestCategory").equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
+        Assert.assertTrue(map.get("marketSegmentCd").equals(transactionalInlineDataOnlyBatchablePage.getMs()));
+        Assert.assertTrue(map.get("fulfillmentType").equals(transactionalInlineDataOnlyBatchablePage.getMaterialType()));
+        Assert.assertTrue(map.get("dataFormat").equals(transactionalInlineDataOnlyBatchablePage.getDataFormat()));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getDeliveryMethod().contains(map.get("deliveryMethod1")));
+        Assert.assertTrue(map.get("emailAddress").equals(transactionalInlineDataOnlyBatchablePage.getRecipientEmail()));
+        Assert.assertTrue(map.get("faxNumber").equals(transactionalInlineDataOnlyBatchablePage.getRecipientFax()));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getLnameFname().contains(map.get("lastName")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("Address1")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("Address2")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("Address3")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("City")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getTemplateName().contains(map.get("templateName")));
     }
 
     @Test
