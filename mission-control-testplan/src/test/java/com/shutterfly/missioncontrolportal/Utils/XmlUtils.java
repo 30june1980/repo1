@@ -1,5 +1,7 @@
 package com.shutterfly.missioncontrolportal.Utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,10 +24,13 @@ import java.util.Map;
 
 public class XmlUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(XmlUtils.class);
+
     private XmlUtils() {
     }
 
     public static Map<String, String> readXml(@Nonnull String filePath) {
+        logger.info("XML path: %s ", filePath);
         Map<String, String> map = new LinkedHashMap<>();
         try {
             final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(filePath);
@@ -33,12 +38,13 @@ public class XmlUtils {
             final NodeList nodeList = (NodeList) xpath.evaluate(document, XPathConstants.NODESET);
             for (int i = 0; i < nodeList.getLength(); i++) {
                 final Element el = (Element) nodeList.item(i);
-                String key = el.getNodeName().replace("sch:", "").trim();
+                String key = el.getNodeName().trim();
                 String value = el.getFirstChild() == null ? "" : el.getFirstChild().getNodeValue().trim();
                 map.put(key, value);
             }
         } catch (Exception exception) {
-            throw new IllegalArgumentException("Failed to parse XML file", exception);
+            logger.error("Failed to parse XML file", exception);
+            throw new RuntimeException("Failed to parse XML file", exception);
         }
         return map;
     }
@@ -51,8 +57,9 @@ public class XmlUtils {
             parser = parserFactor.newSAXParser();
             parser.parse(new File(filePath),
                     handler);
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            throw new IllegalArgumentException("Failed to parse the XML file");
+        } catch (IOException | SAXException | ParserConfigurationException exception) {
+            logger.error("Failed to parse the XML file", exception);
+            throw new RuntimeException("Failed to parse the XML file");
         }
         return handler.result;
     }
@@ -62,36 +69,42 @@ public class XmlUtils {
         private String result;
         private String elementName;
 
-        private SAXHandler() {
-        }
-
         SAXHandler(String elementName) {
             this.elementName = elementName;
         }
 
         @Override
         public void startElement(String uri, String localName,
-                                 String qName, Attributes attributes) throws SAXException {
+                                 String qName, Attributes attributes) {
             if (elementName.equals(qName)) {
                 buffer = new StringBuilder();
             }
         }
 
         @Override
-        public void characters(char[] ch, int start, int length)
-                throws SAXException {
+        public void characters(char[] ch, int start, int length) {
             if (buffer != null) {
-                buffer.append(ch, start, length);
+                StringBuilder builder = new StringBuilder();
+                for (int i = start; i < start + length; i++) {
+                    builder.append(ch[i]);
+                }
+                String word = builder.toString().trim();
+                if (!word.equals("")) {
+                    buffer.append(word).append(", ");
+                }
             }
         }
 
         @Override
-        public void endElement(String uri, String localName, String qName)
-                throws SAXException {
+        public void endElement(String uri, String localName, String qName) {
             if (elementName.equals(qName)) {
-                result = buffer.toString();
+                result = buffer.toString().trim();
+                if (!result.isEmpty() && result.charAt(result.length() - 1) == ',') {
+                    result = result.substring(0, result.length() - 1);
+                }
                 buffer = new StringBuilder();
             }
         }
     }
+
 }

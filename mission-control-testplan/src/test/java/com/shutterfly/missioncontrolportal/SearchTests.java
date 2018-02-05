@@ -19,10 +19,13 @@ import com.shutterfly.missioncontrolportal.pageobject.TransactionalInlinePrintRe
 import com.shutterfly.missioncontrolportal.pageobject.TransactionalInlinePrintReadyMultiItemPage;
 import com.shutterfly.missioncontrolportal.pageobject.TransactionalInlinePrintReadySingleItemPage;
 import org.openqa.selenium.support.PageFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Map;
 
@@ -37,7 +40,6 @@ public class SearchTests extends ConfigLoaderWeb {
     private final String tepr = "TransactionalExternalPrintReady";
     private final String tiprmi = "TransactionalInlinePrintReadyMultItem";
     private final String tiprsi = "TransactionalInlinePrintReadySingleItem";
-    private static final String COULDN_T_READ_FROM_THE_CSV_FILE = "Couldn't read from the CSV file";
 
     private PortalPage portalPage;
     private TransactionalExternalDataOnlyPage transactionalExternalDataOnlyPage;
@@ -50,6 +52,8 @@ public class SearchTests extends ConfigLoaderWeb {
     private TransactionalInlinePrintReadyMultiItemNonBatchableSingleItemPage transactionalInlinePrintReadyMultiItemNonBatchableSingleItemPage;
     private TransactionalInlinePrintReadyMultiItemPage transactionalInlinePrintReadyMultiItemPage;
     private TransactionalInlinePrintReadySingleItemPage transactionalInlinePrintReadySingleItemPage;
+
+    private Logger logger = LoggerFactory.getLogger(SearchTests.class);
 
     private CsvReaderWriter crw;
 
@@ -101,252 +105,153 @@ public class SearchTests extends ConfigLoaderWeb {
 
     @Test // (dependsOnGroups = "Process_TIDO_Valid_Request_Validation")
     public void transactionalInlineDataOnlyTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TIDO);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TIDO);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tido.equals(transactionalInlineDataOnlyPage.getRequestType()));
     }
 
     @Test
     public void transactionalExternalDataOnlyTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TEDO);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TEDO);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tedo.equals(transactionalExternalDataOnlyPage.getRequestType()));
     }
 
     @Test
     public void bulkDataOnlyTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.BDO);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.BDO);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(bdo.equals(bulkDataOnlyPage.getRequestType()));
     }
 
     @Test
     public void bulkPrintReadyTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.BPR);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.BPR);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(bpr.equals(bulkPrintReadyPage.getRequestType()));
     }
 
     @Test
     public void edmsuiTransactionalExternalPrintReadyTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.EUTEPR);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.EUTEPR);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tepr.equals(edmsuiTransactionalExternalPrintReadyPage.getRequestType()));
     }
 
     @Test
     public void transactionalExternalPrintReadyTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TEPR);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TEPR);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tepr.equals(transactionalExternalPrintReadyPage.getRequestType()));
     }
 
     @Test
     public void transactionalInlineDataOnlyBatchableTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TIDOB);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TIDOB);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tido.equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
 
         String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnlyBatchable.xml").getPath();
 
 
         Map<String, String> map = XmlUtils.readXml(filePath);
-        Assert.assertTrue(map.get("sourceID").equals(transactionalInlineDataOnlyBatchablePage.getRequestor()));
-        Assert.assertTrue(map.get("destinationID").equals(transactionalInlineDataOnlyBatchablePage.getVendor()));
-        Assert.assertTrue(map.get("businessSegmentID").equals(transactionalInlineDataOnlyBatchablePage.getBs()));
-        Assert.assertTrue(map.get("requestCategory").equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
-        Assert.assertTrue(map.get("marketSegmentCd").equals(transactionalInlineDataOnlyBatchablePage.getMs()));
-        Assert.assertTrue(map.get("fulfillmentType").equals(transactionalInlineDataOnlyBatchablePage.getMaterialType()));
-        Assert.assertTrue(map.get("dataFormat").equals(transactionalInlineDataOnlyBatchablePage.getDataFormat()));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getDeliveryMethod().contains(map.get("deliveryMethod1")));
-        Assert.assertTrue(map.get("emailAddress").equals(transactionalInlineDataOnlyBatchablePage.getRecipientEmail()));
-        Assert.assertTrue(map.get("faxNumber").equals(transactionalInlineDataOnlyBatchablePage.getRecipientFax()));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getLnameFname().contains(map.get("lastName")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("Address1")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("Address2")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("Address3")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("City")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getTemplateName().contains(map.get("templateName")));
+        Assert.assertTrue(map.get("sch:sourceID").equals(transactionalInlineDataOnlyBatchablePage.getRequestor()));
+        Assert.assertTrue(map.get("sch:destinationID").equals(transactionalInlineDataOnlyBatchablePage.getVendor()));
+        Assert.assertTrue(map.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyBatchablePage.getBs()));
+        Assert.assertTrue(map.get("sch:requestCategory").equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
+        Assert.assertTrue(map.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyBatchablePage.getMs()));
+        Assert.assertTrue(map.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyBatchablePage.getMaterialType()));
+        Assert.assertTrue(map.get("sch:dataFormat").equals(transactionalInlineDataOnlyBatchablePage.getDataFormat()));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getDeliveryMethod().contains(map.get("sch:deliveryMethod1")));
+        Assert.assertTrue(map.get("sch:emailAddress").equals(transactionalInlineDataOnlyBatchablePage.getRecipientEmail()));
+        Assert.assertTrue(map.get("sch:faxNumber").equals(transactionalInlineDataOnlyBatchablePage.getRecipientFax()));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getLnameFname().contains(map.get("sch:lastName")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:Address1")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:Address2")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:Address3")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:City")));
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getTemplateName().contains(map.get("sch:templateName")));
     }
 
     @Test
     public void transactionalInlinePrintReadyMultiItemNonBatchableSingleItemTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TIPRMI_NBSI);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TIPRMI_NBSI);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tiprmi.equals(transactionalInlinePrintReadyMultiItemNonBatchableSingleItemPage.getRequestType()));
     }
 
     @Test
     public void transactionalInlinePrintReadyMultiItemTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TIPRMI);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TIPRMI);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tiprmi.equals(transactionalInlinePrintReadyMultiItemPage.getRequestType()));
     }
 
     @Test
     public void transactionalInlinePrintReadySingleItemTest() {
-        driver.get(portalUrl);
-        String record;
-        try {
-            record = crw.getRequestIdByKeys(AppConstants.TIPRSI);
-        } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
-        }
+        searchByRequestCategory(AppConstants.TIPRSI);
 
-        portalPage.setRequestIdTxt("\"" + record + "\"");
-        portalPage.clickOnSearchBtn();
-
-        Assert.assertTrue(portalPage.areSearchResultsVisible());
-
-        portalPage.clickOnIthResult(0);
         Assert.assertTrue(tiprsi.equals(transactionalInlinePrintReadySingleItemPage.getRequestType()));
     }
 
     @Test
     public void verifyTransactionalInlineDataOnlyPage() {
+        searchByRequestCategory(AppConstants.TIDO);
+
+        String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml").getPath();
+        Map<String, String> map = XmlUtils.readXml(filePath);
+        Assert.assertTrue(map.get("sch:sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
+        Assert.assertTrue(map.get("sch:destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
+        Assert.assertTrue(map.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
+        Assert.assertTrue(map.get("sch:requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
+        Assert.assertTrue(map.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
+        Assert.assertTrue(map.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
+        Assert.assertTrue(map.get("sch:dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(map.get("sch:deliveryMethod1")));
+        Assert.assertTrue(map.get("sch:emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
+        Assert.assertTrue(map.get("sch:faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("sch:lastName")));
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("sch:firstName")));
+        String returnAddressXml = XmlUtils.readXmlElement(filePath, "sch:ReturnToAddress");
+        String returnAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getReturnToAddress());
+        Assert.assertEquals(returnAddressXml, returnAddressPage);
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("sch:Zip")));
+        String mailToAddressXml = XmlUtils.readXmlElement(filePath, "sch:MailToAddress");
+        String mailToAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getMailToAddress());
+        Assert.assertEquals(mailToAddressXml, mailToAddressPage);
+
+    }
+
+    private String removeNewLines(@Nonnull String line) {
+        if (line.isEmpty()) {
+            return line;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] words = line.split(",");
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            stringBuilder.append(word.replaceAll("\n", "").trim());
+            if (i != words.length - 1) {
+                stringBuilder.append(", ");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    private void searchByRequestCategory(@Nonnull String requestCategory) {
         driver.get(portalUrl);
         String record;
         try {
-            record = crw.getRequestIdByKeys(AppConstants.TIDO);
+            record = crw.getRequestIdByKeys(requestCategory);
         } catch (IOException exception) {
-            throw new RuntimeException(COULDN_T_READ_FROM_THE_CSV_FILE, exception);
+            throw new RuntimeException("Couldn't read from the CSV file", exception);
         }
-
-
+        System.out.println(record);
+        logger.warn(record);
         portalPage.setRequestIdTxt("\"" + record + "\"");
         portalPage.clickOnSearchBtn();
-
         Assert.assertTrue(portalPage.areSearchResultsVisible());
-
         portalPage.clickOnIthResult(0);
-        String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml").getPath();
-        Map<String, String> map = XmlUtils.readXml(filePath);
-        Assert.assertTrue(map.get("sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
-        Assert.assertTrue(map.get("destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
-        Assert.assertTrue(map.get("businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
-        Assert.assertTrue(map.get("requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
-        Assert.assertTrue(map.get("marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
-        Assert.assertTrue(map.get("fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
-        Assert.assertTrue(map.get("dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(map.get("deliveryMethod1")));
-        Assert.assertTrue(map.get("emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
-        Assert.assertTrue(map.get("faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("lastName")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("firstName")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address1")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address2")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Address3")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("City")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("State")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("Zip")));
     }
 
 }
