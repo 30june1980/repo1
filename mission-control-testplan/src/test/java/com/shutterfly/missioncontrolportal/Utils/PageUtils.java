@@ -8,9 +8,6 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -36,7 +33,7 @@ public class PageUtils {
         String userName = properties.getProperty(AppConstants.QA_PORTAL_USERNAME);
         String password = null;
         try {
-            password = Encryption.decrypt(properties.getProperty(AppConstants.QA_PORTAL_PASSWORD), secretKey);
+            password = Encryption.decrypt(properties.getProperty(AppConstants.QA_PORTAL_PASS), secretKey);
         } catch (Exception exception) {
             throw new RuntimeException("Failed to decrypt username / password");
         }
@@ -48,28 +45,25 @@ public class PageUtils {
         portalPage.clickOnLogout();
     }
 
-    public static void waitForLoadingToComplete(WebDriver driver, WebElement loader) {
-        WebDriverWait wait = new WebDriverWait(driver, 10000L);
-        wait.until(ExpectedConditions.visibilityOf(loader));
-        wait.until(ExpectedConditions.invisibilityOf(loader));
-    }
-
     public static void testPagination(@Nonnull final WebDriver driver, @Nonnull final PortalPage portalPage,
-                                      int possiblePagesForPagination, boolean moveAhead) {
+                                      int totalNumberOfRecords, boolean moveAhead) {
+        int numberOfPages = totalNumberOfRecords / 20;
+        if (totalNumberOfRecords % 20 == 0) {
+            --numberOfPages;
+        }
+
+        logger.info("Total number of records: ", totalNumberOfRecords);
+        logger.info("Number of pages: ", totalNumberOfRecords);
         assertThatButtonIsNotClickable(driver, portalPage, moveAhead);
 
         int count = 0;
-
-        while (count < possiblePagesForPagination) {
-            ++count;
+        while (count++ < numberOfPages) {
             if (moveAhead) {
                 portalPage.clickOnNextLbl();
             } else {
                 portalPage.clickOnBackLbl();
             }
         }
-        Assert.assertEquals(count, possiblePagesForPagination);
-
         assertThatButtonIsNotClickable(driver, portalPage, !moveAhead);
     }
 
@@ -82,13 +76,12 @@ public class PageUtils {
     public static void takeScreenshot(@Nonnull Properties properties, @Nonnull WebDriver driver) {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(properties.getProperty(AppConstants.SCREENSHOT_PATH))
-                    .append("Screenshot").append(String.valueOf(System.currentTimeMillis()))
-                    .append(".png");
-            FileUtils.copyFile(screenshot, new File(stringBuilder.toString()));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to write screenshot to a file", e);
+            String fileName = properties.getProperty(AppConstants.SCREENSHOT_PATH) +
+                    "Screenshot" + String.valueOf(System.currentTimeMillis()) +
+                    ".png";
+            FileUtils.copyFile(screenshot, new File(fileName));
+        } catch (IOException exception) {
+            throw new RuntimeException("Failed to write screenshot to a file", exception);
         }
     }
 

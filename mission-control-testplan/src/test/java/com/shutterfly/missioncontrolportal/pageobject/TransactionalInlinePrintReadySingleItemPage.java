@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-public class TIPRSIPage {
+public class TransactionalInlinePrintReadySingleItemPage {
 
     private WebDriver driver;
 
@@ -15,7 +15,7 @@ public class TIPRSIPage {
     @FindBy(how = How.XPATH, using = "//text()[contains(.,'Back')]/ancestor::a[1]")
     private WebElement backBtn;
 
-    public TIPRSIPage(WebDriver eDriver) {
+    public TransactionalInlinePrintReadySingleItemPage(WebDriver eDriver) {
         this.driver = eDriver;
     }
 

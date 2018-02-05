@@ -10,7 +10,7 @@ public class SegmentPage {
 
     private WebDriver driver;
 
-    private String newSegmentXpath = "//span[text()='%s']";
+    private final String successToastXpath = "//span[text()='Success: Segments Updated.']";
 
     @FindBy(how = How.XPATH, using = "//button[text()='ADD BUSINESS SEGMENT']")
     private WebElement addBusinessSegmentBtn;
@@ -33,12 +33,15 @@ public class SegmentPage {
     @FindBy(how = How.XPATH, using = "//text()[contains(.,'SAVE BUSINESS SEGMENT')]/ancestor::button[1]")
     private WebElement saveSegmentBtn;
 
-    public WebElement getSavedSegment(String segment) {
-        return driver.findElement(By.xpath(String.format(newSegmentXpath, segment)));
-    }
+    @FindBy(how = How.XPATH, using = "//span[@class='glyphicon glyphicon-pencil']")
+    private WebElement editSegmentBtn;
 
     public SegmentPage(WebDriver eDriver) {
         this.driver = eDriver;
+    }
+
+    public boolean isToastDisplayed() {
+        return driver.findElement(By.xpath(successToastXpath)).isDisplayed();
     }
 
     // action methods
@@ -52,6 +55,10 @@ public class SegmentPage {
 
     public void clickOnSaveSegmentBtn() {
         saveSegmentBtn.click();
+    }
+
+    public void clickOnEditSegmentBtn() {
+        editSegmentBtn.click();
     }
 
     public void setSegmentName(String segmentName) {
@@ -68,6 +75,7 @@ public class SegmentPage {
     }
 
     public void setEndDate(String endDate) {
+        endDateTxt.clear();
         endDateTxt.sendKeys(endDate);
     }
 
