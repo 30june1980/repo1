@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-public class BPRPage {
+public class TransactionalExternalDataOnlyPage {
 
     private WebDriver driver;
 
@@ -15,7 +15,7 @@ public class BPRPage {
     @FindBy(how = How.XPATH, using = "//text()[contains(.,'Back')]/ancestor::a[1]")
     private WebElement backBtn;
 
-    public BPRPage(WebDriver eDriver) {
+    public TransactionalExternalDataOnlyPage(WebDriver eDriver) {
         this.driver = eDriver;
     }
 

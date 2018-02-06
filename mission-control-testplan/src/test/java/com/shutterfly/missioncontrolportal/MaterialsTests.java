@@ -35,11 +35,10 @@ public class MaterialsTests extends ConfigLoaderWeb {
         Assert.assertTrue(portalPage.areSearchResultsVisible());
 
         int results = portalPage.getSearchResultCount();
-        int possiblePagesForPagination = (results / 20);
 
         Assert.assertTrue(results > 0);
-        PageUtils.testPagination(driver, portalPage, possiblePagesForPagination, true);
-        PageUtils.testPagination(driver, portalPage, possiblePagesForPagination, false);
+        PageUtils.testPagination(driver, portalPage, results, true);
+        PageUtils.testPagination(driver, portalPage, results, false);
     }
 
 }
