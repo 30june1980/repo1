@@ -246,8 +246,6 @@ public class SearchTests extends ConfigLoaderWeb {
         } catch (IOException exception) {
             throw new RuntimeException("Couldn't read from the CSV file", exception);
         }
-        System.out.println(record);
-        logger.warn(record);
         portalPage.setRequestIdTxt("\"" + record + "\"");
         portalPage.clickOnSearchBtn();
         Assert.assertTrue(portalPage.areSearchResultsVisible());

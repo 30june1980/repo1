@@ -30,7 +30,7 @@ public class XmlUtils {
     }
 
     public static Map<String, String> readXml(@Nonnull String filePath) {
-        logger.info("XML path: %s ", filePath);
+        System.out.printf("XML path: %s ", filePath);
         Map<String, String> map = new LinkedHashMap<>();
         try {
             final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(filePath);
@@ -43,7 +43,7 @@ public class XmlUtils {
                 map.put(key, value);
             }
         } catch (Exception exception) {
-            logger.error("Failed to parse XML file", exception);
+            System.out.printf("Failed to parse XML file: %s", exception);
             throw new RuntimeException("Failed to parse XML file", exception);
         }
         return map;
