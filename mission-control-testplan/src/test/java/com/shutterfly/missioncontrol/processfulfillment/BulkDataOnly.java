@@ -123,8 +123,8 @@ public class BulkDataOnly extends ConfigLoader {
     assertNotNull(requestDetail.get("bulkRequestDetail"));
   }
 
-  @Test(groups = "Process_BDO_Response_2")
-  private void getResponse2() throws Exception {
+  @Test
+  private void validateBulkRequestIsNotGettingBatched() throws Exception {
     basicConfigNonWeb();
     String requestId = "Test_qa" + UUID.randomUUID().toString();
 
