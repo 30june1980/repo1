@@ -6,6 +6,7 @@ import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
@@ -123,8 +124,8 @@ public class BulkDataOnly extends ConfigLoader {
     assertNotNull(requestDetail.get("bulkRequestDetail"));
   }
 
-  @Test(groups = "Process_BDO_Response_2")
-  private void getResponse2() throws Exception {
+  @Test
+  private void validateBulkRequestIsNotGettingBatched() throws Exception {
     basicConfigNonWeb();
     String requestId = "Test_qa" + UUID.randomUUID().toString();
 

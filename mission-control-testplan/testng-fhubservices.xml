@@ -82,7 +82,7 @@
         name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestDetailValidation"/>
       <class name="com.shutterfly.missioncontrolapi.FulfillmentStatusTrackingControllerTest"/>
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.FileNameValidation"/>
-      <class name="com.shutterfly.missioncontrol.redelivery.EdmsUiTransactionalExternalPrintReady"/>
+      <class name="com.shutterfly.missioncontrol.redelivery.ProcessTransactionalExternalPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
@@ -168,7 +168,12 @@
         name="com.shutterfly.missioncontrol.postforcancel.PostTransactionalInlinePrintReadySingleItemForCancel"/>
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
       <class
-        name="com.shutterfly.missioncontrol.redelivery.EdmsUiPostTransactionalExternalPrintReady"/>
+        name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady"/>
+      <class
+        name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady_Fulfilled"/>
+      <class
+        name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady_Generated"/>
+
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
@@ -182,7 +187,6 @@
         name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"></class>
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.ArchiveInvalidRequestCode"/>
       <class name="com.shutterfly.missioncontrol.validation.postarchive.PostArchiveInvalidFile"/>
-      <class name="com.shutterfly.missioncontrol.processfulfillment.Redelivery"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
