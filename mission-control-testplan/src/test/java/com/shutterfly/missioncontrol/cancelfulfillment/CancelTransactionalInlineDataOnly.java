@@ -106,6 +106,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
   private void validationForDuplicateCancel_1() throws Exception {
     String requestId = "Test_qa_" + UUID.randomUUID().toString();
     RequestUtil.sendProcess(requestId);
+    int maxRetry = 10;
     //send cancel request
     URL cancelFile = Resources
         .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
@@ -138,7 +139,23 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
         .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
-    assertNotNull(trackingRecord.get("postFulfillmentStatus"));
+
+    for (int retry = 0; retry <= maxRetry; retry++) {
+      try {
+        trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
+        ArrayList postFulfillmentStatus = (ArrayList<Document>) trackingRecord.get("postFulfillmentStatus");
+        if (postFulfillmentStatus.equals(null)) {
+          throw new Exception("postFulfillmentStatus is null");
+        }
+      } catch (Exception ex) {
+        if (retry >= maxRetry) {
+          throw new Exception(ex.getMessage());
+        } else {
+          TimeUnit.SECONDS.sleep(10);
+        }
+      }
+    }
+
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
     Document eventHistory = (Document) eventHistoryList.get(2);
     assertEquals(eventHistory.get("eventType"), "Cancelled");
