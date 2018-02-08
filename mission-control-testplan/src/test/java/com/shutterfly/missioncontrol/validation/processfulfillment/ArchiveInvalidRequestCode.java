@@ -57,7 +57,7 @@ public class ArchiveInvalidRequestCode extends ConfigLoader {
 
   }
 
-  @Test()
+  @Test
   private void nameValuePairMismatch() throws IOException {
     basicConfigNonWeb();
     EncoderConfig encoderconfig = new EncoderConfig();
@@ -72,7 +72,9 @@ public class ArchiveInvalidRequestCode extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
         equalTo("18062"));
-
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
+        equalTo("No metadata name-value pair defined."));
   }
 
   @Test()
