@@ -4,7 +4,7 @@
 package com.shutterfly.missioncontrol.cancelfulfillment;
 
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.RequestUtil;
+import com.shutterfly.missioncontrol.util.RequestUtil;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
