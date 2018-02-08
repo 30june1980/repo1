@@ -4,6 +4,7 @@
 package com.shutterfly.missioncontrol.redelivery;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
@@ -13,6 +14,7 @@ import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -24,15 +26,13 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
-/**
- * @author dgupta
- */
 public class ProcessTransactionalExternalPrintReady extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
   CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -75,8 +75,15 @@ public class ProcessTransactionalExternalPrintReady extends ConfigLoader {
 
   @Test(groups = "Process_EUTEPR_DB", dependsOnGroups = {"Process_EUTEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig.getInstances()
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_EUTEPR_DB_Status", dependsOnGroups = {"Process_EUTEPR_DB"})
+  private void validateCurrentFulfillmentStatus() throws Exception {
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
+    String currentFulfillmentStatus = (String) trackingRecord.get("currentFulfillmentStatus");
+    assertEquals(currentFulfillmentStatus,"RECEIVED");
   }
 }

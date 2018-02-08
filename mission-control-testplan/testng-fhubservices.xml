@@ -169,6 +169,11 @@
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
       <class
         name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady"/>
+      <class
+        name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady_Fulfilled"/>
+      <class
+        name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady_Generated"/>
+
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
