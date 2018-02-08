@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.redelivery;
 
 import com.google.common.io.Resources;
@@ -22,33 +19,26 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author dgupta
  */
-public class EdmsUiPostTransactionalExternalPrintReady extends ConfigLoader {
+public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
     return uri;
-
   }
 
   private String buildPayload() throws IOException {
     URL file = Resources
-        .getResource("XMLPayload/Redelivery/EdmsuiPostTransactionalExternalPrintReady.xml");
+        .getResource("XMLPayload/Redelivery/PostTransactionalExternalPrintReady.xml");
     payload = Resources.toString(file, StandardCharsets.UTF_8);
-    record = cwr.getRequestIdByKeys("EUTEPR");
-
+    record = cwr.getRequestIdByKeys("REDELIVER");
     return payload = payload.replaceAll("REQUEST_101", record);
-
   }
-
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Post_EUTEPR_Response", dependsOnGroups = {"Process_EUTEPR_DB"})
   private void getResponse() throws IOException {
@@ -65,7 +55,6 @@ public class EdmsUiPostTransactionalExternalPrintReady extends ConfigLoader {
 
   @Test(groups = "Post_EUTEPR_DB", dependsOnGroups = {"Post_EUTEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);

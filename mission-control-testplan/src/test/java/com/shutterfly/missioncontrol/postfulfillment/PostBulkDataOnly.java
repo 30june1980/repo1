@@ -80,6 +80,8 @@ public class PostBulkDataOnly extends ConfigLoader {
     ArrayList eventHistoryList = (ArrayList<Document>) trackingRecord.get("eventHistory");
     Document eventHistory = (Document) eventHistoryList.get(0);
     assertEquals(eventHistory.get("eventType"), AppConstants.RECEIVED);
+    assertNotNull(eventHistory.get("recipientId"));
+    assertNotNull(eventHistory.get("deliveryMethodCd"));
   }
 
   @Test(groups = "Post_BDO_postItemStatusBulkDetail", dependsOnGroups = {"Post_BDO_DB"})
