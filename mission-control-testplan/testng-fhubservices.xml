@@ -30,6 +30,8 @@
         name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestDateValidation"/>
       <class
         name="com.shutterfly.missioncontrol.validation.processarchive.DestinationIdValidation"/>
+      <class
+        name="com.shutterfly.missioncontrol.validation.processarchive.DocumentTypeValidation"/>
       <class name="com.shutterfly.missioncontrolapi.DeadLetterControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.JobDetailsControllerTest"/>
       <class
@@ -177,6 +179,8 @@
       <class name="com.shutterfly.missioncontrol.cancelfulfillment.CancelBulkPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.InvalidPostFulfillmentRequest"/>
+      <class
+        name="com.shutterfly.missioncontrol.validation.postfulfillment.RecipientIDValidation"/>
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestTypeValidation"/>
       <class
