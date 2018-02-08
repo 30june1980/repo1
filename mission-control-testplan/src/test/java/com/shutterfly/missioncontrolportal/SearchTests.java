@@ -184,14 +184,14 @@ public class SearchTests extends ConfigLoaderWeb {
         Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(tidoXmlData.get("sch:Zip")));
     }
 
-    @Test(groups = "tido")
+//    @Test(groups = "tido")
     public void verifyTransactionalInlineDataOnlyReturnToAddress() {
         String returnAddressXml = XmlUtils.readXmlElement(xmlPath, "sch:ReturnToAddress");
         String returnAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getReturnToAddress());
         Assert.assertEquals(returnAddressXml, returnAddressPage);
     }
 
-    @Test(groups = "tido")
+//    @Test(groups = "tido")
     public void verifyTransactionalInlineDataOnlyMailToAddress() {
         String mailToAddressXml = XmlUtils.readXmlElement(xmlPath, "sch:MailToAddress");
         String mailToAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getMailToAddress());
@@ -287,7 +287,7 @@ public class SearchTests extends ConfigLoaderWeb {
         Assert.assertTrue(bpr.equals(bulkPrintReadyPage.getRequestType()));
     }
 
-    @Test
+//    @Test
     public void edmsuiTransactionalExternalPrintReadyTest() {
         searchByRequestCategory(AppConstants.EUTEPR);
 
