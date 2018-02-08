@@ -31,6 +31,8 @@
       <class
         name="com.shutterfly.missioncontrol.validation.processarchive.DestinationIdValidation"/>
       <class
+        name="com.shutterfly.missioncontrol.validation.processarchive.FileNameValidation"/>
+      <class
         name="com.shutterfly.missioncontrol.validation.processarchive.DocumentTypeValidation"/>
       <class name="com.shutterfly.missioncontrolapi.DeadLetterControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.JobDetailsControllerTest"/>

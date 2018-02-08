@@ -75,7 +75,7 @@
  
             <sch:filePath>/MissionControl/bulkFiles/BRMS</sch:filePath>
  
-            <sch:fileName>bulkfile_all_valid_vishal.xml</sch:fileName>
+            <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
  
             <sch:fileSize>4096</sch:fileSize>
  
