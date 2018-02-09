@@ -1,0 +1,141 @@
+<processFulfillmentRequest
+        xmlns:ns2="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+        xmlns="http://dms-fsl.uhc.com/fulfillment/schema">
+<fulfillmentRequest>
+<requestHeader>
+    <requestID>REQUEST_101</requestID>
+    <sourceID>EOACET</sourceID>
+    <requestDate>2018-02-07T06:47:11.682-06:00</requestDate>
+    <requestType>Process</requestType>
+    <businessSegmentID>EI</businessSegmentID>
+    <marketSegmentCd>OXF</marketSegmentCd>
+    <fulfillmentType>10900</fulfillmentType>
+    <requestCategory>TransactionalExternalPrintReady</requestCategory>
+    <serviceLevelCategory>SLC</serviceLevelCategory>
+    <dataFormat>AFP</dataFormat>
+    <requestorRefNo>Null</requestorRefNo>
+    <supplierRefNo>supplierplaceholder</supplierRefNo>
+    <docCompositionEngineID>ENGONE</docCompositionEngineID>
+</requestHeader>
+<requestDetail>
+    <transactionalRequestDetail>
+        <recipient>
+            <recipientId>020280467</recipientId>
+            <idQualifier>ProviderID</idQualifier>
+            <deliveryMethod1>Mailed</deliveryMethod1>
+            <recipientType>Provider</recipientType>
+            <person/>
+            <MailToAddress>
+                <Address1>90 SWIFTWATER RD </Address1>
+                <City>WOODSVILLE </City>
+                <State>NH</State>
+                <Zip>03785</Zip>
+            </MailToAddress>
+            <ReturnToAddress>
+                <Address1>Oxford</Address1>
+                <Address2>4 Research Drive</Address2>
+                <City>Shelton</City>
+                <State>CT</State>
+                <Zip>06484</Zip>
+            </ReturnToAddress>
+            <carbonCopyInd>false</carbonCopyInd>
+        </recipient>
+        <template>
+            <templateID>Gladiators_TemplateID_01</templateID>
+            <templateName>Balance_Bill_Letter</templateName>
+        </template>
+        <data>
+            <externalFileType>
+                <filePath>/FFH_LZ/Master/inbound/supplier/EngageOne/</filePath>
+                <fileName>bulkfile_all_valid.xml</fileName>
+                <fileSize>2</fileSize>
+            </externalFileType>
+            <embeddedDataType
+                    xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+            xmlns:v2="http://optum.uhc.com/fulfillment/order/v2"
+            xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema">embeddedDataType
+        </embeddedDataType>
+        <contentFormatType>
+            <documentType>UHG ACET</documentType>
+            <mimeType>mime</mimeType>
+            <documentMetadata>
+                <ns2:name>u_dt</ns2:name>
+                <ns2:value>2018-02-07</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_mbr_fst_nm</ns2:name>
+                <ns2:value>ZACHARIAH</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_mbr_midl_nm</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_mbr_lst_nm</ns2:name>
+                <ns2:value>ALLEMAND</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_mbr_sufx</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_rcip_facl_nm</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_prov_id</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_clm_nbr</ns2:name>
+                <ns2:value>123123123</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_mbr_id_nbr</ns2:name>
+                <ns2:value>92638210402</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_rcip_fst_nm</ns2:name>
+                <ns2:value>DANIEL</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_rcip_midl_nm</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_rcip_lst_nm</ns2:name>
+                <ns2:value>ABBIS</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_rcip_sufx</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_auth_id</ns2:name>
+                <ns2:value>NA</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_acet_nbr</ns2:name>
+                <ns2:value>00002157</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_prov_tin</ns2:name>
+                <ns2:value>020280467</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_dlvr_meth</ns2:name>
+                <ns2:value>Mailed</ns2:value>
+            </documentMetadata>
+            <documentMetadata>
+                <ns2:name>u_tmplt_nm</ns2:name>
+                <ns2:value>Balance_Bill_Letter</ns2:value>
+            </documentMetadata>
+        </contentFormatType>
+    </data>
+</transactionalRequestDetail>
+</requestDetail>
+<requestTrailer>
+<requestItemCount>1</requestItemCount>
+</requestTrailer>
+</fulfillmentRequest>
+</processFulfillmentRequest>
