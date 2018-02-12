@@ -29,7 +29,7 @@ public class FileNameValidation extends ConfigLoader {
 	}
 
 	private String buildPayload() throws IOException {
-		URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveTransactionalInlineDataOnly.xml");
+		URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveBulkDataOnly.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
 		return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml", "");
 	}
