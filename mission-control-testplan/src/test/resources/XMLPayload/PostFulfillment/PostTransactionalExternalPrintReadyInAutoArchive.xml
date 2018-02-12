@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<postFulfillmentRequestStatus xmlns="http://dms-fsl.uhc.com/fulfillment/schema" xmlns:ns2="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
+    <fulfillmentRequestStatus>
+        <requestHeader>
+            <requestID>REQUEST_101</requestID>
+            <sourceID>MC</sourceID>
+            <destinationID>EDMS</destinationID>
+            <requestDate>2018-02-07T14:30:00.248-06:00</requestDate>
+            <requestType>PostStatus</requestType>
+            <businessSegmentID>EI</businessSegmentID>
+            <marketSegmentCd>OXF</marketSegmentCd>
+            <fulfillmentType>10900</fulfillmentType>
+            <requestCategory>TransactionalExternalPrintReady</requestCategory>
+            <dataFormat>XML</dataFormat>
+        </requestHeader>
+        <requestHistory>
+            <processor>EDMS</processor>
+            <eventType>ArchiveConfirmed</eventType>
+            <receivedDate>2018-02-07T16:10:11.136-06:00</receivedDate>
+            <dispatchedDate>2018-02-07T16:10:11.136-06:00</dispatchedDate>
+            <statusCode>Accepted</statusCode>
+            <successCount>4</successCount>
+            <exceptionCount>0</exceptionCount>
+        </requestHistory>
+        <requestTrailer>
+            <requestItemCount>1</requestItemCount>
+        </requestTrailer>
+    </fulfillmentRequestStatus>
+</postFulfillmentRequestStatus>
