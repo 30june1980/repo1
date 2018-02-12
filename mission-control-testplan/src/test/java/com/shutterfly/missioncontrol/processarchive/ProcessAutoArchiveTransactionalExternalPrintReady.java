@@ -45,16 +45,16 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
 
     private String buildPayloadForPost() throws IOException {
         URL file = Resources
-                .getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReady.xml");
+                .getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReadyInArchive.xml");
         String payload = Resources.toString(file, StandardCharsets.UTF_8);
-        return payload = payload.replaceAll("REQUEST_101", record);
+        return  payload.replaceAll("REQUEST_101", record);
     }
 
     private String buildPayloadForPostArchive() throws IOException {
         URL file = Resources
-                .getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReady.xml");
+                .getResource("XMLPayload/PostFulfillment/PostTransactionalExternalPrintReadyInAutoArchive.xml");
         String payload = Resources.toString(file, StandardCharsets.UTF_8);
-        return payload = payload.replaceAll("REQUEST_101", record);
+        return payload.replaceAll("REQUEST_101", record);
     }
 
     @Test(groups = "Process_TEPR_Response_Auto")
@@ -76,7 +76,6 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
         response.then().body(
                 "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
                 equalTo("Accepted"));
-        cwr.writeToCsv("TEPR_AUTO", record);
 
     }
 
@@ -89,8 +88,8 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
     }
 
 
-    @Test(groups = "Post_TEPR_Response_auto", dependsOnGroups = {"Process_TEPR_DB_AutoArchive1"})
-    private void getResponseForPost() throws IOException {
+    @Test(groups = "Post_TEPR_Response_auto1", dependsOnGroups = {"Process_TEPR_DB_AutoArchive1"})
+    private void getResponseForPostReceived() throws IOException {
         basicConfigNonWeb();
         Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
                 .all()
@@ -102,14 +101,40 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
 
     }
 
-    @Test(groups = "Post_TEPR_DB", dependsOnGroups = {"Post_TEPR_Response_auto"})
+    @Test(groups = "Post_TEPR_Response_auto2", dependsOnGroups = {"Post_TEPR_Response_auto1"})
+    private void getResponseForPostRecieved() throws IOException {
+        basicConfigNonWeb();
+        Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+                .all()
+                .contentType("application/xml").body(Utils.replaceExactMatch(this.buildPayloadForPost(),"Generated","Received")).when().post(config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment"));
+        assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+        response.then().body(
+                "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+                equalTo("Accepted"));
+
+    }
+
+    @Test(groups = "Post_TEPR_Response_auto3", dependsOnGroups = {"Post_TEPR_Response_auto2"})
+    private void getResponseForPostFulfilled() throws IOException {
+        basicConfigNonWeb();
+        Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+                .all()
+                .contentType("application/xml").body(Utils.replaceExactMatch(this.buildPayloadForPost(),"Generated","Fulfilled")).when().post(config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment"));
+        assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+        response.then().body(
+                "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+                equalTo("Accepted"));
+
+    }
+
+    @Test(groups = "Post_TEPR_DB", dependsOnGroups = {"Post_TEPR_Response_auto3"})
     private void validateRecordsInDatabaseForPost() throws Exception {
         ValidationUtilConfig.getInstances()
                 .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
                         AppConstants.POST_STATUS);
     }
 
-    @Test(groups = "PostForArchive_TEPR_Response", dependsOnGroups = {"Archive_TEPR_DB"})
+    @Test(groups = "PostForArchive_TEPR_Response", dependsOnGroups = {"Post_TEPR_DB"})
     private void getResponseForPostArchive() throws IOException {
         basicConfigNonWeb();
         Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
@@ -122,11 +147,11 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
 
     }
 
-    @Test(groups = "PostForArchive_TEPR_DB", dependsOnGroups = {"PostForArchive_TEPR_Response"})
-    private void validateRecordsInDatabaseForPostArchive() throws Exception {
-
-        ValidationUtilConfig.getInstances()
-                .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
-                        AppConstants.POST_STATUS);
-    }
+//    @Test(groups = "PostForArchive_TEPR_DB", dependsOnGroups = {"PostForArchive_TEPR_Response"})
+//    private void validateRecordsInDatabaseForPostArchive() throws Exception {
+//
+//        ValidationUtilConfig.getInstances()
+//                .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+//                        AppConstants.POST_STATUS);
+//    }
 }

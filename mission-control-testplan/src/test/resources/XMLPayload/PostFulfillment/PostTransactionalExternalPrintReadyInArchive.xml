@@ -1,0 +1,36 @@
+<postFulfillmentRequestStatus
+        xmlns:ns2="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+        xmlns="http://dms-fsl.uhc.com/fulfillment/schema">
+<fulfillmentRequestStatus>
+<requestHeader>
+    <requestID>REQUEST_101</requestID>
+    <sourceID>EOACET</sourceID>
+    <destinationID>SBS</destinationID>
+    <requestDate>2018-02-07T06:47:11.119-06:00</requestDate>
+    <requestType>PostStatus</requestType>
+    <businessSegmentID>EI</businessSegmentID>
+    <marketSegmentCd>OXF</marketSegmentCd>
+    <fulfillmentType>10900</fulfillmentType>
+    <requestCategory>TransactionalExternalPrintReady</requestCategory>
+    <serviceLevelCategory>SLC</serviceLevelCategory>
+    <dataFormat>AFP</dataFormat>
+    <requestorRefNo>Null</requestorRefNo>
+    <supplierRefNo>supplierplaceholder</supplierRefNo>
+    <docCompositionEngineID>ENGONE</docCompositionEngineID>
+</requestHeader>
+<requestHistory>
+    <processor>SBS</processor>
+    <eventType>Generated</eventType>
+    <receivedDate>2018-02-07T06:48:04.405-06:00</receivedDate>
+    <dispatchedDate>2018-02-07T06:51:40.820-06:00</dispatchedDate>
+    <recipientId>020280467</recipientId>
+    <deliveryMethodCd>Mailed</deliveryMethodCd>
+    <statusCode>Accepted</statusCode>
+    <successCount>1</successCount>
+    <exceptionCount>0</exceptionCount>
+</requestHistory>
+<requestTrailer>
+    <requestItemCount>1</requestItemCount>
+</requestTrailer>
+</fulfillmentRequestStatus>
+</postFulfillmentRequestStatus>
