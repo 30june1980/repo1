@@ -36,6 +36,8 @@
         name="com.shutterfly.missioncontrol.validation.processarchive.DocumentTypeValidation"/>
       <class
         name="com.shutterfly.missioncontrol.validation.processarchive.FileSizeValidation"/>
+      <class
+        name="com.shutterfly.missioncontrol.validation.processarchive.RequestDetailValidation"/>
       <class name="com.shutterfly.missioncontrolapi.DeadLetterControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.JobDetailsControllerTest"/>
       <class
@@ -88,7 +90,8 @@
         name="com.shutterfly.missioncontrol.validation.processfulfillment.RequestDetailValidation"/>
       <class name="com.shutterfly.missioncontrolapi.FulfillmentStatusTrackingControllerTest"/>
       <class name="com.shutterfly.missioncontrol.validation.processfulfillment.FileNameValidation"/>
-      <class name="com.shutterfly.missioncontrol.redelivery.ProcessTransactionalExternalPrintReady"/>
+      <class
+        name="com.shutterfly.missioncontrol.redelivery.ProcessTransactionalExternalPrintReady"/>
       <class
         name="com.shutterfly.missioncontrol.postfulfillment.PostTransactionalExternalDataOnly"/>
       <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
@@ -193,7 +196,8 @@
         name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"></class>
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"></class>
-      <class name="com.shutterfly.missioncontrol.validation.processfulfillment.ArchiveInvalidRequestCode"/>
+      <class
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.ArchiveInvalidRequestCode"/>
       <class name="com.shutterfly.missioncontrol.validation.postarchive.PostArchiveInvalidFile"/>
     </classes>
   </test> <!-- Test -->
