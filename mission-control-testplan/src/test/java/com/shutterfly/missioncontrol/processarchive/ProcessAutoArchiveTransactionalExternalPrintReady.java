@@ -12,13 +12,18 @@ import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoader {
 
@@ -147,11 +152,33 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
 
     }
 
-//    @Test(groups = "PostForArchive_TEPR_DB", dependsOnGroups = {"PostForArchive_TEPR_Response"})
-//    private void validateRecordsInDatabaseForPostArchive() throws Exception {
-//
-//        ValidationUtilConfig.getInstances()
-//                .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
-//                        AppConstants.POST_STATUS);
-//    }
+    @Test(groups = "PostForArchive_TEPR_DB", dependsOnGroups = {"PostForArchive_TEPR_Response"})
+    private void validateRecordsInDatabaseForPostArchive() throws Exception {
+        ValidationUtilConfig.getInstances()
+                .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+                        AppConstants.POST_STATUS);
+    }
+
+    @Test(groups = "PostForArchive_TEPR_DB1", dependsOnGroups = {"PostForArchive_TEPR_DB"})
+    private void validateRecordsInDatabaseAfterPostArchive() throws Exception {
+        Document fulfillmentTrackingRecord=ValidationUtilConfig.getInstances().getTrackingRecord(record);
+        assertNotNull(fulfillmentTrackingRecord);
+        ArrayList eventHistoryList = (ArrayList<Document>) fulfillmentTrackingRecord.get("eventHistory");
+
+
+        assertEquals( eventHistoryList.stream().anyMatch(x->((Document)x).get("eventType").toString().equals("ReceivedPending")), true);
+        assertEquals( eventHistoryList.stream().anyMatch(x->((Document)x).get("eventType").toString().equals("ArchivePending")), true);
+        assertEquals( eventHistoryList.stream().anyMatch(x->((Document)x).get("eventType").toString().equals("Generated")), true);
+        assertEquals( eventHistoryList.stream().anyMatch(x->((Document)x).get("eventType").toString().equals("Received")), true);
+        assertEquals( eventHistoryList.stream().anyMatch(x->((Document)x).get("eventType").toString().equals("Fulfilled")), true);
+        assertEquals( eventHistoryList.stream().anyMatch(x->((Document)x).get("eventType").toString().equals("ArchiveConfirmed")), true);
+        assertEquals( fulfillmentTrackingRecord.get("currentFulfillmentStatus").toString(), "FULFILLED");
+        assertEquals( fulfillmentTrackingRecord.get("currentArchivalStatus").toString(), "ARCHIVE_CONFIRMED");
+        assertNotNull(fulfillmentTrackingRecord.get("fulfillmentRequest"));
+        assertNotNull(fulfillmentTrackingRecord.get("archiveRequest"));
+        assertNotNull(fulfillmentTrackingRecord.get("postFulfillmentStatus"));
+
+
+    }
+
 }
