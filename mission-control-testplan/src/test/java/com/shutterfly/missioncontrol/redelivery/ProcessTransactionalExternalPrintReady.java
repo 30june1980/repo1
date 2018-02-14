@@ -84,6 +84,6 @@ public class ProcessTransactionalExternalPrintReady extends ConfigLoader {
   private void validateCurrentFulfillmentStatus() throws Exception {
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
     String currentFulfillmentStatus = (String) trackingRecord.get("currentFulfillmentStatus");
-    assertEquals(currentFulfillmentStatus,"RECEIVED");
+    assertEquals(currentFulfillmentStatus, "RECEIVED");
   }
 }
