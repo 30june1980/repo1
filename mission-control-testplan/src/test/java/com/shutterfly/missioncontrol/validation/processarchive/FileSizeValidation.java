@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.testng.annotations.Test;
 
-public class FileNameValidation extends ConfigLoader {
+public class FileSizeValidation extends ConfigLoader {
 
 	private String uri = "";
 	UUID uuid = UUID.randomUUID();
@@ -31,7 +31,7 @@ public class FileNameValidation extends ConfigLoader {
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/ProcessArchive/ProcessArchiveBulkDataOnly.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml", "");
+		return payload.replaceAll("REQUEST_101", record).replaceAll("4096", "");
 	}
 
 	@Test
@@ -51,10 +51,10 @@ public class FileNameValidation extends ConfigLoader {
 				equalTo("Rejected"));
 		response.then().body(
 				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.code",
-				equalTo("18014"));
+				equalTo("18015"));
 
 		response.then().body(
 				"acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionLevelErrors.transactionError.errorCode.desc",
-				equalTo("File name is missing."));
+				equalTo("File size is missing."));
 	}
 }

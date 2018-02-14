@@ -19,7 +19,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class RequestUtil extends ConfigLoader {
 
-  private static DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+  private static DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig
+      .getInstances();
 
   //send transactional inline process request
   public static void sendProcess(String requestId) throws Exception {
