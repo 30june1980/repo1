@@ -178,6 +178,9 @@
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
       <class
         name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady"/>
+
+      <class name="com.shutterfly.missioncontrol.redelivery.RedeliveryTransactionalExternalPrintReady"/>
+
       <class
         name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady_Fulfilled"/>
       <class
@@ -193,9 +196,9 @@
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.DestinationIdValidation"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"></class>
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"></class>
+        name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"/>
       <class
         name="com.shutterfly.missioncontrol.validation.processfulfillment.ArchiveInvalidRequestCode"/>
       <class name="com.shutterfly.missioncontrol.validation.postarchive.PostArchiveInvalidFile"/>
