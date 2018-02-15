@@ -35,17 +35,7 @@ public class ListenerTest implements ITestListener {
 
     public void onTestSuccess(ITestResult result) {
         System.out.println("class Name - " + simpleClassName + " and Method Name -" + result.getName() + " has been executed and passed");
-        String tc = formattedDate + "_" + simpleClassName + "_" + result.getName();
-        if (result.getTestContext().getCurrentXmlTest().getParameter("Screenshot").equalsIgnoreCase("Yes")) {
-            try {
-                passedTestScreenshotPath = GetScreenshot.capturePassed(simpleClassName, tc);
-            } catch (IOException exception) {
-                logger.error("Failed to capture screenshot", exception);
-            }
-            passedTestScreenshotPath = passedTestScreenshotPath.replace("/opt/shutterfly/jenkins/workspace/testjobs/Mission Control tests/sbs-mc-fhub-test/",
-                    "http://sbscon01-lv.internal.shutterfly.com:8080/job/testjobs/job/Mission%20Control%20tests/job/sbs-mc-fhub-test/ws/");
-            Reporter.log("<a href=" + passedTestScreenshotPath + "><img src=" + passedTestScreenshotPath + " style=width:100px;height:100px;/>" + " Passed Screenshotlink" + "</a><br/>");
-        }
+
         /* Test Rail Update */
         try {
             caseId = System.getProperty("caseId");
