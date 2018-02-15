@@ -2,11 +2,13 @@ package com.shutterfly.missioncontrol.util;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -166,42 +168,48 @@ public class TrackingRecordValidationUtil {
   }
 
   private static void validateExternalFileType(Document xmlData) {
-    Document externalFileType = (Document) xmlData.get("externalFileType");
-    Map<String, Object> externalFileTypeMap = externalFileType.entrySet()
-        .stream()
-        .filter(e -> !e.getValue().toString().equals(""))
-        .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-    xmlData.put("externalFileType", externalFileTypeMap);
+    if (Objects.nonNull(xmlData.get("externalFileType"))) {
+      Document externalFileType = (Document) xmlData.get("externalFileType");
+      Map<String, Object> externalFileTypeMap = externalFileType.entrySet()
+          .stream()
+          .filter(e -> !e.getValue().toString().equals(""))
+          .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue().toString()));
+      xmlData.put("externalFileType", externalFileTypeMap);
+    }
   }
 
   private static void validateEmbeddedDataType(Document docData) {
-    String embeddedDataType = docData.get("embeddedDataType").toString().replace(
-        "<sch:embeddedDataType xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
-        "").replace("</sch:embeddedDataType", "").trim();
-    docData.put("embeddedDataType", embeddedDataType);
+    if (Objects.nonNull(docData.get("embeddedDataType"))) {
+      String embeddedDataType = docData.get("embeddedDataType").toString().replace(
+          "<sch:embeddedDataType xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
+          "").replace("</sch:embeddedDataType", "").trim();
+      docData.put("embeddedDataType", embeddedDataType);
+    }
   }
 
   private static void validateContentFormatType(Document xmlData, Document docData) {
-    Document docContentFormatType = (Document) docData.get("contentFormatType");
-    String contentStream = docContentFormatType.get("contentStream").toString()
-        .replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n"
-                + "<sch:contentStream xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
-            "").replace("</sch:contentStream>", "");
-    docContentFormatType.put("contentStream", contentStream);
-    Document docDocumentMetadata = (Document) ((ArrayList) docContentFormatType
-        .get("documentMetaDataList")).get(0);
-    docContentFormatType.put("documentMetadata", docDocumentMetadata);
-    docContentFormatType.remove("documentMetaDataList");
-    docData.put("contentFormatType", docContentFormatType);
+    if (Objects.nonNull(docData.get("contentFormatType"))) {
+      Document docContentFormatType = (Document) docData.get("contentFormatType");
+      String contentStream = docContentFormatType.get("contentStream").toString()
+          .replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n"
+                  + "<sch:contentStream xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
+              "").replace("</sch:contentStream>", "");
+      docContentFormatType.put("contentStream", contentStream);
+      Document docDocumentMetadata = (Document) ((ArrayList) docContentFormatType
+          .get("documentMetaDataList")).get(0);
+      docContentFormatType.put("documentMetadata", docDocumentMetadata);
+      docContentFormatType.remove("documentMetaDataList");
+      docData.put("contentFormatType", docContentFormatType);
 
-    Document xmlContentFormatType = (Document) xmlData.get("contentFormatType");
-    Document documentMetaData = (Document) xmlContentFormatType.get("documentMetadata");
-    documentMetaData.put("name", documentMetaData.get("v7:name"));
-    documentMetaData.remove("v7:name");
-    documentMetaData.put("value", documentMetaData.get("v7:value"));
-    documentMetaData.remove("v7:value");
-    xmlContentFormatType.put("documentMetadata", documentMetaData);
-    xmlData.put("contentFormatType", xmlContentFormatType);
+      Document xmlContentFormatType = (Document) xmlData.get("contentFormatType");
+      Document documentMetaData = (Document) xmlContentFormatType.get("documentMetadata");
+      documentMetaData.put("name", documentMetaData.get("v7:name"));
+      documentMetaData.remove("v7:name");
+      documentMetaData.put("value", documentMetaData.get("v7:value"));
+      documentMetaData.remove("v7:value");
+      xmlContentFormatType.put("documentMetadata", documentMetaData);
+      xmlData.put("contentFormatType", xmlContentFormatType);
+    }
   }
 
   public static Date toJavaDate(String inputString) {
@@ -211,5 +219,125 @@ public class TrackingRecordValidationUtil {
           .toInstant());
     }
     return date;
+  }
+
+  public static void validatePostRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlPostFulfillmentRequestStatus = (Document) bsonFromPayload
+        .get("postFulfillmentRequestStatus");
+    Document xmlFulfillmentRequestStatus = (Document) xmlPostFulfillmentRequestStatus
+        .get("fulfillmentRequestStatus");
+    Document docPostFulfillmentStatus = (Document) ((ArrayList) fulfillmentTrackingRecordDoc
+        .get("postFulfillmentStatus")).get(0);
+
+    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestHistory(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestTrailer(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+  }
+
+  private static void validateRequestHistory(Document xmlFulfillmentRequest,
+      Document docFulfillmentRequest) {
+    Document xmlRequestHistory = (Document) xmlFulfillmentRequest.get("requestHistory");
+    xmlRequestHistory
+        .put("receivedDate", toJavaDate(xmlRequestHistory.get("receivedDate").toString()));
+    xmlRequestHistory
+        .put("dispatchedDate", toJavaDate(xmlRequestHistory.get("dispatchedDate").toString()));
+    xmlRequestHistory.put("successCount", xmlRequestHistory.get("successCount").toString());
+    xmlRequestHistory.put("exceptionCount", xmlRequestHistory.get("exceptionCount").toString());
+    xmlRequestHistory.put("recipientId", xmlRequestHistory.get("recipientId").toString());
+
+    Document docRequestHistory = (Document) ((ArrayList) docFulfillmentRequest
+        .get("requestHistory")).get(0);
+    docRequestHistory.remove("updateDate");
+    docRequestHistory.remove("insertDate");
+
+    assertTrue(validateExceptionDetails(docRequestHistory, xmlRequestHistory));
+    assertTrue(validatePostFeedBack(docRequestHistory, xmlRequestHistory));
+
+    JSONObject xmlJson = new JSONObject(xmlRequestHistory.toJson());
+
+    JSONObject docJson = new JSONObject(docRequestHistory.toJson());
+    JSONAssert.assertEquals(xmlJson, docJson, false);
+  }
+
+  private static boolean validatePostFeedBack(Document docRequestHistory,
+      Document xmlRequestHistory) {
+    boolean valid = false;
+    docRequestHistory.put("postFeedback", docRequestHistory.get("postFeedbackList"));
+    docRequestHistory.remove("postFeedbackList");
+    ArrayList<Document> docPostFeedback = (ArrayList) docRequestHistory.get("postFeedback");
+    ArrayList<Document> xmlPostFeedback = (ArrayList) xmlRequestHistory.get("postFeedback");
+
+    List<String> docKeyList = new ArrayList<>();
+    docKeyList.add("name");
+    docKeyList.add("value");
+
+    List<String> xmlKeyList = new ArrayList<>();
+    xmlKeyList.add("v7:name");
+    xmlKeyList.add("v7:value");
+
+    if (docPostFeedback.size() == xmlPostFeedback.size()) {
+      for (int i = 0; i < docPostFeedback.size(); i++) {
+        if (checkEquals(docKeyList, xmlKeyList, docPostFeedback.get(i),
+            xmlPostFeedback.get(i))) {
+          valid = true;
+        } else {
+          break;
+        }
+      }
+    }
+    return valid;
+  }
+
+  private static boolean validateExceptionDetails(Document docRequestHistory,
+      Document xmlRequestHistory) {
+    boolean valid = false;
+    docRequestHistory.put("exceptionDetail", docRequestHistory.get("exceptionDetailList"));
+    docRequestHistory.remove("exceptionDetailList");
+    ArrayList<Document> docExceptionDetail = (ArrayList) docRequestHistory.get("exceptionDetail");
+    ArrayList<Document> xmlExceptionDetail = (ArrayList) xmlRequestHistory.get("exceptionDetail");
+
+    List<String> docKeyList = new ArrayList<>();
+    docKeyList.add("errorCode");
+    docKeyList.add("errorMessage");
+
+    List<String> xmlKeyList = new ArrayList<>();
+    xmlKeyList.add("errorCode");
+    xmlKeyList.add("message");
+
+    if (docExceptionDetail.size() == xmlExceptionDetail.size()) {
+      for (int i = 0; i < docExceptionDetail.size(); i++) {
+        if (checkEquals(docKeyList, xmlKeyList, docExceptionDetail.get(i),
+            xmlExceptionDetail.get(i))) {
+          valid = true;
+        } else {
+          break;
+        }
+      }
+    }
+    return valid;
+  }
+
+  private static boolean checkEquals(List<String> docKeyList, List<String> xmlKeyList,
+      Document doc, Document xml) {
+    boolean valid = false;
+    if (docKeyList.size() == xmlKeyList.size()) {
+      for (int i = 0; i < docKeyList.size(); i++) {
+        if (!docKeyList.get(i).equals(xmlKeyList.get(i))) {
+          if (doc.get(docKeyList.get(i)).equals(xml.get(xmlKeyList.get(i)))) {
+            doc.put(xmlKeyList.get(i), xml.get(xmlKeyList.get(i)));
+            doc.remove(docKeyList.get(i));
+            valid = true;
+          } else {
+            valid = false;
+            break;
+          }
+        }
+      }
+    }
+    return valid;
   }
 }

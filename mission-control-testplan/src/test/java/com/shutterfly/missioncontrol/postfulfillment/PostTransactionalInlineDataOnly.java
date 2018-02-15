@@ -6,6 +6,7 @@ import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
@@ -27,9 +28,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.AssertJUnit.assertNull;
 
-/**
- * @author dgupta
- */
 public class PostTransactionalInlineDataOnly extends ConfigLoader {
 
   private String uri = "";
@@ -98,7 +96,13 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     response.then().body(
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
+  }
 
+  @Test(groups = "Post_TIDO_DB_Fields", dependsOnGroups = {"Post_TIDO_Response"})
+  private void validateRecordsInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validatePostRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 
   @Test(groups = "Post_TIDO_Response_GENERATED", dependsOnGroups = {
@@ -158,7 +162,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
   }
 
   @Test(groups = "Post_TIDO_DB", dependsOnGroups = {"Post_TIDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
+  private void validateAcceptanceByRequestor() throws Exception {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
