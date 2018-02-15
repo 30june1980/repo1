@@ -1,12 +1,15 @@
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -25,6 +28,7 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
   private String payload = "";
   private String record = "";
   CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
 
   private String getProperties() {
@@ -54,9 +58,16 @@ public class PostTransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "Post_TEPR_DB", dependsOnGroups = {"Post_TEPR_Response"})
+  @Test(groups = "Post_TEPR_DB_Fields", dependsOnGroups = {"Post_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig.getInstances()
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validatePostRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+  }
+
+  @Test(groups = "Post_TEPR_DB", dependsOnGroups = {"Post_TEPR_Response"})
+  private void validateAcceptanceByRequestor() throws Exception {
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
   }
