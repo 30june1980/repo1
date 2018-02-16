@@ -1,17 +1,17 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -27,18 +27,16 @@ import static org.testng.Assert.assertEquals;
  */
 public class PostTransactionalInlinePrintReadySingleItem extends ConfigLoader {
 
-  /**
-   *
-   */
   private String uri = "";
   private String payload = "";
   private String record = "";
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+  CsvReaderWriter cwr = new CsvReaderWriter();
 
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
     return uri;
-
   }
 
   private String buildPayload() throws IOException {
@@ -48,10 +46,8 @@ public class PostTransactionalInlinePrintReadySingleItem extends ConfigLoader {
     record = cwr.getRequestIdByKeys("TIPRSI");
 
     return payload = payload.replaceAll("REQUEST_101", record);
-
   }
 
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Post_TIPRSI_Response", dependsOnGroups = {"Process_TIPRSI_DB"})
   private void getResponse() throws IOException {
@@ -71,10 +67,16 @@ public class PostTransactionalInlinePrintReadySingleItem extends ConfigLoader {
   }
 
   @Test(groups = "Post_TIPRSI_DB", dependsOnGroups = {"Post_TIPRSI_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-
+  private void validateRequestStatus() throws Exception {
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.REQUEST_UPDATED_TO_DB,
             AppConstants.POST_STATUS);
+  }
+
+  @Test(groups = "Post_TIPRSI_DB_Fields", dependsOnGroups = {"Post_TIPRSI_DB"})
+  private void validateRecordsInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validatePostRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 }
