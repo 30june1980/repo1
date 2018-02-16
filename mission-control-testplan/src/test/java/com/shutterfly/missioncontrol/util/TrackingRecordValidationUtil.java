@@ -184,24 +184,34 @@ public class TrackingRecordValidationUtil {
         .toString().trim().isEmpty()) {
       Document xmlEmbeddedDataType = (Document) xmlData.get("embeddedDataType");
       if (Objects.nonNull(xmlEmbeddedDataType.get("formData"))) {
-        Document formData = (Document) xmlEmbeddedDataType.get("formData");
-        String formItemUOM = formData.get("formItemUOM").toString();
-        String formItemQuantity = formData.get("formItemQuantity").toString();
-        String formItemID = formData.get("formItemID").toString();
-        boolean isValid =
-            docEmbeddedDataType.contains(formItemUOM) && docEmbeddedDataType
-                .contains(formItemQuantity)
-                && docEmbeddedDataType.contains(formItemID);
-        assertTrue(isValid);
-        docData.remove("embeddedDataType");
-        xmlData.remove("embeddedDataType");
+        if (xmlEmbeddedDataType.get("formData") instanceof Document) {
+          validateFormData(docEmbeddedDataType, xmlEmbeddedDataType);
+          docData.remove("embeddedDataType");
+          xmlData.remove("embeddedDataType");
+        } else if (xmlEmbeddedDataType.get("formData") instanceof ArrayList) {
+          ArrayList<Document> formDataList = (ArrayList) xmlEmbeddedDataType.get("formData");
+          formDataList.forEach(formData -> validateFormData(docEmbeddedDataType, formData));
+          docData.remove("embeddedDataType");
+          xmlData.remove("embeddedDataType");
+        }
       }
-    }else {
+    } else {
       String embeddedDataType = docData.get("embeddedDataType").toString().replace(
           "<sch:embeddedDataType xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
           "").replace("</sch:embeddedDataType", "").trim();
       docData.put("embeddedDataType", embeddedDataType);
     }
+  }
+
+  private static void validateFormData(String docEmbeddedDataType, Document formData) {
+    String formItemUOM = formData.get("formItemUOM").toString();
+    String formItemQuantity = formData.get("formItemQuantity").toString();
+    String formItemID = formData.get("formItemID").toString();
+    boolean isValid =
+        docEmbeddedDataType.contains(formItemUOM) && docEmbeddedDataType
+            .contains(formItemQuantity)
+            && docEmbeddedDataType.contains(formItemID);
+    assertTrue(isValid);
   }
 
   private static void validateContentFormatType(Document xmlData, Document docData) {
