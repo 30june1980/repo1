@@ -179,9 +179,9 @@ public class TrackingRecordValidationUtil {
   }
 
   private static void validateEmbeddedDataType(Document xmlData, Document docData) {
-    String docEmbeddedDataType = docData.get("embeddedDataType").toString();
     if (Objects.nonNull(xmlData.get("embeddedDataType")) && !xmlData.get("embeddedDataType")
         .toString().trim().isEmpty()) {
+      String docEmbeddedDataType = docData.get("embeddedDataType").toString();
       Document xmlEmbeddedDataType = (Document) xmlData.get("embeddedDataType");
       if (Objects.nonNull(xmlEmbeddedDataType.get("formData"))) {
         if (xmlEmbeddedDataType.get("formData") instanceof Document) {
@@ -195,7 +195,7 @@ public class TrackingRecordValidationUtil {
           xmlData.remove("embeddedDataType");
         }
       }
-    } else {
+    } else if (Objects.nonNull(docData.get("embeddedDataType"))) {
       String embeddedDataType = docData.get("embeddedDataType").toString().replace(
           "<sch:embeddedDataType xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
           "").replace("</sch:embeddedDataType", "").trim();
@@ -217,26 +217,55 @@ public class TrackingRecordValidationUtil {
   private static void validateContentFormatType(Document xmlData, Document docData) {
     if (Objects.nonNull(docData.get("contentFormatType"))) {
       Document docContentFormatType = (Document) docData.get("contentFormatType");
-      String contentStream = docContentFormatType.get("contentStream").toString()
-          .replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n"
-                  + "<sch:contentStream xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
-              "").replace("</sch:contentStream>", "");
-      docContentFormatType.put("contentStream", contentStream);
-      Document docDocumentMetadata = (Document) ((ArrayList) docContentFormatType
-          .get("documentMetaDataList")).get(0);
-      docContentFormatType.put("documentMetadata", docDocumentMetadata);
-      docContentFormatType.remove("documentMetaDataList");
-      docData.put("contentFormatType", docContentFormatType);
-
       Document xmlContentFormatType = (Document) xmlData.get("contentFormatType");
-      Document documentMetaData = (Document) xmlContentFormatType.get("documentMetadata");
-      documentMetaData.put("name", documentMetaData.get("v7:name"));
-      documentMetaData.remove("v7:name");
-      documentMetaData.put("value", documentMetaData.get("v7:value"));
-      documentMetaData.remove("v7:value");
-      xmlContentFormatType.put("documentMetadata", documentMetaData);
-      xmlData.put("contentFormatType", xmlContentFormatType);
+      validateContentStream(docContentFormatType, xmlContentFormatType);
+      validateDocumentMetadata(docContentFormatType, xmlContentFormatType);
     }
+  }
+
+  private static void validateDocumentMetadata(Document docContentFormatType,
+      Document xmlContentFormatType) {
+    boolean valid = false;
+    docContentFormatType.put("documentMetadata", docContentFormatType.get("documentMetaDataList"));
+    docContentFormatType.remove("documentMetaDataList");
+    List<String> docKeyList = new ArrayList<>();
+    docKeyList.add("name");
+    docKeyList.add("value");
+
+    List<String> xmlKeyList = new ArrayList<>();
+    xmlKeyList.add("v7:name");
+    xmlKeyList.add("v7:value");
+    ArrayList<Document> docDocumentMetadata = (ArrayList) docContentFormatType
+        .get("documentMetadata");
+    if (xmlContentFormatType.get("documentMetadata") instanceof ArrayList) {
+      ArrayList<Document> xmlDocumentMetadata = (ArrayList) xmlContentFormatType
+          .get("documentMetadata");
+
+      if (docDocumentMetadata.size() == xmlDocumentMetadata.size()) {
+        for (int i = 0; i < docDocumentMetadata.size(); i++) {
+          if (checkEquals(docKeyList, xmlKeyList, docDocumentMetadata.get(i),
+              xmlDocumentMetadata.get(i))) {
+            valid = true;
+          } else {
+            break;
+          }
+        }
+      }
+    } else if (xmlContentFormatType.get("documentMetadata") instanceof Document) {
+      valid = checkEquals(docKeyList, xmlKeyList,
+          (Document) ((ArrayList) docContentFormatType.get("documentMetadata")).get(0),
+          (Document) xmlContentFormatType.get("documentMetadata"));
+    }
+    assertTrue(valid);
+    docContentFormatType.put("documentMetadata", xmlContentFormatType.get("documentMetadata"));
+  }
+
+  private static void validateContentStream(Document docContentFormatType,
+      Document xmlContentFormatType) {
+    String docContentStream = docContentFormatType.get("contentStream").toString();
+    String xmlContentStream = xmlContentFormatType.get("contentStream").toString();
+    assertTrue(docContentStream.contains(xmlContentStream));
+    docContentFormatType.put("contentStream", xmlContentStream);
   }
 
   public static Date toJavaDate(String inputString) {
@@ -362,6 +391,8 @@ public class TrackingRecordValidationUtil {
             valid = false;
             break;
           }
+        } else {
+          valid = doc.get(docKeyList.get(i)).equals(xml.get(xmlKeyList.get(i)));
         }
       }
     }
