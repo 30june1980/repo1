@@ -7,6 +7,7 @@ import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
@@ -86,6 +87,10 @@ public class ProcessAutoArchiveTransactionalExternalPrintReady extends ConfigLoa
 
     @Test(groups = "Process_TEPR_DB_AutoArchive1", dependsOnGroups = {"Process_TEPR_Response_Auto"})
     private void validateAutoArchiveInDatabase() throws Exception {
+        Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+        TrackingRecordValidationUtil
+                .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record,
+                        AppConstants.ACCEPTED);
         databaseValidationUtil
                 .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_ARCHIVAL_SYSTEM,
                         AppConstants.ARCHIVE);
