@@ -83,7 +83,7 @@ public class TrackingRecordValidationUtil {
     assertNotNull(eventHistory.get("exceptionDetailList"));
   }
 
-  public static void validateProcessRequestFields(String payload,
+  public static void validateTransactionalProcessRequestFields(String payload,
       Document fulfillmentTrackingRecordDoc) {
     JSONObject xmlJSONObj = XML.toJSONObject(payload);
     String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
@@ -98,6 +98,53 @@ public class TrackingRecordValidationUtil {
     validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
     validateTransactionalRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
+  }
+
+  public static void validateBulkProcessRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlProcessFulfillmentRequest = (Document) bsonFromPayload
+        .get("processFulfillmentRequest");
+    Document xmlFulfillmentRequest = (Document) xmlProcessFulfillmentRequest
+        .get("fulfillmentRequest");
+    Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
+        .get("fulfillmentRequest");
+
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateBulkRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
+  }
+
+  private static void validateBulkRequestDetails(Document xmlFulfillmentRequest,
+      Document docFulfillmentRequest) {
+    Document xmlBulkRequestDetail = (Document) ((Document) xmlFulfillmentRequest
+        .get("requestDetail")).get("bulkRequestDetail");
+    xmlBulkRequestDetail.put("fileSize", xmlBulkRequestDetail.get("fileSize").toString());
+    Document docBulkRequestDetail = (Document) ((ArrayList) ((Document) docFulfillmentRequest
+        .get("requestDetail")).get("bulkRequestDetail")).get(0);
+
+    validateEcgDetail(xmlBulkRequestDetail, docBulkRequestDetail);
+    validateSourceDetail(xmlBulkRequestDetail, docBulkRequestDetail);
+
+    JSONObject xmlJson = new JSONObject(xmlBulkRequestDetail.toJson());
+    JSONObject docJson = new JSONObject(docBulkRequestDetail.toJson());
+    JSONAssert.assertEquals(xmlJson, docJson, false);
+  }
+
+  private static void validateEcgDetail(Document xmlBulkRequestDetail,
+      Document docBulkRequestDetail) {
+    assertTrue(docBulkRequestDetail.get("ecgDetail").toString()
+        .contains(xmlBulkRequestDetail.get("ecgDetail").toString()));
+    docBulkRequestDetail.put("ecgDetail", xmlBulkRequestDetail.get("ecgDetail").toString());
+  }
+
+  private static void validateSourceDetail(Document xmlBulkRequestDetail,
+      Document docBulkRequestDetail) {
+    assertTrue(docBulkRequestDetail.get("sourceDetail").toString()
+        .contains(xmlBulkRequestDetail.get("sourceDetail").toString()));
+    docBulkRequestDetail.put("sourceDetail", xmlBulkRequestDetail.get("sourceDetail").toString());
   }
 
   private static void validateRequestHeader(Document xmlFulfillmentRequest,

@@ -78,7 +78,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   private void validateRecordInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 
   @Test(groups = "Process_TIDO_DB_Rule", dependsOnGroups = {"Process_TIDO_DB_Fields"})
