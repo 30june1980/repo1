@@ -83,7 +83,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
   private void validateRecordInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 
   @Test(dependsOnGroups = {"Process_TIPRMI_DB"})

@@ -83,7 +83,7 @@ public class TrackingRecordValidationUtil {
     assertNotNull(eventHistory.get("exceptionDetailList"));
   }
 
-  public static void validateProcessRequestFields(String payload,
+  public static void validateTransactionalProcessRequestFields(String payload,
       Document fulfillmentTrackingRecordDoc) {
     JSONObject xmlJSONObj = XML.toJSONObject(payload);
     String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
@@ -97,6 +97,23 @@ public class TrackingRecordValidationUtil {
 
     validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
     validateTransactionalRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
+  }
+
+  public static void validateBulkProcessRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlProcessFulfillmentRequest = (Document) bsonFromPayload
+        .get("processFulfillmentRequest");
+    Document xmlFulfillmentRequest = (Document) xmlProcessFulfillmentRequest
+        .get("fulfillmentRequest");
+    Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
+        .get("fulfillmentRequest");
+
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
   }
 

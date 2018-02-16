@@ -78,7 +78,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
   private void validateRecordsInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 
   @Test(groups = "Process_TEPR_DB", dependsOnGroups = {"Process_TEPR_Response"})
