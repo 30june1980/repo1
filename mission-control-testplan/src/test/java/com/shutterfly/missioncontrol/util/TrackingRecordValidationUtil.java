@@ -6,12 +6,11 @@ import static org.testng.Assert.assertTrue;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
 import org.json.JSONObject;
 import org.json.XML;
@@ -180,9 +179,13 @@ public class TrackingRecordValidationUtil {
     Document xmlTransactionalDetail = (Document) xmlRequestDetail.get("transactionalRequestDetail");
     Document docTransactionalDetail = (Document) docRequestDetail.get("transactionalRequestDetail");
 
-    //TODO Check recipients
-    docTransactionalDetail.remove("recipientList");
-    xmlTransactionalDetail.remove("recipient");
+    try {
+      validateRecipients((Document) xmlTransactionalDetail.get("recipient"), (Document) ((ArrayList) docTransactionalDetail.get("recipientList")).get(0));
+      docTransactionalDetail.put("recipient", xmlTransactionalDetail.get("recipient"));
+      docTransactionalDetail.remove("recipientList");
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
 
     //validate template Details
     docTransactionalDetail.put("template", docTransactionalDetail.get("templateDetail"));
@@ -482,5 +485,108 @@ public class TrackingRecordValidationUtil {
       }
     }
     return valid;
+  }
+
+  public static void validateRecipients(Document docRecipient, Document xmlRecipient) throws JsonProcessingException {
+
+
+    JSONObject docRecipientObject = new JSONObject(docRecipient.toJson());
+    Map<String, Object> docRecipientObjectMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    docRecipientObjectMap.putAll(docRecipientObject.toMap());
+
+
+
+    JSONObject xmlRecipientObject = new JSONObject(xmlRecipient.toJson());
+    Map<String, Object> xmlRecipientObjectMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    xmlRecipientObjectMap.putAll(xmlRecipientObject.toMap());
+
+    Map<String, String> nodeMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+    for (Map.Entry e : docRecipientObjectMap.entrySet()) {
+       nodeMap.put(e.getKey().toString().toLowerCase(), String.valueOf(e.getValue()));
+    }
+
+
+
+    Map<String, String> nodeMap2 = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
+    for (Map.Entry e : xmlRecipientObjectMap.entrySet()) {
+      nodeMap2.put(e.getKey().toString().toLowerCase(), String.valueOf(e.getValue()));
+    }
+    nodeMap.remove("mailtoaddress");
+    nodeMap.remove("returntoaddress");
+    nodeMap.remove("person");
+    nodeMap.remove("organization");
+    nodeMap2.remove("mailtoaddress");
+    nodeMap2.remove("returntoaddress");
+    nodeMap2.remove("person");
+    nodeMap2.remove("organization");
+
+    Object mailToAddress1 = docRecipientObjectMap.get("mailtoaddress");
+    Object returnToAddress1 = docRecipientObjectMap.get("returntoaddress") ;
+    Object person1 =  docRecipientObjectMap.get("person");
+    Object organization1= docRecipientObjectMap.get("organization");
+    Object MailToAddressInternational1=docRecipientObjectMap.get("MailToAddressInternational");
+    Object ReturnToAddressInternational1=docRecipientObjectMap.get("ReturnToAddressInternational");
+
+    Object mailToAddress2 = xmlRecipientObjectMap.get("mailtoaddress");
+    Object returnToAddress2 = xmlRecipientObjectMap.get("returntoaddress");
+    Object person2 = xmlRecipientObjectMap.get("person");
+    Object organization2= xmlRecipientObjectMap.get("organization");
+    Object MailToAddressInternational2=xmlRecipientObjectMap.get("MailToAddressInternational");
+    Object ReturnToAddressInternational2=docRecipientObjectMap.get("ReturnToAddressInternational");
+
+
+
+    if(Objects.nonNull(mailToAddress1)){
+      Map<String,String> mailToAddress1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(mailToAddress1));
+      Map<String,String> mailToAddress2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(mailToAddress2));
+      assertEquals(mailToAddress1Map.equals(mailToAddress2Map),true);
+    }
+    if(Objects.nonNull(returnToAddress1)){
+      Map<String,String> returnToAddress1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(returnToAddress1));
+      Map<String,String> returnToAddress2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(returnToAddress2));
+      assertEquals(returnToAddress1Map.equals(returnToAddress2Map),true);
+    }
+    if(Objects.nonNull(person1)){
+      Map<String,String> person1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(person1));
+      Map<String,String> person2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(person2));
+      assertEquals(person1Map.equals(person2Map),true);
+    }
+
+    if(Objects.nonNull(organization1)){
+      Map<String,String> person1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(organization1));
+      Map<String,String> person2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(organization2));
+      assertEquals(person1Map.equals(person2Map),true);
+    }
+    if(Objects.nonNull(MailToAddressInternational1)){
+      Map<String,String> person1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(MailToAddressInternational1));
+      Map<String,String> person2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(MailToAddressInternational2));
+      assertEquals(person1Map.equals(person2Map),true);
+    }
+    if(Objects.nonNull(ReturnToAddressInternational1)){
+      Map<String,String> person1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(ReturnToAddressInternational1));
+      Map<String,String> person2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(ReturnToAddressInternational1));
+      assertEquals(person1Map.equals(person2Map),true);
+    }
+    assertEquals(nodeMap.equals(nodeMap2),true);
+  }
+
+
+  public static Map<String,String> convertJsonStringToMapAndKeysToLowerCase(String jsonString){
+
+    JSONObject jsonObject = new JSONObject(jsonString);
+    Map<String, Object> jsonObjectMap = jsonObject.toMap();
+
+    Map<String, String> map = new HashMap<>();
+    for (Map.Entry e : jsonObjectMap.entrySet()) {
+      map.put(e.getKey().toString().toLowerCase(), String.valueOf(e.getValue()));
+    }
+    return map;
+  }
+
+  private static String javaObjectToJsonString(Object object) throws JsonProcessingException {
+    ObjectMapper mapper=new ObjectMapper();
+    return mapper.writeValueAsString(object);
   }
 }
