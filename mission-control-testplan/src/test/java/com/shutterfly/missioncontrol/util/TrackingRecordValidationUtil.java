@@ -158,7 +158,7 @@ public class TrackingRecordValidationUtil {
     validateContentFormatType(xmlData, docData);
 
     //validate embeddedDataType
-    validateEmbeddedDataType(docData);
+    validateEmbeddedDataType(xmlData, docData);
 
     //validate externalFileType
     validateExternalFileType(xmlData);
@@ -178,8 +178,25 @@ public class TrackingRecordValidationUtil {
     }
   }
 
-  private static void validateEmbeddedDataType(Document docData) {
-    if (Objects.nonNull(docData.get("embeddedDataType"))) {
+  private static void validateEmbeddedDataType(Document xmlData, Document docData) {
+    String docEmbeddedDataType = docData.get("embeddedDataType").toString();
+    if (Objects.nonNull(xmlData.get("embeddedDataType")) && !xmlData.get("embeddedDataType")
+        .toString().trim().isEmpty()) {
+      Document xmlEmbeddedDataType = (Document) xmlData.get("embeddedDataType");
+      if (Objects.nonNull(xmlEmbeddedDataType.get("formData"))) {
+        Document formData = (Document) xmlEmbeddedDataType.get("formData");
+        String formItemUOM = formData.get("formItemUOM").toString();
+        String formItemQuantity = formData.get("formItemQuantity").toString();
+        String formItemID = formData.get("formItemID").toString();
+        boolean isValid =
+            docEmbeddedDataType.contains(formItemUOM) && docEmbeddedDataType
+                .contains(formItemQuantity)
+                && docEmbeddedDataType.contains(formItemID);
+        assertTrue(isValid);
+        docData.remove("embeddedDataType");
+        xmlData.remove("embeddedDataType");
+      }
+    }else {
       String embeddedDataType = docData.get("embeddedDataType").toString().replace(
           "<sch:embeddedDataType xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
           "").replace("</sch:embeddedDataType", "").trim();
