@@ -77,6 +77,6 @@ public class TransactionalInlinePrintReadySingleItem extends ConfigLoader {
   private void validateRecordsInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 }
