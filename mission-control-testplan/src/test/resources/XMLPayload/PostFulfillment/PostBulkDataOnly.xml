@@ -34,8 +34,7 @@
 			<!--Optional: -->
 			<sch:bulkRequestHeaderID>String</sch:bulkRequestHeaderID>
 			<!--Optional: -->
-			<sch:docCompositionEngineID>DC_COMP_ENGINE_001
-			</sch:docCompositionEngineID>
+			<sch:docCompositionEngineID>DC_COMP_ENGINE_001</sch:docCompositionEngineID>
 		</sch:requestHeader>
 		<!--1 to 7 repetitions: -->
 		<sch:requestHistory>

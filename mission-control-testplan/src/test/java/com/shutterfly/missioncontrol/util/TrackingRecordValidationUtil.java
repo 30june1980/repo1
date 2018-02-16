@@ -341,6 +341,42 @@ public class TrackingRecordValidationUtil {
     validateRequestTrailer(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
   }
 
+  public static void validateBulkPostRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlPostFulfillmentRequestStatus = (Document) bsonFromPayload
+        .get("postFulfillmentRequestStatus");
+    Document xmlFulfillmentRequestStatus = (Document) xmlPostFulfillmentRequestStatus
+        .get("fulfillmentRequestStatus");
+    Document docPostFulfillmentStatus = (Document) ((ArrayList) fulfillmentTrackingRecordDoc
+        .get("postFulfillmentStatus")).get(0);
+
+    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestHistory(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    Document xmlPostItemStatusBulkDetail = (Document) xmlFulfillmentRequestStatus
+        .get("postItemStatusBulkDetail");
+    Document docPostItemStatusBulkDetail = (Document) ((ArrayList) docPostFulfillmentStatus
+        .get("postItemStatusBulkDetails")).get(0);
+    validatePostItemStatusBulkDetail(xmlPostItemStatusBulkDetail, docPostItemStatusBulkDetail);
+    validateRequestTrailer(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+  }
+
+  private static void validatePostItemStatusBulkDetail(Document xmlPostItemStatusBulkDetail,
+      Document docPostItemStatusBulkDetail) {
+
+    xmlPostItemStatusBulkDetail
+        .put("fileSize", xmlPostItemStatusBulkDetail.get("fileSize").toString());
+
+    validateEcgDetail(xmlPostItemStatusBulkDetail, docPostItemStatusBulkDetail);
+    validateSourceDetail(xmlPostItemStatusBulkDetail, docPostItemStatusBulkDetail);
+
+    JSONObject xmlJson = new JSONObject(xmlPostItemStatusBulkDetail.toJson());
+    JSONObject docJson = new JSONObject(docPostItemStatusBulkDetail.toJson());
+    JSONAssert.assertEquals(xmlJson, docJson, false);
+  }
+
   private static void validateRequestHistory(Document xmlFulfillmentRequest,
       Document docFulfillmentRequest) {
     Document xmlRequestHistory = (Document) xmlFulfillmentRequest.get("requestHistory");
@@ -350,7 +386,9 @@ public class TrackingRecordValidationUtil {
         .put("dispatchedDate", toJavaDate(xmlRequestHistory.get("dispatchedDate").toString()));
     xmlRequestHistory.put("successCount", xmlRequestHistory.get("successCount").toString());
     xmlRequestHistory.put("exceptionCount", xmlRequestHistory.get("exceptionCount").toString());
-    xmlRequestHistory.put("recipientId", xmlRequestHistory.get("recipientId").toString());
+    if (Objects.nonNull(xmlRequestHistory.get("recipientId"))) {
+      xmlRequestHistory.put("recipientId", xmlRequestHistory.get("recipientId").toString());
+    }
 
     Document docRequestHistory = (Document) ((ArrayList) docFulfillmentRequest
         .get("requestHistory")).get(0);
