@@ -84,13 +84,7 @@ public class TrackingRecordValidationUtil {
 
   public static void validateTransactionalProcessRequestFields(String payload,
       Document fulfillmentTrackingRecordDoc) {
-    JSONObject xmlJSONObj = XML.toJSONObject(payload);
-    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
-    Document bsonFromPayload = Document.parse(jsonToString);
-    Document xmlProcessFulfillmentRequest = (Document) bsonFromPayload
-        .get("processFulfillmentRequest");
-    Document xmlFulfillmentRequest = (Document) xmlProcessFulfillmentRequest
-        .get("fulfillmentRequest");
+    Document xmlFulfillmentRequest = getDocumentForXmlFulfillmentRequest(payload);
     Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
         .get("fulfillmentRequest");
 
@@ -99,15 +93,91 @@ public class TrackingRecordValidationUtil {
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
   }
 
-  public static void validateBulkProcessRequestFields(String payload,
+  public static void validateChildItemFields(String payload,
       Document fulfillmentTrackingRecordDoc) {
+    Document xmlFulfillmentRequest = getDocumentForXmlFulfillmentRequest(payload);
+    Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
+        .get("fulfillmentRequest");
+
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateSingleItemsRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
+  }
+
+  private static void validateSingleItemsRequestDetails(Document xmlFulfillmentRequest,
+      Document docFulfillmentRequest) {
+    Document xmlRequestDetail = (Document) xmlFulfillmentRequest.get("requestDetail");
+    Document docRequestDetail = (Document) docFulfillmentRequest.get("requestDetail");
+
+    Document xmlTransactionalDetail = (Document) xmlRequestDetail.get("transactionalRequestDetail");
+    Document docTransactionalDetail = (Document) docRequestDetail.get("transactionalRequestDetail");
+
+    try {
+      validateRecipients((Document) xmlTransactionalDetail.get("recipient"), (Document) ((ArrayList) docTransactionalDetail.get("recipientList")).get(0));
+      docTransactionalDetail.put("recipient", xmlTransactionalDetail.get("recipient"));
+      docTransactionalDetail.remove("recipientList");
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+
+    //validate data and template details
+    validateDataOfChildItem(xmlTransactionalDetail, docTransactionalDetail);
+
+    JSONObject docJson = new JSONObject(docTransactionalDetail.toJson());
+    JSONObject xmlJson = new JSONObject(xmlTransactionalDetail.toJson());
+    JSONAssert.assertEquals(xmlJson, docJson, JSONCompareMode.LENIENT);
+  }
+
+  private static void validateDataOfChildItem(Document xmlTransactionalDetail,
+      Document docTransactionalDetail) {
+    validateEmbeddedDataTypeOfChildItem(xmlTransactionalDetail, docTransactionalDetail);
+  }
+
+  private static void validateEmbeddedDataTypeOfChildItem(Document xmlTransactionalDetail,
+      Document docTransactionalDetail) {
+    Document docData = (Document) docTransactionalDetail.get("data");
+    Document xmlData = (Document) xmlTransactionalDetail.get("data");
+
+    if (Objects.nonNull(xmlData.get("embeddedDataType")) && !xmlData.get("embeddedDataType")
+        .toString().trim().isEmpty()) {
+      String docEmbeddedDataType = docData.get("embeddedDataType").toString();
+      Document xmlEmbeddedDataType = (Document) xmlData.get("embeddedDataType");
+      ArrayList<Document> formDataList = (ArrayList) xmlEmbeddedDataType.get("formData");
+      Document xmlFormData = formDataList.get(0);
+      validateFormData(docEmbeddedDataType, xmlFormData);
+      docData.remove("embeddedDataType");
+      xmlData.remove("embeddedDataType");
+
+      //check if form data content is copied to template details or not
+      Document templateDetail = (Document) docTransactionalDetail.get("templateDetail");
+      if (Objects.nonNull(xmlFormData.get("formItemID"))) {
+        assertEquals(templateDetail.get("templateID"), xmlFormData.get("formItemID").toString());
+      }
+      if (Objects.nonNull(xmlFormData.get("formItemName"))) {
+        assertEquals(templateDetail.get("templateName"),
+            xmlFormData.get("formItemName").toString());
+      }
+
+      docTransactionalDetail.put("data", docData);
+      xmlTransactionalDetail.put("data", xmlData);
+      xmlTransactionalDetail.remove("template");
+      docTransactionalDetail.remove("templateDetail");
+    }
+  }
+
+  private static Document getDocumentForXmlFulfillmentRequest(String payload) {
     JSONObject xmlJSONObj = XML.toJSONObject(payload);
     String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
     Document bsonFromPayload = Document.parse(jsonToString);
     Document xmlProcessFulfillmentRequest = (Document) bsonFromPayload
         .get("processFulfillmentRequest");
-    Document xmlFulfillmentRequest = (Document) xmlProcessFulfillmentRequest
+    return (Document) xmlProcessFulfillmentRequest
         .get("fulfillmentRequest");
+  }
+
+  public static void validateBulkProcessRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    Document xmlFulfillmentRequest = getDocumentForXmlFulfillmentRequest(payload);
     Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
         .get("fulfillmentRequest");
 
@@ -489,12 +559,9 @@ public class TrackingRecordValidationUtil {
 
   public static void validateRecipients(Document docRecipient, Document xmlRecipient) throws JsonProcessingException {
 
-
     JSONObject docRecipientObject = new JSONObject(docRecipient.toJson());
     Map<String, Object> docRecipientObjectMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     docRecipientObjectMap.putAll(docRecipientObject.toMap());
-
-
 
     JSONObject xmlRecipientObject = new JSONObject(xmlRecipient.toJson());
     Map<String, Object> xmlRecipientObjectMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -505,8 +572,6 @@ public class TrackingRecordValidationUtil {
     for (Map.Entry e : docRecipientObjectMap.entrySet()) {
        nodeMap.put(e.getKey().toString().toLowerCase(), String.valueOf(e.getValue()));
     }
-
-
 
     Map<String, String> nodeMap2 = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
@@ -536,8 +601,6 @@ public class TrackingRecordValidationUtil {
     Object MailToAddressInternational2=xmlRecipientObjectMap.get("MailToAddressInternational");
     Object ReturnToAddressInternational2=docRecipientObjectMap.get("ReturnToAddressInternational");
 
-
-
     if(Objects.nonNull(mailToAddress1)){
       Map<String,String> mailToAddress1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(mailToAddress1));
       Map<String,String> mailToAddress2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(mailToAddress2));
@@ -566,7 +629,7 @@ public class TrackingRecordValidationUtil {
     }
     if(Objects.nonNull(ReturnToAddressInternational1)){
       Map<String,String> person1Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(ReturnToAddressInternational1));
-      Map<String,String> person2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(ReturnToAddressInternational1));
+      Map<String,String> person2Map=convertJsonStringToMapAndKeysToLowerCase(javaObjectToJsonString(ReturnToAddressInternational2));
       assertEquals(person1Map.equals(person2Map),true);
     }
     assertEquals(nodeMap.equals(nodeMap2),true);
