@@ -72,11 +72,4 @@ public class TransactionalInlinePrintReadySingleItem extends ConfigLoader {
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
-
-  @Test(groups = "Process_TIPRSI_DB_Fields", dependsOnGroups = {"Process_TIPRSI_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
-    TrackingRecordValidationUtil
-        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
-  }
 }
