@@ -4,15 +4,18 @@
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -29,9 +32,11 @@ import static org.hamcrest.Matchers.equalTo;
 public class TransactionalExternalDataOnly extends ConfigLoader {
 
   private String uri = "";
-
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+  CsvReaderWriter cwr = new CsvReaderWriter();
+
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -48,8 +53,6 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
         .replaceAll("bulkfile_all_valid.xml", (record + ".xml"));
 
   }
-
-  CsvReaderWriter cwr = new CsvReaderWriter();
 
   @Test(groups = "Process_TXDO_Response")
   private void getResponse() throws IOException, InterruptedException {
@@ -72,12 +75,17 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 
   }
 
-
   @Test(groups = "Process_TXDO_DB", dependsOnGroups = {"Process_TXDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-
-    ValidationUtilConfig.getInstances()
+  private void validateAcceptanceBySupplier() throws Exception {
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_TXDO_DB_Fields", dependsOnGroups = {"Process_TXDO_Response"})
+  private void validateRecordInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 }

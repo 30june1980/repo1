@@ -7,7 +7,7 @@
     <sch:requestHeader>
       <sch:requestID>REQUEST_101</sch:requestID>
       <!--Optional:-->
-      <sch:sourceID>CIRRUS</sch:sourceID>
+      <sch:sourceID>EDMSUI</sch:sourceID>
       <!--Optional:-->
       <sch:destinationID>SBS</sch:destinationID>
       <!--Optional:-->
@@ -19,9 +19,9 @@
       <!--Optional:-->
       <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
       <!--Optional:-->
-      <sch:fulfillmentType>10000</sch:fulfillmentType>
+      <sch:fulfillmentType>10600</sch:fulfillmentType>
       <!--Optional:-->
-      <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
+      <sch:requestCategory>TransactionalExternalPrintReady</sch:requestCategory>
       <!--Optional:-->
       <sch:serviceLevelCategory>String</sch:serviceLevelCategory>
       <!--Optional:-->
@@ -38,14 +38,14 @@
     <!--1 to 7 repetitions:-->
     <sch:requestHistory>
       <sch:processor>PRINT_SUPPLIER_2345</sch:processor>
-      <sch:eventType>Received</sch:eventType>
+      <sch:eventType>Generated</sch:eventType>
       <sch:receivedDate>2001-12-17T09:31:47Z</sch:receivedDate>
       <!--Optional:-->
       <sch:dispatchedDate>2001-12-17T09:32:47Z</sch:dispatchedDate>
       <!--Optional:-->
-      <sch:recipientId>111223333</sch:recipientId>
+      <sch:recipientId>749845246671790086</sch:recipientId>
       <!--Optional:-->
-      <sch:deliveryMethodCd>Emailed</sch:deliveryMethodCd>
+      <sch:deliveryMethodCd>Mailed</sch:deliveryMethodCd>
       <sch:statusCode>Accepted</sch:statusCode>
       <sch:successCount>1</sch:successCount>
       <sch:exceptionCount>0</sch:exceptionCount>

@@ -4,7 +4,7 @@
 package com.shutterfly.missioncontrol.processarchive;
 
 import com.google.common.io.Resources;
-import com.shutterfly.missioncontrol.RequestUtil;
+import com.shutterfly.missioncontrol.util.RequestUtil;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
