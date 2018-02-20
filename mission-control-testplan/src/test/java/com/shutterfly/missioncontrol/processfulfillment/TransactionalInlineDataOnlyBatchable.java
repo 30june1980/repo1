@@ -1,14 +1,17 @@
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -27,6 +30,8 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
   private String uri = "";
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -61,10 +66,17 @@ public class TransactionalInlineDataOnlyBatchable extends ConfigLoader {
   }
 
   @Test(groups = "Process_TIDO_Batchable_DB", dependsOnGroups = {"Process_TIDO_Batchable_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig
-        .getInstances()
+  private void validateRequestStatus() throws Exception {
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.REQUEST_BATCHED,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_TIDO_Batchable_DB_Fields", dependsOnGroups = {
+      "Process_TIDO_Batchable_DB"})
+  private void validateRecordInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 }

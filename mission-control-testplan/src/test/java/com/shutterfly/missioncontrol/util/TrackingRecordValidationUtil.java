@@ -83,7 +83,7 @@ public class TrackingRecordValidationUtil {
     assertNotNull(eventHistory.get("exceptionDetailList"));
   }
 
-  public static void validateProcessRequestFields(String payload,
+  public static void validateTransactionalProcessRequestFields(String payload,
       Document fulfillmentTrackingRecordDoc) {
     JSONObject xmlJSONObj = XML.toJSONObject(payload);
     String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
@@ -98,6 +98,53 @@ public class TrackingRecordValidationUtil {
     validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
     validateTransactionalRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
+  }
+
+  public static void validateBulkProcessRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlProcessFulfillmentRequest = (Document) bsonFromPayload
+        .get("processFulfillmentRequest");
+    Document xmlFulfillmentRequest = (Document) xmlProcessFulfillmentRequest
+        .get("fulfillmentRequest");
+    Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
+        .get("fulfillmentRequest");
+
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateBulkRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
+  }
+
+  private static void validateBulkRequestDetails(Document xmlFulfillmentRequest,
+      Document docFulfillmentRequest) {
+    Document xmlBulkRequestDetail = (Document) ((Document) xmlFulfillmentRequest
+        .get("requestDetail")).get("bulkRequestDetail");
+    xmlBulkRequestDetail.put("fileSize", xmlBulkRequestDetail.get("fileSize").toString());
+    Document docBulkRequestDetail = (Document) ((ArrayList) ((Document) docFulfillmentRequest
+        .get("requestDetail")).get("bulkRequestDetail")).get(0);
+
+    validateEcgDetail(xmlBulkRequestDetail, docBulkRequestDetail);
+    validateSourceDetail(xmlBulkRequestDetail, docBulkRequestDetail);
+
+    JSONObject xmlJson = new JSONObject(xmlBulkRequestDetail.toJson());
+    JSONObject docJson = new JSONObject(docBulkRequestDetail.toJson());
+    JSONAssert.assertEquals(xmlJson, docJson, false);
+  }
+
+  private static void validateEcgDetail(Document xmlBulkRequestDetail,
+      Document docBulkRequestDetail) {
+    assertTrue(docBulkRequestDetail.get("ecgDetail").toString()
+        .contains(xmlBulkRequestDetail.get("ecgDetail").toString()));
+    docBulkRequestDetail.put("ecgDetail", xmlBulkRequestDetail.get("ecgDetail").toString());
+  }
+
+  private static void validateSourceDetail(Document xmlBulkRequestDetail,
+      Document docBulkRequestDetail) {
+    assertTrue(docBulkRequestDetail.get("sourceDetail").toString()
+        .contains(xmlBulkRequestDetail.get("sourceDetail").toString()));
+    docBulkRequestDetail.put("sourceDetail", xmlBulkRequestDetail.get("sourceDetail").toString());
   }
 
   private static void validateRequestHeader(Document xmlFulfillmentRequest,
@@ -179,24 +226,23 @@ public class TrackingRecordValidationUtil {
   }
 
   private static void validateEmbeddedDataType(Document xmlData, Document docData) {
-    String docEmbeddedDataType = docData.get("embeddedDataType").toString();
     if (Objects.nonNull(xmlData.get("embeddedDataType")) && !xmlData.get("embeddedDataType")
         .toString().trim().isEmpty()) {
+      String docEmbeddedDataType = docData.get("embeddedDataType").toString();
       Document xmlEmbeddedDataType = (Document) xmlData.get("embeddedDataType");
       if (Objects.nonNull(xmlEmbeddedDataType.get("formData"))) {
-        Document formData = (Document) xmlEmbeddedDataType.get("formData");
-        String formItemUOM = formData.get("formItemUOM").toString();
-        String formItemQuantity = formData.get("formItemQuantity").toString();
-        String formItemID = formData.get("formItemID").toString();
-        boolean isValid =
-            docEmbeddedDataType.contains(formItemUOM) && docEmbeddedDataType
-                .contains(formItemQuantity)
-                && docEmbeddedDataType.contains(formItemID);
-        assertTrue(isValid);
-        docData.remove("embeddedDataType");
-        xmlData.remove("embeddedDataType");
+        if (xmlEmbeddedDataType.get("formData") instanceof Document) {
+          validateFormData(docEmbeddedDataType, xmlEmbeddedDataType);
+          docData.remove("embeddedDataType");
+          xmlData.remove("embeddedDataType");
+        } else if (xmlEmbeddedDataType.get("formData") instanceof ArrayList) {
+          ArrayList<Document> formDataList = (ArrayList) xmlEmbeddedDataType.get("formData");
+          formDataList.forEach(formData -> validateFormData(docEmbeddedDataType, formData));
+          docData.remove("embeddedDataType");
+          xmlData.remove("embeddedDataType");
+        }
       }
-    }else {
+    } else if (Objects.nonNull(docData.get("embeddedDataType"))) {
       String embeddedDataType = docData.get("embeddedDataType").toString().replace(
           "<sch:embeddedDataType xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
           "").replace("</sch:embeddedDataType", "").trim();
@@ -204,29 +250,69 @@ public class TrackingRecordValidationUtil {
     }
   }
 
+  private static void validateFormData(String docEmbeddedDataType, Document formData) {
+    String formItemUOM = formData.get("formItemUOM").toString();
+    String formItemQuantity = formData.get("formItemQuantity").toString();
+    String formItemID = formData.get("formItemID").toString();
+    boolean isValid =
+        docEmbeddedDataType.contains(formItemUOM) && docEmbeddedDataType
+            .contains(formItemQuantity)
+            && docEmbeddedDataType.contains(formItemID);
+    assertTrue(isValid);
+  }
+
   private static void validateContentFormatType(Document xmlData, Document docData) {
     if (Objects.nonNull(docData.get("contentFormatType"))) {
       Document docContentFormatType = (Document) docData.get("contentFormatType");
-      String contentStream = docContentFormatType.get("contentStream").toString()
-          .replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>\n"
-                  + "<sch:contentStream xmlns:sch=\"http://dms-fsl.uhc.com/fulfillment/schema\" xmlns:v7=\"http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"/>",
-              "").replace("</sch:contentStream>", "");
-      docContentFormatType.put("contentStream", contentStream);
-      Document docDocumentMetadata = (Document) ((ArrayList) docContentFormatType
-          .get("documentMetaDataList")).get(0);
-      docContentFormatType.put("documentMetadata", docDocumentMetadata);
-      docContentFormatType.remove("documentMetaDataList");
-      docData.put("contentFormatType", docContentFormatType);
-
       Document xmlContentFormatType = (Document) xmlData.get("contentFormatType");
-      Document documentMetaData = (Document) xmlContentFormatType.get("documentMetadata");
-      documentMetaData.put("name", documentMetaData.get("v7:name"));
-      documentMetaData.remove("v7:name");
-      documentMetaData.put("value", documentMetaData.get("v7:value"));
-      documentMetaData.remove("v7:value");
-      xmlContentFormatType.put("documentMetadata", documentMetaData);
-      xmlData.put("contentFormatType", xmlContentFormatType);
+      validateContentStream(docContentFormatType, xmlContentFormatType);
+      validateDocumentMetadata(docContentFormatType, xmlContentFormatType);
     }
+  }
+
+  private static void validateDocumentMetadata(Document docContentFormatType,
+      Document xmlContentFormatType) {
+    boolean valid = false;
+    docContentFormatType.put("documentMetadata", docContentFormatType.get("documentMetaDataList"));
+    docContentFormatType.remove("documentMetaDataList");
+    List<String> docKeyList = new ArrayList<>();
+    docKeyList.add("name");
+    docKeyList.add("value");
+
+    List<String> xmlKeyList = new ArrayList<>();
+    xmlKeyList.add("v7:name");
+    xmlKeyList.add("v7:value");
+    ArrayList<Document> docDocumentMetadata = (ArrayList) docContentFormatType
+        .get("documentMetadata");
+    if (xmlContentFormatType.get("documentMetadata") instanceof ArrayList) {
+      ArrayList<Document> xmlDocumentMetadata = (ArrayList) xmlContentFormatType
+          .get("documentMetadata");
+
+      if (docDocumentMetadata.size() == xmlDocumentMetadata.size()) {
+        for (int i = 0; i < docDocumentMetadata.size(); i++) {
+          if (checkEquals(docKeyList, xmlKeyList, docDocumentMetadata.get(i),
+              xmlDocumentMetadata.get(i))) {
+            valid = true;
+          } else {
+            break;
+          }
+        }
+      }
+    } else if (xmlContentFormatType.get("documentMetadata") instanceof Document) {
+      valid = checkEquals(docKeyList, xmlKeyList,
+          (Document) ((ArrayList) docContentFormatType.get("documentMetadata")).get(0),
+          (Document) xmlContentFormatType.get("documentMetadata"));
+    }
+    assertTrue(valid);
+    docContentFormatType.put("documentMetadata", xmlContentFormatType.get("documentMetadata"));
+  }
+
+  private static void validateContentStream(Document docContentFormatType,
+      Document xmlContentFormatType) {
+    String docContentStream = docContentFormatType.get("contentStream").toString();
+    String xmlContentStream = xmlContentFormatType.get("contentStream").toString();
+    assertTrue(docContentStream.contains(xmlContentStream));
+    docContentFormatType.put("contentStream", xmlContentStream);
   }
 
   public static Date toJavaDate(String inputString) {
@@ -255,6 +341,42 @@ public class TrackingRecordValidationUtil {
     validateRequestTrailer(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
   }
 
+  public static void validateBulkPostRequestFields(String payload,
+      Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlPostFulfillmentRequestStatus = (Document) bsonFromPayload
+        .get("postFulfillmentRequestStatus");
+    Document xmlFulfillmentRequestStatus = (Document) xmlPostFulfillmentRequestStatus
+        .get("fulfillmentRequestStatus");
+    Document docPostFulfillmentStatus = (Document) ((ArrayList) fulfillmentTrackingRecordDoc
+        .get("postFulfillmentStatus")).get(0);
+
+    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestHistory(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    Document xmlPostItemStatusBulkDetail = (Document) xmlFulfillmentRequestStatus
+        .get("postItemStatusBulkDetail");
+    Document docPostItemStatusBulkDetail = (Document) ((ArrayList) docPostFulfillmentStatus
+        .get("postItemStatusBulkDetails")).get(0);
+    validatePostItemStatusBulkDetail(xmlPostItemStatusBulkDetail, docPostItemStatusBulkDetail);
+    validateRequestTrailer(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+  }
+
+  private static void validatePostItemStatusBulkDetail(Document xmlPostItemStatusBulkDetail,
+      Document docPostItemStatusBulkDetail) {
+
+    xmlPostItemStatusBulkDetail
+        .put("fileSize", xmlPostItemStatusBulkDetail.get("fileSize").toString());
+
+    validateEcgDetail(xmlPostItemStatusBulkDetail, docPostItemStatusBulkDetail);
+    validateSourceDetail(xmlPostItemStatusBulkDetail, docPostItemStatusBulkDetail);
+
+    JSONObject xmlJson = new JSONObject(xmlPostItemStatusBulkDetail.toJson());
+    JSONObject docJson = new JSONObject(docPostItemStatusBulkDetail.toJson());
+    JSONAssert.assertEquals(xmlJson, docJson, false);
+  }
+
   private static void validateRequestHistory(Document xmlFulfillmentRequest,
       Document docFulfillmentRequest) {
     Document xmlRequestHistory = (Document) xmlFulfillmentRequest.get("requestHistory");
@@ -264,7 +386,9 @@ public class TrackingRecordValidationUtil {
         .put("dispatchedDate", toJavaDate(xmlRequestHistory.get("dispatchedDate").toString()));
     xmlRequestHistory.put("successCount", xmlRequestHistory.get("successCount").toString());
     xmlRequestHistory.put("exceptionCount", xmlRequestHistory.get("exceptionCount").toString());
-    xmlRequestHistory.put("recipientId", xmlRequestHistory.get("recipientId").toString());
+    if (Objects.nonNull(xmlRequestHistory.get("recipientId"))) {
+      xmlRequestHistory.put("recipientId", xmlRequestHistory.get("recipientId").toString());
+    }
 
     Document docRequestHistory = (Document) ((ArrayList) docFulfillmentRequest
         .get("requestHistory")).get(0);
@@ -352,6 +476,8 @@ public class TrackingRecordValidationUtil {
             valid = false;
             break;
           }
+        } else {
+          valid = doc.get(docKeyList.get(i)).equals(xml.get(xmlKeyList.get(i)));
         }
       }
     }

@@ -1,13 +1,16 @@
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -25,12 +28,13 @@ public class PostBulkPrintReady extends ConfigLoader {
   private String uri = "";
   private String payload = "";
   private String record = "";
+  CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
     uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionPostFulfillment");
     return uri;
-
   }
 
   private String buildPayload() throws IOException {
@@ -43,9 +47,7 @@ public class PostBulkPrintReady extends ConfigLoader {
 
   }
 
-  CsvReaderWriter cwr = new CsvReaderWriter();
-
-  @Test(groups = "Post_BPR_Response", dependsOnGroups = {"Process_BPR_DB"})
+  @Test(groups = "Post_BPR_Response", dependsOnGroups = {"Process_BPR_DB_Fields"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -63,9 +65,16 @@ public class PostBulkPrintReady extends ConfigLoader {
   }
 
   @Test(groups = "Post_BPR_DB", dependsOnGroups = {"Post_BPR_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig.getInstances()
+  private void validateAcceptanceByRequestor() throws Exception {
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
+  }
+
+  @Test(groups = "Post_BPR_DB_Fields", dependsOnGroups = {"Post_BPR_Response"})
+  private void validateRecordsInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateBulkPostRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 }

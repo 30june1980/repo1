@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.postfulfillment;
 
 import com.google.common.io.Resources;
@@ -10,6 +7,7 @@ import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.bson.Document;
@@ -50,7 +48,7 @@ public class PostBulkDataOnly extends ConfigLoader {
         (record + AppConstants.POST_SUFFIX + ".xml"));
   }
 
-  @Test(groups = "Post_BDO_Response", dependsOnGroups = {"Process_BDO_DB"})
+  @Test(groups = "Post_BDO_Response", dependsOnGroups = {"Process_BDO_DB_Fields"})
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
@@ -67,10 +65,17 @@ public class PostBulkDataOnly extends ConfigLoader {
   }
 
   @Test(groups = "Post_BDO_DB", dependsOnGroups = {"Post_BDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
+  private void validateAcceptanceByRequestor() throws Exception {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);
+  }
+
+  @Test(groups = "Post_BDO_DB_Fields", dependsOnGroups = {"Post_BDO_Response"})
+  private void validateRecordsInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateBulkPostRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 
   @Test(groups = "Post_BDO_DB_Items", dependsOnGroups = {"Post_BDO_DB"})
@@ -86,8 +91,9 @@ public class PostBulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Post_BDO_postItemStatusBulkDetail", dependsOnGroups = {"Post_BDO_DB"})
   private void validatePostItemStatusBulkDetailInDB() throws Exception {
-    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record );
-    ArrayList postFulfillmentStatusList = (ArrayList<Document>) trackingRecord.get("postFulfillmentStatus");
+    Document trackingRecord = databaseValidationUtil.getTrackingRecord(record);
+    ArrayList postFulfillmentStatusList = (ArrayList<Document>) trackingRecord
+        .get("postFulfillmentStatus");
     Document postFulfillmentStatus = (Document) postFulfillmentStatusList.get(0);
     assertNotNull(postFulfillmentStatus.get("postItemStatusBulkDetails"));
   }
