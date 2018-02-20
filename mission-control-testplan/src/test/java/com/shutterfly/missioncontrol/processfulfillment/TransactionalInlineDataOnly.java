@@ -1,28 +1,28 @@
 package com.shutterfly.missioncontrol.processfulfillment;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import java.util.ArrayList;
-import org.bson.Document;
-import org.testng.annotations.Test;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.UUID;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import org.bson.Document;
+import org.testng.annotations.Test;
 
 /**
  * @author dgupta
@@ -68,13 +68,20 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
   }
 
   @Test(groups = "Process_TIDO_DB", dependsOnGroups = {"Process_TIDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
+  private void validateAcceptanceBySupplier() throws Exception {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
 
-  @Test(groups = "Process_TIDO_DB_Rule", dependsOnGroups = {"Process_TIDO_DB"})
+  @Test(groups = "Process_TIDO_DB_Fields", dependsOnGroups = {"Process_TIDO_Response"})
+  private void validateRecordInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+  }
+
+  @Test(groups = "Process_TIDO_DB_Rule", dependsOnGroups = {"Process_TIDO_DB_Fields"})
   private void validateRuleInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     assertNotNull(fulfillmentTrackingRecordDoc.get("ruleId"));

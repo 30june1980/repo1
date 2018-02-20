@@ -1,15 +1,16 @@
 package com.shutterfly.missioncontrol.common;
 
-import static org.testng.Assert.assertNotNull;
-
-import com.jcraft.jsch.Channel;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
-import com.jcraft.jsch.SftpException;
+import com.jcraft.jsch.*;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.util.Encryption;
 import io.restassured.path.xml.XmlPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -17,8 +18,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.testng.Assert.assertNotNull;
 
 public class EcgFileSafeUtil extends ConfigLoader {
 
@@ -28,9 +31,9 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
   public static String buildInboundFilePath(String payload) {
 
-		/*
-     * Get Source Id Build Inbound ECG file location
-		 */
+        /*
+         * Get Source Id Build Inbound ECG file location
+         */
 
     String sourceEcgPath = "";
     XmlPath xmlPath = new XmlPath(payload);
@@ -63,19 +66,34 @@ public class EcgFileSafeUtil extends ConfigLoader {
     JSch jsch = new JSch();
     Session session = null;
     try {
-      session = jsch.getSession("auto-mc", "tmvitdmz01-lv.dmz.lab.shutterfly.com", 22);
+      session = jsch.getSession("dgupta", "dsbsapp14-lv.internal.shutterfly.com", 22);
       session.setConfig("StrictHostKeyChecking", "no");
-      session.setPassword("q19zo1W9");
+      SecretKey secretKey = Encryption.keyGenerator();
+      try {
+        session.setPassword(Encryption.decrypt(
+            "6QkeUtamWANCjylsQiKZEw==", secretKey
+        ));
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
+      } catch (BadPaddingException e) {
+        e.printStackTrace();
+      } catch (IllegalBlockSizeException e) {
+        e.printStackTrace();
+      }
       session.connect();
 
       Channel channel = session.openChannel("sftp");
       channel.connect();
       ChannelSftp sftpChannel = (ChannelSftp) channel;
-      /*
-       * normalize folder path with regex expression
-			 */
+            /*
+             * normalize folder path with regex expression
+             */
       sftpChannel.put((LOCAL_PATH + externalFilename),
-          (sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
+          ("/" + sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
       sftpChannel.exit();
 
     } catch (JSchException | SftpException e) {
@@ -95,10 +113,28 @@ public class EcgFileSafeUtil extends ConfigLoader {
     Session session = null;
     File tempFile = null;
     String destinationFileName = requestId + fileNameSuffix;
+
     try {
-      session = jsch.getSession("auto-mc", "tmvitdmz01-lv.dmz.lab.shutterfly.com", 22);
+
+      session = jsch.getSession("dgupta", "dsbsapp14-lv.internal.shutterfly.com", 22);
       session.setConfig("StrictHostKeyChecking", "no");
-      session.setPassword("q19zo1W9");
+      SecretKey secretKey = Encryption.keyGenerator();
+      try {
+        session.setPassword(Encryption.decrypt(
+            "6QkeUtamWANCjylsQiKZEw==", secretKey
+        ));
+      } catch (NoSuchPaddingException e) {
+        e.printStackTrace();
+      } catch (NoSuchAlgorithmException e) {
+        e.printStackTrace();
+      } catch (InvalidKeyException e) {
+        e.printStackTrace();
+      } catch (BadPaddingException e) {
+        e.printStackTrace();
+      } catch (IllegalBlockSizeException e) {
+        e.printStackTrace();
+      }
+
       session.connect();
 
       Channel channel = session.openChannel("sftp");
@@ -116,7 +152,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
       Files.write(tempFilePath, content.getBytes(charset));
 
       sftpChannel.put(tempFilePath.toString(),
-          (sourceEcgPath + "/" + destinationFileName + ".xml").replaceAll("/+", "/"));
+          ("/" + sourceEcgPath + "/" + destinationFileName + ".xml").replaceAll("/+", "/"));
       sftpChannel.exit();
 
     } catch (JSchException | SftpException | IOException e) {

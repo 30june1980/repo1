@@ -7,10 +7,12 @@ import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.bson.Document;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -72,8 +74,15 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   }
 
-  @Test(groups = "Process_TEPR_DB", dependsOnGroups = {"Process_TEPR_Response"})
+  @Test(groups = "Process_TEPR_DB_Fields", dependsOnGroups = {"Process_TEPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+  }
+
+  @Test(groups = "Process_TEPR_DB", dependsOnGroups = {"Process_TEPR_Response"})
+  private void validateAcceptanceBySupplier() throws Exception {
     databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);

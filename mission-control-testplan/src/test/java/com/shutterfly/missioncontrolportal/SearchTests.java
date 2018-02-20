@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.Test;
 
 import javax.annotation.Nonnull;
@@ -52,6 +53,10 @@ public class SearchTests extends ConfigLoaderWeb {
     private TransactionalInlinePrintReadyMultiItemNonBatchableSingleItemPage transactionalInlinePrintReadyMultiItemNonBatchableSingleItemPage;
     private TransactionalInlinePrintReadyMultiItemPage transactionalInlinePrintReadyMultiItemPage;
     private TransactionalInlinePrintReadySingleItemPage transactionalInlinePrintReadySingleItemPage;
+
+    private Map<String, String> tidoXmlData;
+    private Map<String, String> tidobXmlData;
+    private String xmlPath;
 
     private Logger logger = LoggerFactory.getLogger(SearchTests.class);
 
@@ -102,12 +107,163 @@ public class SearchTests extends ConfigLoaderWeb {
         Assert.assertNotEquals(oldUrl, newUrl);
     }
 
-
-    @Test // (dependsOnGroups = "Process_TIDO_Valid_Request_Validation")
-    public void transactionalInlineDataOnlyTest() {
+    @BeforeGroups(groups = "tido")
+    private void loadTidoData() {
+        xmlPath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml").getPath();
+        tidoXmlData = XmlUtils.readXml(xmlPath);
         searchByRequestCategory(AppConstants.TIDO);
+    }
 
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyRequestType() {
         Assert.assertTrue(tido.equals(transactionalInlineDataOnlyPage.getRequestType()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlySourceId() {
+        Assert.assertTrue(tidoXmlData.get("sch:sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyDestinationId() {
+        Assert.assertTrue(tidoXmlData.get("sch:destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyBusinessSegmentId() {
+        Assert.assertTrue(tidoXmlData.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyRequestCategory() {
+        Assert.assertTrue(tidoXmlData.get("sch:requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyMarketSegmentCd() {
+        Assert.assertTrue(tidoXmlData.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyFulfillmentType() {
+        Assert.assertTrue(tidoXmlData.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyDataFormat() {
+        Assert.assertTrue(tidoXmlData.get("sch:dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyDeliveryMethods() {
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(tidoXmlData.get("sch:deliveryMethod1")));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyEmailAddress() {
+        Assert.assertTrue(tidoXmlData.get("sch:emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyFaxNumber() {
+        Assert.assertTrue(tidoXmlData.get("sch:faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyLastName() {
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(tidoXmlData.get("sch:lastName")));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyFirstName() {
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(tidoXmlData.get("sch:firstName")));
+    }
+
+    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyZip() {
+        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(tidoXmlData.get("sch:Zip")));
+    }
+
+    //    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyReturnToAddress() {
+        String returnAddressXml = XmlUtils.readXmlElement(xmlPath, "sch:ReturnToAddress");
+        String returnAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getReturnToAddress());
+        Assert.assertEquals(returnAddressXml, returnAddressPage);
+    }
+
+    //    @Test(groups = "tido")
+    public void verifyTransactionalInlineDataOnlyMailToAddress() {
+        String mailToAddressXml = XmlUtils.readXmlElement(xmlPath, "sch:MailToAddress");
+        String mailToAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getMailToAddress());
+        Assert.assertEquals(mailToAddressXml, mailToAddressPage);
+    }
+
+
+    @BeforeGroups(groups = "tidob")
+    private void loadTidobData() {
+        xmlPath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnlyBatchable.xml").getPath();
+        tidobXmlData = XmlUtils.readXml(xmlPath);
+        searchByRequestCategory(AppConstants.TIDOB);
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableRequestType() {
+        Assert.assertTrue(tido.equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableSourceId() {
+        Assert.assertTrue(tidobXmlData.get("sch:sourceID").equals(transactionalInlineDataOnlyBatchablePage.getRequestor()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableDestinationId() {
+        Assert.assertTrue(tidobXmlData.get("sch:destinationID").equals(transactionalInlineDataOnlyBatchablePage.getVendor()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableBusinessSegmentId() {
+        Assert.assertTrue(tidobXmlData.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyBatchablePage.getBs()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableRequestCategory() {
+        Assert.assertTrue(tidobXmlData.get("sch:requestCategory").equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableMarketSegmentCd() {
+        Assert.assertTrue(tidobXmlData.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyBatchablePage.getMs()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableMaterialType() {
+        Assert.assertTrue(tidobXmlData.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyBatchablePage.getMaterialType()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableDataFormat() {
+        Assert.assertTrue(tidobXmlData.get("sch:dataFormat").equals(transactionalInlineDataOnlyBatchablePage.getDataFormat()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableDeliveryMethod() {
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getDeliveryMethod().contains(tidobXmlData.get("sch:deliveryMethod1")));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableRecipientEmail() {
+        Assert.assertTrue(tidobXmlData.get("sch:emailAddress").equals(transactionalInlineDataOnlyBatchablePage.getRecipientEmail()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableFaxNumber() {
+        Assert.assertTrue(tidobXmlData.get("sch:faxNumber").equals(transactionalInlineDataOnlyBatchablePage.getRecipientFax()));
+    }
+
+    @Test(groups = "tidob")
+    public void verifyTransactionalInlineDataOnlyBatchableLastName() {
+        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getLnameFname().contains(tidobXmlData.get("sch:lastName")));
     }
 
     @Test
@@ -131,7 +287,7 @@ public class SearchTests extends ConfigLoaderWeb {
         Assert.assertTrue(bpr.equals(bulkPrintReadyPage.getRequestType()));
     }
 
-    @Test
+    //    @Test
     public void edmsuiTransactionalExternalPrintReadyTest() {
         searchByRequestCategory(AppConstants.EUTEPR);
 
@@ -143,34 +299,6 @@ public class SearchTests extends ConfigLoaderWeb {
         searchByRequestCategory(AppConstants.TEPR);
 
         Assert.assertTrue(tepr.equals(transactionalExternalPrintReadyPage.getRequestType()));
-    }
-
-    @Test
-    public void transactionalInlineDataOnlyBatchableTest() {
-        searchByRequestCategory(AppConstants.TIDOB);
-
-        Assert.assertTrue(tido.equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
-
-        String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnlyBatchable.xml").getPath();
-
-
-        Map<String, String> map = XmlUtils.readXml(filePath);
-        Assert.assertTrue(map.get("sch:sourceID").equals(transactionalInlineDataOnlyBatchablePage.getRequestor()));
-        Assert.assertTrue(map.get("sch:destinationID").equals(transactionalInlineDataOnlyBatchablePage.getVendor()));
-        Assert.assertTrue(map.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyBatchablePage.getBs()));
-        Assert.assertTrue(map.get("sch:requestCategory").equals(transactionalInlineDataOnlyBatchablePage.getRequestType()));
-        Assert.assertTrue(map.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyBatchablePage.getMs()));
-        Assert.assertTrue(map.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyBatchablePage.getMaterialType()));
-        Assert.assertTrue(map.get("sch:dataFormat").equals(transactionalInlineDataOnlyBatchablePage.getDataFormat()));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getDeliveryMethod().contains(map.get("sch:deliveryMethod1")));
-        Assert.assertTrue(map.get("sch:emailAddress").equals(transactionalInlineDataOnlyBatchablePage.getRecipientEmail()));
-        Assert.assertTrue(map.get("sch:faxNumber").equals(transactionalInlineDataOnlyBatchablePage.getRecipientFax()));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getLnameFname().contains(map.get("sch:lastName")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:Address1")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:Address2")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:Address3")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getReturnToAddress().contains(map.get("sch:City")));
-        Assert.assertTrue(transactionalInlineDataOnlyBatchablePage.getTemplateName().contains(map.get("sch:templateName")));
     }
 
     @Test
@@ -192,34 +320,6 @@ public class SearchTests extends ConfigLoaderWeb {
         searchByRequestCategory(AppConstants.TIPRSI);
 
         Assert.assertTrue(tiprsi.equals(transactionalInlinePrintReadySingleItemPage.getRequestType()));
-    }
-
-    @Test
-    public void verifyTransactionalInlineDataOnlyPage() {
-        searchByRequestCategory(AppConstants.TIDO);
-
-        String filePath = Resources.getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml").getPath();
-        Map<String, String> map = XmlUtils.readXml(filePath);
-        Assert.assertTrue(map.get("sch:sourceID").equals(transactionalInlineDataOnlyPage.getRequestor()));
-        Assert.assertTrue(map.get("sch:destinationID").equals(transactionalInlineDataOnlyPage.getVendor()));
-        Assert.assertTrue(map.get("sch:businessSegmentID").equals(transactionalInlineDataOnlyPage.getBusinessSegment()));
-        Assert.assertTrue(map.get("sch:requestCategory").equals(transactionalInlineDataOnlyPage.getRequestType()));
-        Assert.assertTrue(map.get("sch:marketSegmentCd").equals(transactionalInlineDataOnlyPage.getMarketSegment()));
-        Assert.assertTrue(map.get("sch:fulfillmentType").equals(transactionalInlineDataOnlyPage.getMaterialType()));
-        Assert.assertTrue(map.get("sch:dataFormat").equals(transactionalInlineDataOnlyPage.getDataFormat()));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getDeliveryMethods().contains(map.get("sch:deliveryMethod1")));
-        Assert.assertTrue(map.get("sch:emailAddress").equals(transactionalInlineDataOnlyPage.getRecipientEmail()));
-        Assert.assertTrue(map.get("sch:faxNumber").equals(transactionalInlineDataOnlyPage.getFax()));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("sch:lastName")));
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getLastFirstName().contains(map.get("sch:firstName")));
-        String returnAddressXml = XmlUtils.readXmlElement(filePath, "sch:ReturnToAddress");
-        String returnAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getReturnToAddress());
-        Assert.assertEquals(returnAddressXml, returnAddressPage);
-        Assert.assertTrue(transactionalInlineDataOnlyPage.getReturnToAddress().contains(map.get("sch:Zip")));
-        String mailToAddressXml = XmlUtils.readXmlElement(filePath, "sch:MailToAddress");
-        String mailToAddressPage = removeNewLines(transactionalInlineDataOnlyPage.getMailToAddress());
-        Assert.assertEquals(mailToAddressXml, mailToAddressPage);
-
     }
 
     private String removeNewLines(@Nonnull String line) {

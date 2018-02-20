@@ -1,11 +1,13 @@
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.common.DatabaseValidationUtil;
 import com.shutterfly.missioncontrol.common.EcgFileSafeUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
@@ -31,6 +33,7 @@ public class BulkDataOnly extends ConfigLoader {
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
   CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -68,10 +71,17 @@ public class BulkDataOnly extends ConfigLoader {
   }
 
   @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
-  private void validateRecordsInDatabase() throws Exception {
-    ValidationUtilConfig.getInstances()
+  private void validateAcceptanceBySupplier() throws Exception {
+    databaseValidationUtil
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_BDO_DB_Fields", dependsOnGroups = {"Process_BDO_Response"})
+  private void validateRecordInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateBulkProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
   }
 
   @Test(groups = "Process_BDO_Valid_Request_Validation", dependsOnGroups = {
@@ -123,8 +133,8 @@ public class BulkDataOnly extends ConfigLoader {
     assertNotNull(requestDetail.get("bulkRequestDetail"));
   }
 
-  @Test(groups = "Process_BDO_Response_2")
-  private void getResponse2() throws Exception {
+  @Test
+  private void validateBulkRequestIsNotGettingBatched() throws Exception {
     basicConfigNonWeb();
     String requestId = "Test_qa" + UUID.randomUUID().toString();
 
