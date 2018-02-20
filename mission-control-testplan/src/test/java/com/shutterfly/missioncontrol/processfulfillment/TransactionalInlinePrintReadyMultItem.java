@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.shutterfly.missioncontrol.processfulfillment;
 
 import com.google.common.io.Resources;
@@ -37,6 +34,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
   UUID uuid = UUID.randomUUID();
   String record = "Test_qa_" + uuid.toString();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+  String singleItemRequestId = record + "_1";
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -83,14 +81,28 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
   private void validateRecordInDatabase() throws Exception {
     Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
     TrackingRecordValidationUtil
-        .validateTransactionalProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+        .validateTransactionalProcessRequestFields(this.buildPayload(),
+            fulfillmentTrackingRecordDoc);
   }
 
-  @Test(dependsOnGroups = {"Process_TIPRMI_DB"})
+  @Test(groups = "Process_TIPRMI_ChildItems_Status", dependsOnGroups = {"Process_TIPRMI_DB"})
   private void validateSingleItemRecordsInDatabase() throws Exception {
     ValidationUtilConfig.getInstances()
-        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.REQUEST_BATCHED,
+        .validateRecordsAvailabilityAndStatusCheck(singleItemRequestId,
+            AppConstants.REQUEST_BATCHED,
             AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_TIPRMI_ChildItems_DB", dependsOnGroups = {
+      "Process_TIPRMI_ChildItems_Status"})
+  private void validateChildItemInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil
+        .getTrackingRecord(singleItemRequestId);
+    String payload = this.buildPayload();
+    payload = payload.replace(record, singleItemRequestId)
+        .replace("TransactionalInlinePrintReadyMultItem",
+            "TransactionalInlinePrintReadySingleItem");
+    TrackingRecordValidationUtil.validateChildItemFields(payload, fulfillmentTrackingRecordDoc);
   }
 
 }
