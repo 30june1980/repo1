@@ -11,6 +11,7 @@ import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.config.CsvReaderWriter;
 import com.shutterfly.missioncontrol.util.AppConstants;
+import com.shutterfly.missioncontrol.util.TrackingRecordValidationUtil;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
@@ -123,6 +124,12 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
     assertEquals(metaData1.get("value"),"EDMS");
   }
 
+    @Test(groups = "Archive_TIDO_DB_ALL_Fields", dependsOnGroups = {"Archive_TIDO_DB_eventHistory"})
+    private void validateRecordInDatabase() throws Exception {
+        Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+        TrackingRecordValidationUtil
+                .validateTransactionalArchiveRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+    }
 
   private String buildPayloadForInvalidArchive() throws IOException {
     URL file = Resources
