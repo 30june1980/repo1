@@ -99,7 +99,7 @@ public class TrackingRecordValidationUtil {
     Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
         .get("fulfillmentRequest");
 
-    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest,"requestHeader");
     validateSingleItemsRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
   }
@@ -431,7 +431,7 @@ public class TrackingRecordValidationUtil {
     Document docPostFulfillmentStatus = (Document) ((ArrayList) fulfillmentTrackingRecordDoc
         .get("postFulfillmentStatus")).get(0);
 
-    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus,"requestHeader");
     validateRequestHistory(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
     Document xmlPostItemStatusBulkDetail = (Document) xmlFulfillmentRequestStatus
         .get("postItemStatusBulkDetail");
