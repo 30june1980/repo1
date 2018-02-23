@@ -88,8 +88,8 @@ public class TrackingRecordValidationUtil {
     Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
         .get("fulfillmentRequest");
 
-    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
-    validateTransactionalRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest,"requestHeader");
+    validateTransactionalRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest,"requestDetail","transactionalRequestDetail");
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
   }
 
@@ -99,7 +99,7 @@ public class TrackingRecordValidationUtil {
     Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
         .get("fulfillmentRequest");
 
-    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest,"requestHeader");
     validateSingleItemsRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
   }
@@ -181,7 +181,7 @@ public class TrackingRecordValidationUtil {
     Document docFulfillmentRequest = (Document) fulfillmentTrackingRecordDoc
         .get("fulfillmentRequest");
 
-    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest);
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest,"requestHeader");
     validateBulkRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest);
     validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest);
   }
@@ -217,13 +217,13 @@ public class TrackingRecordValidationUtil {
   }
 
   private static void validateRequestHeader(Document xmlFulfillmentRequest,
-      Document docFulfillmentRequest) {
-    Document xmlRequestHeader = (Document) xmlFulfillmentRequest.get("requestHeader");
+      Document docFulfillmentRequest,String payloadHeaderString) {
+    Document xmlRequestHeader = (Document) xmlFulfillmentRequest.get(payloadHeaderString);
     Date date = TrackingRecordValidationUtil
         .toJavaDate(xmlRequestHeader.get("requestDate").toString());
     xmlRequestHeader.put("requestDate", date);
     xmlRequestHeader.put("fulfillmentType", xmlRequestHeader.get("fulfillmentType").toString());
-    Document docRequestHeader = (Document) docFulfillmentRequest.get("requestHeader");
+    Document docRequestHeader = (Document) docFulfillmentRequest.get(payloadHeaderString);
 
     JSONObject xmlJson = new JSONObject(xmlRequestHeader.toJson());
     JSONObject docJson = new JSONObject(docRequestHeader.toJson());
@@ -242,12 +242,12 @@ public class TrackingRecordValidationUtil {
   }
 
   private static void validateTransactionalRequestDetails(Document xmlFulfillmentRequest,
-      Document docFulfillmentRequest) {
-    Document xmlRequestDetail = (Document) xmlFulfillmentRequest.get("requestDetail");
-    Document docRequestDetail = (Document) docFulfillmentRequest.get("requestDetail");
+      Document docFulfillmentRequest,String outerRequestDetail,String innerRequestDetail) {
+    Document xmlRequestDetail = (Document) xmlFulfillmentRequest.get(outerRequestDetail);
+    Document docRequestDetail = (Document) docFulfillmentRequest.get(outerRequestDetail);
 
-    Document xmlTransactionalDetail = (Document) xmlRequestDetail.get("transactionalRequestDetail");
-    Document docTransactionalDetail = (Document) docRequestDetail.get("transactionalRequestDetail");
+    Document xmlTransactionalDetail = (Document) xmlRequestDetail.get(innerRequestDetail);
+    Document docTransactionalDetail = (Document) docRequestDetail.get(innerRequestDetail);
 
     try {
       validateRecipients((Document) xmlTransactionalDetail.get("recipient"), (Document) ((ArrayList) docTransactionalDetail.get("recipientList")).get(0));
@@ -258,8 +258,13 @@ public class TrackingRecordValidationUtil {
     }
 
     //validate template Details
-    docTransactionalDetail.put("template", docTransactionalDetail.get("templateDetail"));
-    docTransactionalDetail.remove("templateDetail");
+    /**
+     * template detail are not present in archive request so skipping
+     */
+    if(!outerRequestDetail.equals("archiveRequestDetail")) {
+      docTransactionalDetail.put("template", docTransactionalDetail.get("templateDetail"));
+      docTransactionalDetail.remove("templateDetail");
+    }
 
     //validate data
     validateData(xmlTransactionalDetail, docTransactionalDetail);
@@ -409,7 +414,7 @@ public class TrackingRecordValidationUtil {
     Document docPostFulfillmentStatus = (Document) ((ArrayList) fulfillmentTrackingRecordDoc
         .get("postFulfillmentStatus")).get(0);
 
-    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus,"requestHeader");
     validateRequestHistory(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
     validateRequestTrailer(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
   }
@@ -426,7 +431,7 @@ public class TrackingRecordValidationUtil {
     Document docPostFulfillmentStatus = (Document) ((ArrayList) fulfillmentTrackingRecordDoc
         .get("postFulfillmentStatus")).get(0);
 
-    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
+    validateRequestHeader(xmlFulfillmentRequestStatus, docPostFulfillmentStatus,"requestHeader");
     validateRequestHistory(xmlFulfillmentRequestStatus, docPostFulfillmentStatus);
     Document xmlPostItemStatusBulkDetail = (Document) xmlFulfillmentRequestStatus
         .get("postItemStatusBulkDetail");
@@ -582,10 +587,14 @@ public class TrackingRecordValidationUtil {
     nodeMap.remove("returntoaddress");
     nodeMap.remove("person");
     nodeMap.remove("organization");
+    nodeMap.remove("MailToAddressInternational");
+    nodeMap.remove("ReturnToAddressInternational");
     nodeMap2.remove("mailtoaddress");
     nodeMap2.remove("returntoaddress");
     nodeMap2.remove("person");
     nodeMap2.remove("organization");
+    nodeMap2.remove("MailToAddressInternational");
+    nodeMap2.remove("ReturnToAddressInternational");
 
     Object mailToAddress1 = docRecipientObjectMap.get("mailtoaddress");
     Object returnToAddress1 = docRecipientObjectMap.get("returntoaddress") ;
@@ -651,5 +660,22 @@ public class TrackingRecordValidationUtil {
   private static String javaObjectToJsonString(Object object) throws JsonProcessingException {
     ObjectMapper mapper=new ObjectMapper();
     return mapper.writeValueAsString(object);
+  }
+
+  public static void validateTransactionalArchiveRequestFields(String payload,
+                                                               Document fulfillmentTrackingRecordDoc) {
+    JSONObject xmlJSONObj = XML.toJSONObject(payload);
+    String jsonToString = xmlJSONObj.toString().replaceAll("sch:", "");
+    Document bsonFromPayload = Document.parse(jsonToString);
+    Document xmlProcessFulfillmentRequest = (Document) bsonFromPayload
+            .get("processArchiveRequest");
+    Document xmlFulfillmentRequest = (Document) xmlProcessFulfillmentRequest
+            .get("archiveRequest");
+    ArrayList<Document> docFulfillmentRequest = (ArrayList<Document>) fulfillmentTrackingRecordDoc
+            .get("archiveRequest");
+
+    validateRequestHeader(xmlFulfillmentRequest, docFulfillmentRequest.get(0),"archiveRequestHeader");
+    validateTransactionalRequestDetails(xmlFulfillmentRequest, docFulfillmentRequest.get(0),"archiveRequestDetail","archiveTransactionalDetail");
+    validateRequestTrailer(xmlFulfillmentRequest, docFulfillmentRequest.get(0));
   }
 }
