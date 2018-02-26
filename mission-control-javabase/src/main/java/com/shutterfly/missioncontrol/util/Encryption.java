@@ -42,6 +42,5 @@ public class Encryption {
 
         return new String(decryptedByte);
     }
-
 }
 

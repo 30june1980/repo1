@@ -136,7 +136,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
     //post request should be generated
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_REQUESTOR,
+        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.POST_STATUS);
     Document trackingRecord = databaseValidationUtil.getTrackingRecord(requestId);
 
