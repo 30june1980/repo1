@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -117,8 +118,8 @@ public class ConfigLoaderWeb {
 
             case INTERNET_EXPLORER:
                 desiredCapabilities = DesiredCapabilities.internetExplorer();
-                desiredCapabilities.setCapability("ignoreZoomSetting", true);
-
+                desiredCapabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+                desiredCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
                 if (AppConstants.LOCAL.equalsIgnoreCase(environment)) {
                     System.setProperty(AppConstants.IE_DRIVER, System.getProperty(AppConstants.IE_DRIVER));
                     driver = new InternetExplorerDriver(desiredCapabilities);

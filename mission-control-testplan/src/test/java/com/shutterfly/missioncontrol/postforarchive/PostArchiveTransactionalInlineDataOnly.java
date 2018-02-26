@@ -65,7 +65,7 @@ public class PostArchiveTransactionalInlineDataOnly extends ConfigLoader {
   @Test(groups = "PostForArchive_TIDO_DB", dependsOnGroups = {"PostForArchive_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.POST_STATUS);
   }
 

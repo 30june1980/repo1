@@ -74,5 +74,5 @@ public class AppConstants {
     public static final String REQUEST_BATCHED = "RequestBatched";
     public static final String ACCEPTED = "Accepted";
     public static final String REJECTED = "Rejected";
-
+public static final String NO_REQUESTOR_NOTIFICATION_REQUIRED = "NoRequestorNotificationRequired";
 }
