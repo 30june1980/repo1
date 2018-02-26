@@ -66,7 +66,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
     JSch jsch = new JSch();
     Session session = null;
     try {
-      session = jsch.getSession("dgupta", "dsbsapp14-lv.internal.shutterfly.com", 22);
+      session = jsch.getSession("dgupta", "tsbsapp31-lv.internal.shutterfly.com", 22);
       session.setConfig("StrictHostKeyChecking", "no");
       SecretKey secretKey = Encryption.keyGenerator();
       try {
@@ -93,7 +93,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
              * normalize folder path with regex expression
              */
       sftpChannel.put((LOCAL_PATH + externalFilename),
-          ("/" + sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
+          ("/"+ sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
       sftpChannel.exit();
 
     } catch (JSchException | SftpException e) {
@@ -116,13 +116,16 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
     try {
 
-      session = jsch.getSession("dgupta", "dsbsapp14-lv.internal.shutterfly.com", 22);
+     // session = jsch.getSession("dgupta", "dsbsapp14-lv.internal.shutterfly.com", 22);
+      session = jsch.getSession("dgupta", "tsbsapp31-lv.internal.shutterfly.com", 22);
       session.setConfig("StrictHostKeyChecking", "no");
       SecretKey secretKey = Encryption.keyGenerator();
       try {
-        session.setPassword(Encryption.decrypt(
-            "6QkeUtamWANCjylsQiKZEw==", secretKey
-        ));
+       // session.setPassword(Encryption.decrypt(
+        //    "6QkeUtamWANCjylsQiKZEw==", secretKey  ));
+session.setPassword(Encryption.decrypt("6QkeUtamWANCjylsQiKZEw==",secretKey));
+
+
       } catch (NoSuchPaddingException e) {
         e.printStackTrace();
       } catch (NoSuchAlgorithmException e) {

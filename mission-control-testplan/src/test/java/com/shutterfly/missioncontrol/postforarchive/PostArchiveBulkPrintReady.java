@@ -48,8 +48,8 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
   private void getResponse() throws IOException {
     basicConfigNonWeb();
     String payload = this.buildPayload();
-    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
-        record, AppConstants.BULK_FILE_FOR_ARCHIVE);
+    EcgFileSafeUtil.updateAndPutFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload),
+        record, AppConstants.BULK_FILE_FOR_ARCHIVE, AppConstants.POST_FOR_ARCHIVE_SUFFIX);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()
         .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
@@ -63,6 +63,7 @@ public class PostArchiveBulkPrintReady extends ConfigLoader {
 
   @Test(groups = "PostForArchive_BPR_DB", dependsOnGroups = {"PostForArchive_BPR_Response"})
   private void validateRecordsInDatabase() throws Exception {
+    // Need to be updated
     ValidationUtilConfig.getInstances()
         .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
             AppConstants.POST_STATUS);

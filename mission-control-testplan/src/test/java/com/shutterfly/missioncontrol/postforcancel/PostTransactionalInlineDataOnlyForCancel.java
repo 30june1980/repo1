@@ -67,7 +67,7 @@ public class PostTransactionalInlineDataOnlyForCancel extends ConfigLoader {
   @Test(groups = "PostForCancel_TIDO_DB", dependsOnGroups = {"PostForCancel_TIDO_Response"})
   private void validateRecordsInDatabase() throws Exception {
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.POST_STATUS);
   }
 

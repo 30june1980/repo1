@@ -5,8 +5,13 @@ import com.shutterfly.missioncontrol.config.ConfigLoader;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.TestListenerAdapter;
+import org.testng.TestNG;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.collections.Lists;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -35,7 +40,6 @@ public class RoutingRuleControllerTest extends ConfigLoader {
                 .when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/routingrule");
         Assert.assertEquals(response.getStatusCode(), 200);
     }
-
 
 
 
