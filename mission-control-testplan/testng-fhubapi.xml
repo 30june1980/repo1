@@ -19,6 +19,7 @@
       <class name="com.shutterfly.missioncontrolapi.DeadLetterControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.JobDetailsControllerTest"/>
       <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
+            <class name="com.shutterfly.missioncontrolapi.RoutingRuleControllerTest"/>
 		</classes>
 	</test> <!-- Api-Test -->
 </suite> <!-- Suite -->

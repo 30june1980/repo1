@@ -9,6 +9,7 @@ public class TransactionalInlineDataOnlyBatchablePage {
 
     private WebDriver driver;
 
+
     @FindBy(how = How.CSS, using = "details-component > div > div:nth-child(1) > div:nth-child(2) > div > span")
     private WebElement requestTypeTxt;
 

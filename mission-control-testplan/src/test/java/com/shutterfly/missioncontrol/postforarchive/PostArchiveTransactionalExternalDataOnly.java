@@ -70,7 +70,7 @@ public class PostArchiveTransactionalExternalDataOnly extends ConfigLoader {
   private void validateRecordsInDatabase() throws Exception {
 
     ValidationUtilConfig.getInstances()
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_REQUESTOR,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.POST_STATUS);
   }
 }
