@@ -3,7 +3,7 @@
 <suite thread-count="1" name="Suite">
     <test name="Portal-Test">
         <parameter name="platform" value="any"/>
-        <parameter name="browser" value="ie"/>
+        <parameter name="browser" value="chrome"/>
 
         <classes><!-- Portal Test case classes  -->
             <class name="com.shutterfly.missioncontrolportal.LoginTest"/>
