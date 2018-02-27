@@ -184,7 +184,7 @@ public class PostTransactionalInlineDataOnly extends ConfigLoader {
     URL file = Resources
         .getResource("XMLPayload/PostFulfillment/PostTransactionalInlineDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     payload = payload.replaceAll("REQUEST_101", requestId);
     Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
         .all()

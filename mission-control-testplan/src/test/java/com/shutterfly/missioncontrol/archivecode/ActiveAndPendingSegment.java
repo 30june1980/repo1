@@ -5,6 +5,7 @@ package com.shutterfly.missioncontrol.archivecode;
 
 import static io.restassured.RestAssured.given;
 
+import com.shutterfly.missioncontrol.util.AppConstants;
 import java.io.IOException;
 
 import org.testng.annotations.Test;
@@ -20,7 +21,7 @@ public class ActiveAndPendingSegment extends ConfigLoader {
 	String uri = null;
 	String myJson = null;
 	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	String record = AppConstants.REQUEST_ID_PREFIX + millis;
 	private String accesstoken = new AccessToken().getAccessToken();
 
 	private String getSaveSegmentProperties() {

@@ -31,7 +31,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
   CsvReaderWriter cwr = new CsvReaderWriter();
 
@@ -99,7 +99,7 @@ public class TransactionalExternalPrintReady extends ConfigLoader {
   @Test(groups = "Process_TEPR_When_File_Is_Unavailable")
   private void validateWhenFileIsUnavailable() throws Exception {
     basicConfigNonWeb();
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     URL file = Resources
         .getResource("XMLPayload/ProcessFulfillment/TransactionalExternalPrintReady.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
