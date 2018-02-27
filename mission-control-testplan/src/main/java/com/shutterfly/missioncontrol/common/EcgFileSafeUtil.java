@@ -134,12 +134,12 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
     private static Session getNewSession() throws JSchException {
         JSch jsch = new JSch();
-        Session session = jsch.getSession(config.getProperty("UhgTestUserName"), config.getProperty("UhgTestUrl"), Integer.parseInt(config.getProperty("UhgTestPort")));
+        Session session = jsch.getSession(config.getProperty("file.server.username"), config.getProperty("file.server.url"), Integer.parseInt(config.getProperty("file.server.port")));
         session.setConfig("StrictHostKeyChecking", "no");
         SecretKey secretKey = Encryption.keyGenerator();
         try {
             session.setPassword(Encryption.decrypt(
-                    config.getProperty("UhgTestPassword"), secretKey
+                    config.getProperty("file.server.password"), secretKey
             ));
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | IllegalBlockSizeException e) {
             logger.error("Failed to decrypt the password", e);
