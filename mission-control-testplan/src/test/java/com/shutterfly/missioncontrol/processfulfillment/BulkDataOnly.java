@@ -73,7 +73,7 @@ public class BulkDataOnly extends ConfigLoader {
   @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
   private void validateAcceptanceBySupplier() throws Exception {
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.PROCESS);
   }
 
@@ -158,7 +158,7 @@ public class BulkDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
     ValidationUtilConfig.getInstances()
-        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_SUPPLIER,
+        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.PROCESS);
   }
 
