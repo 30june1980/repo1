@@ -156,6 +156,7 @@
                 </plugins>
             </build>
         </profile>
+
         <profile>
             <id>uhg-test</id>
             <build>
@@ -201,9 +202,5 @@
                 </plugins>
             </build>
         </profile>
-
     </profiles>
-
-
-
 </project>
