@@ -27,7 +27,7 @@ public class SegmentSave extends ConfigLoader {
 	String uri = null;
 	String myJson = null;
 	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	String record = AppConstants.REQUEST_ID_PREFIX + millis;
 	private String accesstoken = new AccessToken().getAccessToken();
 
 	private String getSaveSegmentProperties() {

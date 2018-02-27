@@ -45,7 +45,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
   CsvReaderWriter cwr = new CsvReaderWriter();
   Logger logger = LoggerFactory.getLogger(ProcessArchiveTransactionInlineDataOnly.class);
-  String requestIdForInvalidRequest = "Test_qa_" + UUID.randomUUID().toString();
+  String requestIdForInvalidRequest = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
 
   private String getProperties() {
     basicConfigNonWeb();

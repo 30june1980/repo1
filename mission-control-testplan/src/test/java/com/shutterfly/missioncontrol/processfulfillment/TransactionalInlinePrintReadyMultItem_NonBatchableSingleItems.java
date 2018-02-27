@@ -40,7 +40,7 @@ public class TransactionalInlinePrintReadyMultItem_NonBatchableSingleItems exten
   private String payload = "";
 
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
 
   private String getProperties() {
     basicConfigNonWeb();
