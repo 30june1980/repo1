@@ -31,7 +31,7 @@ public class BulkDataOnly extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
   CsvReaderWriter cwr = new CsvReaderWriter();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 

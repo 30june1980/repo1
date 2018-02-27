@@ -71,7 +71,7 @@ public class CancelBulkDataOnly extends ConfigLoader {
   @Test(groups = "Cancel_BDO_Invalid_Request")
   private void getResponseForInvalidCancel() throws IOException {
     basicConfigNonWeb();
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     URL file = Resources.getResource("XMLPayload/CancelFulfillment/CancelBulkDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
     payload = payload.replaceAll("REQUEST_101", requestId).replace("ACET", "");

@@ -33,7 +33,7 @@ public class TransactionalExternalDataOnly extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
   CsvReaderWriter cwr = new CsvReaderWriter();
 

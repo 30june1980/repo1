@@ -21,7 +21,7 @@ public class RecipientInfoValidation extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
 
   private String getProperties() {
     basicConfigNonWeb();
