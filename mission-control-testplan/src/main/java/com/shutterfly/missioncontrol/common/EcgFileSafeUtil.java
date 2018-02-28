@@ -69,11 +69,13 @@ public class EcgFileSafeUtil extends ConfigLoader {
       String externalFilename) {
 
     Session session = null;
+    ChannelSftp sftpChannel = null;
     try {
       session = getNewSession();
+      session.connect();
       Channel channel = session.openChannel("sftp");
       channel.connect();
-      ChannelSftp sftpChannel = (ChannelSftp) channel;
+      sftpChannel = (ChannelSftp) channel;
             /*
              * normalize folder path with regex expression
              */
@@ -84,7 +86,9 @@ public class EcgFileSafeUtil extends ConfigLoader {
     } catch (JSchException | SftpException e) {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
-
+      if (sftpChannel != null && sftpChannel.isConnected()) {
+        sftpChannel.exit();
+      }
       if (session != null && session.isConnected()) {
         session.disconnect();
       }
@@ -95,6 +99,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
       String externalFilename, String fileNameSuffix) {
 
     Session session = null;
+    ChannelSftp sftpChannel = null;
     File tempFile = null;
     String destinationFileName = requestId + fileNameSuffix;
 
@@ -104,7 +109,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
       Channel channel = session.openChannel("sftp");
       channel.connect();
-      ChannelSftp sftpChannel = (ChannelSftp) channel;
+      sftpChannel = (ChannelSftp) channel;
 
       Path sourcePath = Paths.get(LOCAL_PATH + externalFilename);
       tempFile = new File(destinationFileName);
@@ -123,6 +128,9 @@ public class EcgFileSafeUtil extends ConfigLoader {
     } catch (JSchException | SftpException | IOException e) {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
+      if (sftpChannel != null && sftpChannel.isConnected()) {
+        sftpChannel.exit();
+      }
       if (tempFile != null) {
         tempFile.delete();
       }
