@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrol.util.RequestUtil;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import io.restassured.RestAssured;

@@ -6,6 +6,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 import com.google.common.io.Resources;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrol.util.RequestUtil;
 import com.shutterfly.missioncontrol.common.ValidationUtilConfig;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
