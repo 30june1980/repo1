@@ -9,11 +9,11 @@
  
           <!--Optional:-->
  
-          <sch:sourceID>ACET</sch:sourceID>
+          <sch:sourceID>automation_ACET</sch:sourceID>
  
           <!--Optional:-->
  
-          <sch:destinationID>RRD</sch:destinationID>
+          <sch:destinationID>automation_RRD</sch:destinationID>
  
           <!--Optional:-->
  
@@ -73,7 +73,7 @@
  
             <!--Optional:-->
  
-            <sch:filePath>/MissionControl/ACET</sch:filePath>
+            <sch:filePath>tmp/MissionControl/Automation/ACET</sch:filePath>
  
             <sch:fileName>bulkfiles_invalids.xml</sch:fileName>
  

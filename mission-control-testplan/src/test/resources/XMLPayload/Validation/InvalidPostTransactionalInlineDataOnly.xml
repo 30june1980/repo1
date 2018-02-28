@@ -5,7 +5,7 @@
                 <sch:requestHeader>
                     <sch:requestID>REQUEST_101</sch:requestID>
                     <!--Optional:-->
-                    <sch:sourceID>CIRRUS</sch:sourceID>
+                    <sch:sourceID>automation_CIRRUS</sch:sourceID>
                     <!--Optional:-->
                     <sch:destinationID>Invalid</sch:destinationID>
                     <!--Optional:-->
@@ -17,7 +17,7 @@
                     <!--Optional:-->
                     <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>10000</sch:fulfillmentType>
+                    <sch:fulfillmentType>ba000</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
                     <!--Optional:-->

@@ -7,9 +7,9 @@
     <sch:requestHeader>
       <sch:requestID>REQUEST_101</sch:requestID>
       <!--Optional:-->
-      <sch:sourceID>EDMSUI</sch:sourceID>
+      <sch:sourceID>automation_EDMSUI</sch:sourceID>
       <!--Optional:-->
-      <sch:destinationID>SBS</sch:destinationID>
+      <sch:destinationID>automation_SBS</sch:destinationID>
       <!--Optional:-->
       <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
       <!--Optional:-->
@@ -19,7 +19,7 @@
       <!--Optional:-->
       <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
       <!--Optional:-->
-      <sch:fulfillmentType>10600</sch:fulfillmentType>
+      <sch:fulfillmentType>ba600</sch:fulfillmentType>
       <!--Optional:-->
       <sch:requestCategory>TransactionalExternalPrintReady</sch:requestCategory>
       <!--Optional:-->

@@ -5,13 +5,13 @@
 	<fulfillmentRequest>
 		<requestHeader>
 			<requestID>REQUEST_101</requestID>
-			<sourceID>CIRRUS</sourceID>
-			<destinationID>SBS</destinationID>
+			<sourceID>automation_CIRRUS</sourceID>
+			<destinationID>automation_SBS</destinationID>
 			<requestDate>2017-01-01T12:01:01-06:00</requestDate>
 			<requestType>Process</requestType>
 			<businessSegmentID>EI</businessSegmentID>
 			<marketSegmentCd>LRG</marketSegmentCd>
-			<fulfillmentType>10000</fulfillmentType>
+			<fulfillmentType>ba000</fulfillmentType>
 			<requestCategory>TransactionalInlinePrintReadyMultItem</requestCategory>
 			<serviceLevelCategory></serviceLevelCategory>
 			<dataFormat>XML</dataFormat>

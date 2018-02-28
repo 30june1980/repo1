@@ -4,9 +4,9 @@
     <sch:requestHeader>
       <sch:requestID>REQUEST_101</sch:requestID>
       <!--Optional:-->
-      <sch:sourceID>CIRRUS</sch:sourceID>
+      <sch:sourceID>automation_CIRRUS</sch:sourceID>
       <!--Optional:-->
-      <sch:destinationID>EDMS</sch:destinationID>
+      <sch:destinationID>automation_EDMS</sch:destinationID>
       <!--Optional:-->
       <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
       <!--Optional:-->
@@ -16,7 +16,7 @@
       <!--Optional:-->
       <sch:marketSegmentCd>LRG</sch:marketSegmentCd>
       <!--Optional:-->
-      <sch:fulfillmentType>10100</sch:fulfillmentType>
+      <sch:fulfillmentType>ba100</sch:fulfillmentType>
       <!--Optional:-->
       <sch:requestCategory>TransactionalExternalDataOnly</sch:requestCategory>
       <!--Optional:-->
@@ -83,7 +83,7 @@
     <!--Optional:-->
     <sch:postItemStatusBulkDetail>
       <!--Optional:-->
-      <sch:filePath>/MissionControl/EDMS</sch:filePath>
+      <sch:filePath>tmp/MissionControl/Automation/EDMS</sch:filePath>
       <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
       <sch:fileSize>100</sch:fileSize>
       <!--Optional:-->

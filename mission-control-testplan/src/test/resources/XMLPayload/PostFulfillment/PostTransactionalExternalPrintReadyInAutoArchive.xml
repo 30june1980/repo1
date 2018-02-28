@@ -6,7 +6,7 @@
             <!--Optional:-->
             <sch:sourceID>MC</sch:sourceID>
             <!--Optional:-->
-            <sch:destinationID>EDMS</sch:destinationID>
+            <sch:destinationID>automation_EDMS</sch:destinationID>
             <!--Optional:-->
             <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
             <!--Optional:-->
@@ -16,7 +16,7 @@
             <!--Optional:-->
             <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
             <!--Optional:-->
-            <sch:fulfillmentType>10900</sch:fulfillmentType>
+            <sch:fulfillmentType>ba900</sch:fulfillmentType>
             <!--Optional:-->
             <sch:requestCategory>TransactionalExternalPrintReady</sch:requestCategory>
             <!--Optional:-->

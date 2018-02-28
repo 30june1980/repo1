@@ -8,9 +8,9 @@
 		<sch:requestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>BRMS</sch:sourceID>
+			<sch:sourceID>automation_BRMS</sch:sourceID>
 			<!--Optional: -->
-			<sch:destinationID>SBS</sch:destinationID>
+			<sch:destinationID>automation_SBS</sch:destinationID>
 			<!--Optional: -->
 			<sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
 			<!--Optional: -->
@@ -20,7 +20,7 @@
 			<!--Optional: -->
 			<sch:marketSegmentCd>OXF</sch:marketSegmentCd>
 			<!--Optional: -->
-			<sch:fulfillmentType>11300</sch:fulfillmentType>
+			<sch:fulfillmentType>bb300</sch:fulfillmentType>
 			<!--Optional: -->
 			<sch:requestCategory>BulkPrintReady</sch:requestCategory>
 			<!--Optional: -->
@@ -82,7 +82,7 @@
 		<!--Optional: -->
 		<sch:postItemStatusBulkDetail>
 			<!--Optional: -->
-			<sch:filePath>/MissionControl/RRD</sch:filePath>
+			<sch:filePath>tmp/MissionControl/Automation/RRD</sch:filePath>
 			<sch:fileName>bulkfile_all_valid.xml</sch:fileName>
 			<sch:fileSize>100</sch:fileSize>
 			<!--Optional: -->

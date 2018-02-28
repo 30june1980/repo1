@@ -9,11 +9,11 @@
  
           <!--Optional:-->
  
-          <sch:sourceID>CIRRUS</sch:sourceID>
+          <sch:sourceID>automation_CIRRUS</sch:sourceID>
  
           <!--Optional:-->
  
-          <sch:destinationID>SBS</sch:destinationID>
+          <sch:destinationID>automation_SBS</sch:destinationID>
  
           <!--Optional:-->
  
@@ -33,7 +33,7 @@
  
           <!--Optional:-->
  
-          <sch:fulfillmentType>10000</sch:fulfillmentType>
+          <sch:fulfillmentType>ba000</sch:fulfillmentType>
  
           <!--Optional:-->
  
@@ -73,7 +73,7 @@
  
             <!--Optional:-->
  
-            <sch:filePath>/MissionControl/bulkFiles/BRMS</sch:filePath>
+            <sch:filePath>tmp/MissionControl/Automation/bulkFiles/BRMS</sch:filePath>
  
             <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
  

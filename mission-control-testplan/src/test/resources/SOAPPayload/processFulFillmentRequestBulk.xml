@@ -7,9 +7,9 @@
         <sch:requestHeader>
           <sch:requestID>REQUEST_101</sch:requestID>
           <!--Optional:-->
-          <sch:sourceID>Cirrus</sch:sourceID>
+          <sch:sourceID>automation_Cirrus</sch:sourceID>
           <!--Optional:-->
-          <sch:destinationID>SBS</sch:destinationID>
+          <sch:destinationID>automation_SBS</sch:destinationID>
           <!--Optional:-->
           <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
           <!--Optional:-->
@@ -19,7 +19,7 @@
           <!--Optional:-->
           <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
           <!--Optional:-->
-          <sch:fulfillmentType>10000</sch:fulfillmentType>
+          <sch:fulfillmentType>ba000</sch:fulfillmentType>
           <!--Optional:-->
           <sch:requestCategory>BulkDataOnly</sch:requestCategory>
           <!--Optional:-->
@@ -39,7 +39,7 @@
           <!--1 to 10 repetitions:-->
           <sch:bulkRequestDetail>
             <!--Optional:-->
-            <sch:filePath>/MissionControl</sch:filePath>
+            <sch:filePath>tmp/MissionControl/Automation</sch:filePath>
             <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
             <sch:fileSize>4096</sch:fileSize>
             <!--Optional:-->
@@ -49,7 +49,7 @@
           </sch:bulkRequestDetail>
           <sch:bulkRequestDetail>
             <!--Optional:-->
-            <sch:filePath>/MissionControl</sch:filePath>
+            <sch:filePath>tmp/MissionControl/Automation</sch:filePath>
             <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
             <sch:fileSize>2048</sch:fileSize>
             <!--Optional:-->
