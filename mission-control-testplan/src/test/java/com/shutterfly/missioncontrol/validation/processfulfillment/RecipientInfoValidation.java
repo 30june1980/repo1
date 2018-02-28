@@ -6,6 +6,7 @@ import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrol.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
