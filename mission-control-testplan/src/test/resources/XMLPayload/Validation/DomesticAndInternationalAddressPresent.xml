@@ -4,9 +4,9 @@
       <sch:requestHeader>
          <sch:requestID>REQUEST_101</sch:requestID>
          <!--Optional:-->
-         <sch:sourceID>CIRRUS</sch:sourceID>
+         <sch:sourceID>automation_CIRRUS</sch:sourceID>
          <!--Optional:-->
-         <sch:destinationID>RRD</sch:destinationID>
+         <sch:destinationID>automation_RRD</sch:destinationID>
          <!--Optional:-->
          <sch:requestDate>2016-12-17T09:30:47Z</sch:requestDate>
          <!--Optional:-->
@@ -14,7 +14,7 @@
          <sch:businessSegmentID>EI</sch:businessSegmentID>
          <sch:marketSegmentCd>SMB</sch:marketSegmentCd>
          <!--Optional:-->
-         <sch:fulfillmentType>10700</sch:fulfillmentType>
+         <sch:fulfillmentType>ba700</sch:fulfillmentType>
          <!--Optional:-->
          <sch:requestCategory>TransactionalInlineDataOnly</sch:requestCategory>
          <!--Optional:-->

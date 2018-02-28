@@ -2,13 +2,13 @@
 	"fulfillmentRequest": {
 		"requestHeader": {
 			"requestID": "REQUEST_101",
-			"sourceID": "Cirrus",
-			"destinationID": "SBS",
+			"sourceID": "automation_Cirrus",
+			"destinationID": "automation_SBS",
 			"requestDate": "2016-12-17T09:30:47.000Z",
 			"requestType": "Process",
 			"businessSegmentID": "E&I",
 			"marketSegmentCd": "OXF",
-			"fulfillmentType": "10000",
+			"fulfillmentType": "ba000",
 			"requestCategory": "BulkPrintReady",
 			"serviceLevelCategory": "String",
 			"dataFormat": "XML",
@@ -20,14 +20,14 @@
 		"requestDetail": {
 			"bulkRequestDetail": [
 				{
-					"filePath": "/MissionControl",
+					"filePath": "tmp/MissionControl/Automation",
 					"fileName": "bulkfile_all_valid.xml",
 					"fileSize": "9999",
 					"egcDetail": "text",
 					"sourceDetail": "text"
 				},
 				{
-					"filePath": "/MissionControl",
+					"filePath": "tmp/MissionControl/Automation",
 					"fileName": "bulkfile_all_valid.xml",
 					"fileSize": "9999",
 					"egcDetail": "text",

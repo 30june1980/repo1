@@ -4,8 +4,8 @@
     xsi:schemaLocation="http://dms-fsl.uhc.com/fulfillment/schema itemStatusFile.xsd">
     <batchStatusHeader>
         <requestID>REQUEST_104</requestID>
-        <sourceID>ACET</sourceID>
-        <destinationID>RRD</destinationID>
+        <sourceID>automation_ACET</sourceID>
+        <destinationID>automation_RRD</destinationID>
         <requestDate>2001-12-17T09:30:47Z</requestDate>
         <requestType>Process</requestType>
         <fulfillmentType>EOB</fulfillmentType>
@@ -22,8 +22,8 @@
             <batchItemRequest>
                 <requestHeader>
                     <requestID>VALID_REQUEST_101_1</requestID>
-                    <sourceID>ACET</sourceID>
-                    <destinationID>RRD</destinationID>
+                    <sourceID>automation_ACET</sourceID>
+                    <destinationID>automation_RRD</destinationID>
                     <requestDate>2001-12-17T09:30:47Z</requestDate>
                     <requestType>Process</requestType>
                     <fulfillmentType>EOB</fulfillmentType>
@@ -172,8 +172,8 @@
             <batchItemRequest>
                 <requestHeader>
                     <requestID>VALID_REQUEST_101_2</requestID>
-                    <sourceID>ACET</sourceID>
-                    <destinationID>RRD</destinationID>
+                    <sourceID>automation_ACET</sourceID>
+                    <destinationID>automation_RRD</destinationID>
                     <requestDate>2001-12-17T09:30:47Z</requestDate>
                     <requestType>Process</requestType>
                     <fulfillmentType>EOB</fulfillmentType>
