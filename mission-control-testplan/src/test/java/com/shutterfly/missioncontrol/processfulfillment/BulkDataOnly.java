@@ -73,7 +73,7 @@ public class BulkDataOnly extends ConfigLoader {
   @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
   private void validateAcceptanceBySupplier() throws Exception {
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
 
@@ -99,7 +99,7 @@ public class BulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Process_BDO_Valid_Request_Validation")
   private void validateRecordFieldsInDbForInValidBDORequest() throws Exception {
-    String requestId = "Test_qa" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX+ UUID.randomUUID().toString();
 
     //send invalid process request
     basicConfigNonWeb();
@@ -136,7 +136,7 @@ public class BulkDataOnly extends ConfigLoader {
   @Test
   private void validateBulkRequestIsNotGettingBatched() throws Exception {
     basicConfigNonWeb();
-    String requestId = "Test_qa" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX+ UUID.randomUUID().toString();
 
     URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly_2.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
