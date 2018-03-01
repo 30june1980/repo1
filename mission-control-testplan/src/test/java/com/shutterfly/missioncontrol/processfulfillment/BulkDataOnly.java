@@ -73,7 +73,7 @@ public class BulkDataOnly extends ConfigLoader {
   @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
   private void validateAcceptanceBySupplier() throws Exception {
     databaseValidationUtil
-        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
             AppConstants.PROCESS);
   }
 
