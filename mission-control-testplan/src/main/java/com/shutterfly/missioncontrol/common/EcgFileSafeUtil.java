@@ -87,7 +87,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
       if (sftpChannel != null && sftpChannel.isConnected()) {
-        sftpChannel.exit();
+        sftpChannel.disconnect();
       }
       if (session != null && session.isConnected()) {
         session.disconnect();
@@ -129,7 +129,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
       if (sftpChannel != null && sftpChannel.isConnected()) {
-        sftpChannel.exit();
+        sftpChannel.disconnect();
       }
       if (tempFile != null) {
         tempFile.delete();
