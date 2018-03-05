@@ -43,7 +43,7 @@ public class SourceIdValidation extends ConfigLoader {
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/Validation/CommonValidationRules.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("CIRRUS", "");
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("automation_CIRRUS", "");
 	}
 
 	@Test
