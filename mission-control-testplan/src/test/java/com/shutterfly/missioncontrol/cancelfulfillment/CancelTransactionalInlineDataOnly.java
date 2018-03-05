@@ -104,7 +104,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Cancel_TIDO_Duplicate_1")
   private void validationForDuplicateCancel_1() throws Exception {
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     RequestUtil.sendProcess(requestId);
     int maxRetry = 10;
     //send cancel request
@@ -167,7 +167,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Cancel_TIDO_Duplicate_2")
   private void validationForDuplicateCancel_2() throws Exception {
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     RequestUtil.sendProcess(requestId);
     //send invalid cancel request
     URL cancelFile = Resources
@@ -217,7 +217,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validateCancelForNoProcess() throws Exception {
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
 
     URL file = Resources
         .getResource("XMLPayload/CancelFulfillment/CancelTransactionalInlineDataOnly.xml");
@@ -245,7 +245,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyRejected() throws Exception {
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
 
     RequestUtil.sendProcess(requestId);
     sendPostWithRejectedEvent(requestId);
@@ -281,7 +281,7 @@ public class CancelTransactionalInlineDataOnly extends ConfigLoader {
 
   @Test(groups = "Cancel_TIDO_For_No_Process")
   private void validationWhenProcessIsAlreadyFulfilled() throws Exception {
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     RequestUtil.sendProcess(requestId);
     sendPostWithFulfilledEvent(requestId);
     sendCancel(requestId);

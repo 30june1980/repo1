@@ -4,13 +4,13 @@
 <fulfillmentRequestStatus>
 <requestHeader>
     <requestID>REQUEST_101</requestID>
-    <sourceID>EOACET</sourceID>
-    <destinationID>SBS</destinationID>
+    <sourceID>automation_EOACET</sourceID>
+    <destinationID>automation_SBS</destinationID>
     <requestDate>2018-02-07T06:47:11.119-06:00</requestDate>
     <requestType>PostStatus</requestType>
     <businessSegmentID>EI</businessSegmentID>
     <marketSegmentCd>OXF</marketSegmentCd>
-    <fulfillmentType>10900</fulfillmentType>
+    <fulfillmentType>ba900</fulfillmentType>
     <requestCategory>TransactionalExternalPrintReady</requestCategory>
     <serviceLevelCategory>SLC</serviceLevelCategory>
     <dataFormat>AFP</dataFormat>

@@ -31,7 +31,7 @@ public class BulkDataOnly extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
   CsvReaderWriter cwr = new CsvReaderWriter();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
@@ -99,7 +99,7 @@ public class BulkDataOnly extends ConfigLoader {
 
   @Test(groups = "Process_BDO_Valid_Request_Validation")
   private void validateRecordFieldsInDbForInValidBDORequest() throws Exception {
-    String requestId = "Test_qa" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX+ UUID.randomUUID().toString();
 
     //send invalid process request
     basicConfigNonWeb();
@@ -136,7 +136,7 @@ public class BulkDataOnly extends ConfigLoader {
   @Test
   private void validateBulkRequestIsNotGettingBatched() throws Exception {
     basicConfigNonWeb();
-    String requestId = "Test_qa" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX+ UUID.randomUUID().toString();
 
     URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly_2.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
@@ -158,7 +158,7 @@ public class BulkDataOnly extends ConfigLoader {
         "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
         equalTo("Accepted"));
     ValidationUtilConfig.getInstances()
-        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.ACCEPTED_BY_SUPPLIER,
+        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
             AppConstants.PROCESS);
   }
 

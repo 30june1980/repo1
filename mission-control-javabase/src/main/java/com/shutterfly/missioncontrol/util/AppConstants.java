@@ -63,7 +63,7 @@ public class AppConstants {
     public static final String BULK_FILE_FOR_ARCHIVE = "bulkfile_all_valid_archive.xml";
     public static final String BULK_FILE_INVALID = "bulkfile_invalid.xml";
     public static final String BULK_FILE_INVALID_2 = "bulkfile_invalid_2.xml";
-    public static final String REQUEST_ID_PREPEND = "Test_qa_";
+    public static final String REQUEST_ID_PREFIX = "Automation_";
     public static final String VALIDATION_FAILURE = "ValidationFailure";
     public static final String DUPLICATE_PROCESSFULFILLMENT_REQUEST = "Duplicate fulfillment request.";
     public static final String RECEIVED = "Received";
@@ -74,5 +74,6 @@ public class AppConstants {
     public static final String REQUEST_BATCHED = "RequestBatched";
     public static final String ACCEPTED = "Accepted";
     public static final String REJECTED = "Rejected";
-public static final String NO_REQUESTOR_NOTIFICATION_REQUIRED = "NoRequestorNotificationRequired";
+    public static final String NO_REQUESTOR_NOTIFICATION_REQUIRED = "NoRequestorNotificationRequired";
+
 }

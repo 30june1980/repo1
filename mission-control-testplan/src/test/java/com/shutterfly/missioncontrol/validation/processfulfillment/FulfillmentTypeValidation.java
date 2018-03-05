@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.util.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +32,7 @@ public class FulfillmentTypeValidation extends ConfigLoader {
 	 */
 	private String uri = "";
 	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
+	String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
 
 	private String getProperties() {
 		basicConfigNonWeb();
@@ -42,7 +43,7 @@ public class FulfillmentTypeValidation extends ConfigLoader {
 	private String buildPayload() throws IOException {
 		URL file = Resources.getResource("XMLPayload/Validation/CommonValidationRules.xml");
 		String payload = Resources.toString(file, StandardCharsets.UTF_8);
-		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("10000", "");
+		return payload = payload.replaceAll("REQUEST_101", record).replaceAll("ba000", "");
 	}
 
 	@Test

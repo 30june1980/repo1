@@ -5,12 +5,12 @@
     <fulfillmentRequest>
         <requestHeader>
             <requestID>REQUEST_101</requestID>
-            <sourceID>EOACET</sourceID>
+            <sourceID>automation_EOACET</sourceID>
             <requestDate>2018-02-07T06:47:11.682-06:00</requestDate>
             <requestType>Process</requestType>
             <businessSegmentID>EI</businessSegmentID>
             <marketSegmentCd>OXF</marketSegmentCd>
-            <fulfillmentType>10900</fulfillmentType>
+            <fulfillmentType>ba900</fulfillmentType>
             <requestCategory>TransactionalExternalPrintReady</requestCategory>
             <serviceLevelCategory>SLC</serviceLevelCategory>
             <dataFormat>AFP</dataFormat>

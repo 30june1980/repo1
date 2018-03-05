@@ -45,7 +45,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
   CsvReaderWriter cwr = new CsvReaderWriter();
   Logger logger = LoggerFactory.getLogger(ProcessArchiveTransactionInlineDataOnly.class);
-  String requestIdForInvalidRequest = "Test_qa_" + UUID.randomUUID().toString();
+  String requestIdForInvalidRequest = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
 
   private String getProperties() {
     basicConfigNonWeb();
@@ -121,7 +121,7 @@ public class ProcessArchiveTransactionInlineDataOnly extends ConfigLoader {
         .get("fulfillmentMetaData");
     Document metaData1 = (Document) fulfillmentMetaDataList.get(3);
     assertEquals(metaData1.get("name"),"archiveDestinationId");
-    assertEquals(metaData1.get("value"),"EDMS");
+    assertEquals(metaData1.get("value"),"automation_EDMS");
   }
 
     @Test(groups = "Archive_TIDO_DB_ALL_Fields", dependsOnGroups = {"Archive_TIDO_DB_eventHistory"})

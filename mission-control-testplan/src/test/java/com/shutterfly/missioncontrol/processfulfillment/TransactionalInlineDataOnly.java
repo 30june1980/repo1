@@ -31,7 +31,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
 
   private String uri = "";
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
 
   private String getProperties() {
@@ -131,7 +131,7 @@ public class TransactionalInlineDataOnly extends ConfigLoader {
     URL file = Resources
         .getResource("XMLPayload/ProcessFulfillment/TransactionalInlineDataOnly.xml");
     String payload = Resources.toString(file, StandardCharsets.UTF_8);
-    String requestId = "Test_qa_" + UUID.randomUUID().toString();
+    String requestId = AppConstants.REQUEST_ID_PREFIX + UUID.randomUUID().toString();
     //set sourceId null
     payload = payload.replaceAll("REQUEST_101", requestId)
         .replace("CIRRUS", "");

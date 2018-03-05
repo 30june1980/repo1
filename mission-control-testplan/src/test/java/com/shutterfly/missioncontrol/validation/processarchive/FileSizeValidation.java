@@ -6,6 +6,7 @@ import static org.testng.Assert.assertEquals;
 
 import com.google.common.io.Resources;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
+import com.shutterfly.missioncontrol.util.AppConstants;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.http.ContentType;
@@ -20,7 +21,7 @@ public class FileSizeValidation extends ConfigLoader {
 
 	private String uri = "";
 	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
+	String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
 
 	private String getProperties() {
 		basicConfigNonWeb();

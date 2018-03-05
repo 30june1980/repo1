@@ -1,6 +1,11 @@
 package com.shutterfly.missioncontrol.common;
 
-import com.jcraft.jsch.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 import com.shutterfly.missioncontrol.config.ConfigLoader;
 import com.shutterfly.missioncontrol.util.Encryption;
 import io.restassured.path.xml.XmlPath;
@@ -63,43 +68,27 @@ public class EcgFileSafeUtil extends ConfigLoader {
   public static void putFileAtSourceLocation(String sourceEcgPath, String record,
       String externalFilename) {
 
-    JSch jsch = new JSch();
     Session session = null;
+    ChannelSftp sftpChannel = null;
     try {
-      session = jsch.getSession("dgupta", "tsbsapp31-lv.internal.shutterfly.com", 22);
-      session.setConfig("StrictHostKeyChecking", "no");
-      SecretKey secretKey = Encryption.keyGenerator();
-      try {
-        session.setPassword(Encryption.decrypt(
-            "6QkeUtamWANCjylsQiKZEw==", secretKey
-        ));
-      } catch (NoSuchPaddingException e) {
-        e.printStackTrace();
-      } catch (NoSuchAlgorithmException e) {
-        e.printStackTrace();
-      } catch (InvalidKeyException e) {
-        e.printStackTrace();
-      } catch (BadPaddingException e) {
-        e.printStackTrace();
-      } catch (IllegalBlockSizeException e) {
-        e.printStackTrace();
-      }
+      session = getNewSession();
       session.connect();
-
       Channel channel = session.openChannel("sftp");
       channel.connect();
-      ChannelSftp sftpChannel = (ChannelSftp) channel;
+      sftpChannel = (ChannelSftp) channel;
             /*
              * normalize folder path with regex expression
              */
       sftpChannel.put((LOCAL_PATH + externalFilename),
-          ("/"+ sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
+          ("/" + sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
       sftpChannel.exit();
 
     } catch (JSchException | SftpException e) {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
-
+      if (sftpChannel != null && sftpChannel.isConnected()) {
+        sftpChannel.disconnect();
+      }
       if (session != null && session.isConnected()) {
         session.disconnect();
       }
@@ -109,40 +98,18 @@ public class EcgFileSafeUtil extends ConfigLoader {
   public static void updateAndPutFileAtSourceLocation(String sourceEcgPath, String requestId,
       String externalFilename, String fileNameSuffix) {
 
-    JSch jsch = new JSch();
     Session session = null;
+    ChannelSftp sftpChannel = null;
     File tempFile = null;
     String destinationFileName = requestId + fileNameSuffix;
 
     try {
-
-     // session = jsch.getSession("dgupta", "dsbsapp14-lv.internal.shutterfly.com", 22);
-      session = jsch.getSession("dgupta", "tsbsapp31-lv.internal.shutterfly.com", 22);
-      session.setConfig("StrictHostKeyChecking", "no");
-      SecretKey secretKey = Encryption.keyGenerator();
-      try {
-       // session.setPassword(Encryption.decrypt(
-        //    "6QkeUtamWANCjylsQiKZEw==", secretKey  ));
-session.setPassword(Encryption.decrypt("6QkeUtamWANCjylsQiKZEw==",secretKey));
-
-
-      } catch (NoSuchPaddingException e) {
-        e.printStackTrace();
-      } catch (NoSuchAlgorithmException e) {
-        e.printStackTrace();
-      } catch (InvalidKeyException e) {
-        e.printStackTrace();
-      } catch (BadPaddingException e) {
-        e.printStackTrace();
-      } catch (IllegalBlockSizeException e) {
-        e.printStackTrace();
-      }
-
+      session = getNewSession();
       session.connect();
 
       Channel channel = session.openChannel("sftp");
       channel.connect();
-      ChannelSftp sftpChannel = (ChannelSftp) channel;
+      sftpChannel = (ChannelSftp) channel;
 
       Path sourcePath = Paths.get(LOCAL_PATH + externalFilename);
       tempFile = new File(destinationFileName);
@@ -161,11 +128,35 @@ session.setPassword(Encryption.decrypt("6QkeUtamWANCjylsQiKZEw==",secretKey));
     } catch (JSchException | SftpException | IOException e) {
       logger.error("Error stack trace while building source file path : ", e);
     } finally {
-      tempFile.delete();
+      if (sftpChannel != null && sftpChannel.isConnected()) {
+        sftpChannel.disconnect();
+      }
+      if (tempFile != null) {
+        tempFile.delete();
+      }
       if (session != null && session.isConnected()) {
         session.disconnect();
       }
     }
+  }
+
+  private static Session getNewSession() throws JSchException {
+    JSch jsch = new JSch();
+    Session session = jsch
+        .getSession(config.getProperty("FileServerUsername"), config.getProperty("FileServerUrl"),
+            Integer.parseInt(config.getProperty("FileServerPort")));
+    session.setConfig("StrictHostKeyChecking", "no");
+    SecretKey secretKey = Encryption.keyGenerator();
+    try {
+      session.setPassword(Encryption.decrypt(
+          config.getProperty("FileServerPassword"), secretKey
+      ));
+    } catch (NoSuchPaddingException | NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | IllegalBlockSizeException e) {
+      logger.error("Failed to decrypt the password", e);
+      throw new RuntimeException("Failed to decrypt the password");
+    }
+
+    return session;
   }
 
 }

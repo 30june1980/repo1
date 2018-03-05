@@ -9,11 +9,11 @@
 
     <!--Optional:-->
 
-    <sch:sourceID>ACET</sch:sourceID>
+    <sch:sourceID>automation_ACET</sch:sourceID>
 
     <!--Optional:-->
 
-    <sch:destinationID>RRD</sch:destinationID>
+    <sch:destinationID>automation_RRD</sch:destinationID>
 
     <!--Optional:-->
 
@@ -33,7 +33,7 @@
 
     <!--Optional:-->
 
-    <sch:fulfillmentType>10700</sch:fulfillmentType>
+    <sch:fulfillmentType>ba700</sch:fulfillmentType>
 
     <!--Optional:-->
 

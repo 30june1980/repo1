@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.util.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -27,7 +28,7 @@ public class SegmentSave extends ConfigLoader {
 	String uri = null;
 	String myJson = null;
 	long millis = System.currentTimeMillis();
-	String record = "Test_qa_" + millis;
+	String record = AppConstants.REQUEST_ID_PREFIX + millis;
 	private String accesstoken = new AccessToken().getAccessToken();
 
 	private String getSaveSegmentProperties() {

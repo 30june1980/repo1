@@ -32,7 +32,7 @@ public class TransactionalInlinePrintReadyMultItem extends ConfigLoader {
   private String payload = "";
   CsvReaderWriter cwr = new CsvReaderWriter();
   UUID uuid = UUID.randomUUID();
-  String record = "Test_qa_" + uuid.toString();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
   DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
   String singleItemRequestId = record + "_1";
 

@@ -1,0 +1,1021 @@
+[{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_17d52f7e-edca-de22-84bf-3ae9719db297",
+	"cronExpression": "0 0 9,17 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_Claim_Letters",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:45:54.689Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:45:54.689Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_2f8d545b-da09-1657-dd0c-4363144e5261",
+	"cronExpression": "0 15 9,17 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_Enrollment_Letters",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:51:02.716Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:51:02.716Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_9876ef2a-a973-b5b2-b9b9-c9be2eda8307",
+	"cronExpression": "0 30 17,9 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_Provider_Term_Letters",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:51:49.307Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:51:49.307Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_a31d7c13-da4b-fdf2-bb93-a9a176f40a1d",
+	"cronExpression": "0 45 9,17 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_Welcome_Kits",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:52:17.458Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:52:17.458Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_a7a44f01-6997-03e4-31b6-600ccdf60633",
+	"cronExpression": "0 0 8,16 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_eCOC_Postcard",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:52:53.546Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:52:53.546Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_dd26c48c-4d49-263a-2739-57801cbc37eb",
+	"cronExpression": "0 0 8,16 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_SBC_and_Handbook",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:53:21.637Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:53:21.637Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_05b1b700-1096-8d70-110c-7596693a0b23",
+	"cronExpression": "0 15 8,16 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_Therapy",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:53:51.006Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:53:51.006Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_95babf13-c612-79af-6f4a-07f856ee7e21",
+	"cronExpression": "0 0 18,1 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Cirrus_ID_Cards",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:54:20.292Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:54:20.292Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_2ebf9704-f1fc-eada-0dfd-fc1f96244765",
+	"cronExpression": "0 45 8 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Acet_Blank_Forms",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:56:24.013Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:56:24.013Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_a4b391b3-b11c-528d-39a9-1d6601e1e2c9",
+	"cronExpression": "0 0 7 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Broker_Portal_Blank_Forms",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:57:34.325Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:57:34.325Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_79aa8369-c29e-1654-ad1f-2ff2b6ce0ef6",
+	"cronExpression": "0 0 7 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_Employer_Portal_Blank_Forms",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:58:07.588Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:58:07.588Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_93665166-bc6a-77d0-9d4a-57a569911952",
+	"cronExpression": "0 * 16,8 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_IVR_Employer_Letters",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:58:34.025Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:58:34.025Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_5450c6fc-5e5c-9741-5780-8572995cb30f",
+	"cronExpression": "0 15 8,16 ? * MON,TUE,WED,THU,FRI,SAT,SUN *",
+	"sendingRuleName": "automation_IVR_Provider_Letters",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-10-17T05:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdDate": {
+			"$date": "2017-10-18T06:59:01.957Z"
+		},
+		"updatedDate": {
+			"$date": "2017-10-18T06:59:01.957Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_34f72c8e-050d-9031-cd9b-74a3068710b0",
+	"cronExpression": "0 * 3/1 ? * * *",
+	"sendingRuleName": "automation_Testing new Quartz collections",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-11-17T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2017-11-18T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2017-11-16T23:45:37.276Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2017-11-17T02:31:06.623Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_c9acce7d-bf16-86d4-1fca-31622c98f5e8",
+	"cronExpression": "0 0 1/1 ? * * *",
+	"sendingRuleName": "automation_Tesing 2",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-11-17T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2017-11-18T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2017-11-17T02:33:21.303Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2017-11-17T02:34:36.533Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_bebd4592-1935-5e7c-8e58-c065649ac369",
+	"cronExpression": "0 0 1/1 ? * * *",
+	"sendingRuleName": "automation_Testing 3",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-11-17T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2017-11-18T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2017-11-17T02:35:12.425Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2017-11-17T02:35:12.425Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_9fa3aa77-7050-6a51-f42e-2c01c44f8c2b",
+	"cronExpression": "0 30 16/1 ? * * *",
+	"sendingRuleName": "automation_Test1",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-11-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2017-11-19T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2017-11-17T10:39:53.524Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2017-11-17T10:39:53.524Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_96946279-f446-70ea-739b-b762f21e2300",
+	"cronExpression": "0 0 17/1 ? * * *",
+	"sendingRuleName": "automation_Test2",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-11-19T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2017-11-28T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2017-11-17T10:49:40.195Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2017-11-17T10:49:40.195Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_f07d7a34-9459-2e0d-7a68-cb1c8c54f7c8",
+	"cronExpression": "0 0 17/1 ? * * *",
+	"sendingRuleName": "automation_Test3",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2017-11-17T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2017-11-29T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2017-11-17T10:51:36.403Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2017-11-17T10:51:36.403Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_26163895-ef0f-a3b9-77cf-9f8c29bfaa08",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Delete_Schedule",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-09T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-08T10:50:06.417Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-08T10:50:06.417Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_1fc2660e-e528-5454-12d9-45f83daa074b",
+	"cronExpression": "0 0 0,11 ? * MON,TUE *",
+	"sendingRuleName": "automation_Delete Schedule 2",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-09T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-08T10:51:18.836Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-08T10:51:18.836Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_983d9279-a469-d061-8d92-2882c471c688",
+	"cronExpression": "0 20 6,0 ? * MON,TUE *",
+	"sendingRuleName": "automation_Delete_Schedule233",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-09T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-08T10:55:30.223Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-08T10:55:30.223Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_5d636b1d-c8f7-e349-6362-9388e02a4d55",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test_Duplicate",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-09T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-08T11:00:20.142Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-08T11:00:20.142Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_015898e2-6d9a-c1e4-961c-da83dbac27c4",
+	"cronExpression": "0 0 8/1 ? * * *",
+	"sendingRuleName": "automation_Test_Duplicate",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-09T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-08T11:00:48.540Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-08T11:00:48.540Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_9bff013a-b062-90f6-7ee7-103827d9a6a2",
+	"cronExpression": "0 0 1/1 ? * * *",
+	"sendingRuleName": "automation_Test1",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-09T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2023-08-09T05:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-09T13:09:38.431Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-09T13:09:38.431Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_3926993b-8266-0c43-97e2-bebbe96380d5",
+	"cronExpression": "0 0 3/1 ? * * *",
+	"sendingRuleName": "automation_Test1_Schedule",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-02-14T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T08:43:02.752Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T08:43:02.752Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_3702b609-645f-3054-0bdb-1ab2229c4868",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test2_Schedule",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-31T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T08:44:11.393Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T08:44:11.393Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_d86cb3c6-c9df-36b0-9d7c-b0acdee72795",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test3_Schedule",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-31T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T08:53:11.367Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T08:53:11.367Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_dafc8a1f-8c19-baf9-327d-1122f586aed1",
+	"cronExpression": "0 0 3 ? * WED *",
+	"sendingRuleName": "automation_delete_schedule1",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": {
+				"$numberLong": "253402236000000"
+			}
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:01:36.387Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:01:36.387Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_721e422c-992a-3a78-8ec5-1ad3421eca64",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test4_Schedules",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-31T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:02:52.719Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:02:52.719Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_fa72ebc5-0920-54d5-42f2-c2fe087530e6",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test5_Schedule",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-31T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:04:31.299Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:04:31.299Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_c6d8cc6a-2f11-77f9-88f8-29e2f92e8001",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test6_Schedule",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-31T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:07:27.541Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:07:27.541Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_e81a554e-3960-bc6b-aac0-473b489acb46",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test7_Schedules",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-31T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:08:00.068Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:08:00.068Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_64691df6-23e8-9ccd-a7d9-914e24468cbd",
+	"cronExpression": "0 0 0/1 ? * * *",
+	"sendingRuleName": "automation_Test8_Schedules",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-30T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:08:29.064Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:08:29.064Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_e1e925e0-cd4e-97a5-5dad-5721c4d311fa",
+	"cronExpression": "0 0 2 ? * WED *",
+	"sendingRuleName": "automation_delete_schedule_2",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-01-18T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-01-20T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-01-17T09:23:57.937Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-01-17T09:23:57.937Z"
+		}
+	}
+},
+{
+	
+	"_class": "com.shutterfly.missioncontrol.fulfillmenthub.core.doc.SendingRuleDoc",
+	"sendingRuleId": "automation_2cd9e5be-32d1-8e19-b293-01d1ff7c31f5",
+	"cronExpression": "0 0 1 ? * MON *",
+	"sendingRuleName": "automation_Testing3",
+	"effectiveInterval": {
+		"startDate": {
+			"$date": "2018-02-03T06:00:00.000Z"
+		},
+		"endDate": {
+			"$date": "2018-02-16T06:00:00.000Z"
+		}
+	},
+	"status": {
+		"deleted": false
+	},
+	"auditHistory": {
+		"createdBy": "testMsid",
+		"createdDate": {
+			"$date": "2018-02-02T21:14:46.569Z"
+		},
+		"updatedBy": "testMsid",
+		"updatedDate": {
+			"$date": "2018-02-02T21:14:46.569Z"
+		}
+	}
+}]
+

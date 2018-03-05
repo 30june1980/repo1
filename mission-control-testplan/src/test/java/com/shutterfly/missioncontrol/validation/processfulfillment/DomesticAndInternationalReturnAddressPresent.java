@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import com.shutterfly.missioncontrol.util.AppConstants;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +32,7 @@ public class DomesticAndInternationalReturnAddressPresent extends ConfigLoader {
 	 */
 	private String uri = "";
 	UUID uuid = UUID.randomUUID();
-	String record = "Test_qa_" + uuid.toString();
+	String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
 	private String getProperties() {
 		basicConfigNonWeb();
 		uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");

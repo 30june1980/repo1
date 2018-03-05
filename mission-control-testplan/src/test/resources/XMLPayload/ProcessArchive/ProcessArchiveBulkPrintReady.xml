@@ -4,9 +4,9 @@
                 <sch:archiveRequestHeader>
                     <sch:requestID>REQUEST_101</sch:requestID>
                     <!--Optional:-->
-                    <sch:sourceID>BRMS</sch:sourceID>
+                    <sch:sourceID>automation_BRMS</sch:sourceID>
                     <!--Optional:-->
-                    <sch:destinationID>SBS</sch:destinationID>
+                    <sch:destinationID>automation_SBS</sch:destinationID>
                     <!--Optional:-->
                     <sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
                     <!--Optional:-->
@@ -16,7 +16,7 @@
                     <!--Optional:-->
                     <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
                     <!--Optional:-->
-                    <sch:fulfillmentType>11300</sch:fulfillmentType>
+                    <sch:fulfillmentType>bb300</sch:fulfillmentType>
                     <!--Optional:-->
                     <sch:requestCategory>BulkPrintReady</sch:requestCategory>
                     <!--Optional:-->
@@ -37,7 +37,7 @@
                     <!--1 to 10 repetitions:-->
                     <sch:archiveBulkDetail>
                         <!--Optional:-->
-                        <sch:filePath>/MissionControl/ACET</sch:filePath>
+                        <sch:filePath>tmp/MissionControl/Automation/ACET</sch:filePath>
                         <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
                         <sch:fileSize>4096</sch:fileSize>
                         <!--Optional:-->
