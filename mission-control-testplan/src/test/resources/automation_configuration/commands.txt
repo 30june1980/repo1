@@ -1,0 +1,18 @@
+mongoexport --host tsbsmdb01-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection material_type -o material_type.json --pretty --jsonArray
+mongoexport --host tsbsmdb01-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection participant -o participant.json --pretty --jsonArray
+mongoexport --host tsbsmdb01-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection routing_rule -o routing_rule.json --pretty --jsonArray
+
+mongoexport --host tsbsmdb01-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection sending_rule -o sending_rule.json --pretty --jsonArray
+
+mongoexport --host tsbsmdb01-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection file_transfer_details -o file_transfer_details.json --pretty --jsonArray
+
+
+mongoimport --host tsbsmdb02-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection file_transfer_details --file file_transfer_details.json --jsonArray
+
+mongoimport --host tsbsmdb02-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection material_type --file material_type.json --jsonArray
+
+mongoimport --host tsbsmdb02-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection participant --file participant.json --jsonArray
+
+mongoimport --host tsbsmdb02-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection routing_rule --file routing_rule.json --jsonArray
+
+mongoimport --host tsbsmdb02-lv.internal.shutterfly.com --username=userName --password=password --db missioncontrol --collection sending_rule --file sending_rule.json --jsonArray
