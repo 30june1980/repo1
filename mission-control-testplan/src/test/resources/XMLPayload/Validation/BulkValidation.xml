@@ -9,11 +9,11 @@
  
           <!--Optional:-->
  
-          <sch:sourceID>BRMS</sch:sourceID>
+          <sch:sourceID>automation_BRMS</sch:sourceID>
  
           <!--Optional:-->
  
-          <sch:destinationID>SBS</sch:destinationID>
+          <sch:destinationID>automation_SBS</sch:destinationID>
  
           <!--Optional:-->
  
@@ -33,7 +33,7 @@
  
           <!--Optional:-->
  
-          <sch:fulfillmentType>11300</sch:fulfillmentType>
+          <sch:fulfillmentType>bb300</sch:fulfillmentType>
  
           <!--Optional:-->
  
@@ -73,7 +73,7 @@
  
             <!--Optional:-->
  
-            <sch:filePath>/MissionControl/bulkFiles/BRMS</sch:filePath>
+            <sch:filePath>tmp/MissionControl/Automation/bulkFiles/BRMS</sch:filePath>
  
             <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
  

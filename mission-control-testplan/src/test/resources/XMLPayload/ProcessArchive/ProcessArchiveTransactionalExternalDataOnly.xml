@@ -6,9 +6,9 @@
 		<sch:archiveRequestHeader>
 			<sch:requestID>REQUEST_101</sch:requestID>
 			<!--Optional: -->
-			<sch:sourceID>CIRRUS</sch:sourceID>
+			<sch:sourceID>automation_CIRRUS</sch:sourceID>
 			<!--Optional: -->
-			<sch:destinationID>RRD</sch:destinationID>
+			<sch:destinationID>automation_RRD</sch:destinationID>
 			<!--Optional: -->
 			<sch:requestDate>2001-12-17T09:30:47Z</sch:requestDate>
 			<!--Optional: -->
@@ -18,7 +18,7 @@
 			<!--Optional: -->
 			<sch:marketSegmentCd>LRG</sch:marketSegmentCd>
 			<!--Optional: -->
-			<sch:fulfillmentType>10100</sch:fulfillmentType>
+			<sch:fulfillmentType>ba100</sch:fulfillmentType>
 			<!--Optional: -->
 			<sch:requestCategory>TransactionalExternalDataOnly</sch:requestCategory>
 			<!--Optional: -->
@@ -41,7 +41,7 @@
 					<!--Optional: -->
 					<sch:externalFileType>
 						<!--Optional: -->
-						<sch:filePath>/MissionControl/CIRRUS</sch:filePath>
+						<sch:filePath>tmp/MissionControl/Automation/CIRRUS</sch:filePath>
 						<sch:fileName>bulkfile_all_valid.xml</sch:fileName>
 						<sch:fileSize>9999</sch:fileSize>
 					</sch:externalFileType>

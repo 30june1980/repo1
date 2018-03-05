@@ -7,9 +7,9 @@
     <sch:requestHeader>
       <sch:requestID>REQUEST_101</sch:requestID>
       <!--Optional: -->
-      <sch:sourceID>EOACET</sch:sourceID>
+      <sch:sourceID>automation_EOACET</sch:sourceID>
       <!--Optional: -->
-      <sch:destinationID>SBS</sch:destinationID>
+      <sch:destinationID>automation_SBS</sch:destinationID>
       <!--Optional: -->
       <sch:requestDate>2017-05-17T09:30:47Z</sch:requestDate>
       <!--Optional: -->
@@ -17,7 +17,7 @@
       <sch:businessSegmentID>EI</sch:businessSegmentID>
       <sch:marketSegmentCd>OXF</sch:marketSegmentCd>
       <!--Optional: -->
-      <sch:fulfillmentType>10900</sch:fulfillmentType>
+      <sch:fulfillmentType>ba900</sch:fulfillmentType>
       <!--Optional: -->
       <sch:requestCategory>TransactionalExternalPrintReady</sch:requestCategory>
       <!--Optional: -->
@@ -111,7 +111,7 @@
           <!--Optional: -->
           <sch:externalFileType>
             <!--Optional: -->
-            <sch:filePath>/MissionControl/CIRRUS</sch:filePath>
+            <sch:filePath>tmp/MissionControl/Automation/CIRRUS</sch:filePath>
             <sch:fileName>bulkfile_all_valid.xml</sch:fileName>
             <sch:fileSize>9999</sch:fileSize>
           </sch:externalFileType>

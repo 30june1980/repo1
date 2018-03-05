@@ -4,13 +4,13 @@
   xsi:schemaLocation="http://dms-fsl.uhc.com/fulfillment/schema itemStatusFile.xsd">
   <batchStatusHeader>
     <requestID>REQUEST_101</requestID>
-    <sourceID>BRMS</sourceID>
-    <destinationID>SBS</destinationID>
+    <sourceID>automation_BRMS</sourceID>
+    <destinationID>automation_SBS</destinationID>
     <requestDate>2001-12-17T09:30:47Z</requestDate>
     <requestType>Process</requestType>
     <businessSegmentID>EI</businessSegmentID>
     <marketSegmentCd>OXF</marketSegmentCd>
-    <fulfillmentType>10000</fulfillmentType>
+    <fulfillmentType>ba000</fulfillmentType>
     <requestCategory>BulkDataOnly</requestCategory>
     <serviceLevelCategory>String</serviceLevelCategory>
     <dataFormat>XML</dataFormat>
@@ -24,13 +24,13 @@
       <batchItemRequest>
         <requestHeader>
           <requestID>VALID_REQUEST_101_1</requestID>
-          <sourceID>CIRRUS</sourceID>
-          <destinationID>SBS</destinationID>
+          <sourceID>automation_CIRRUS</sourceID>
+          <destinationID>automation_SBS</destinationID>
           <requestDate>2017-09-15T09:30:47Z</requestDate>
           <requestType>Process</requestType>
           <businessSegmentID>EI</businessSegmentID>
           <marketSegmentCd>OXF</marketSegmentCd>
-          <fulfillmentType>10000</fulfillmentType>
+          <fulfillmentType>ba000</fulfillmentType>
           <requestCategory>TransactionalInlineDataOnly</requestCategory>
           <serviceLevelCategory>String</serviceLevelCategory>
           <dataFormat>XML</dataFormat>
@@ -236,13 +236,13 @@
       <batchItemRequest>
         <requestHeader>
           <requestID>VALID_REQUEST_101_2</requestID>
-          <sourceID>BRMS</sourceID>
-          <destinationID>SBS</destinationID>
+          <sourceID>automation_BRMS</sourceID>
+          <destinationID>automation_SBS</destinationID>
           <requestDate>2017-09-15T09:30:47Z</requestDate>
           <requestType>Process</requestType>
           <businessSegmentID>EI</businessSegmentID>
           <marketSegmentCd>OXF</marketSegmentCd>
-          <fulfillmentType>10000</fulfillmentType>
+          <fulfillmentType>ba000</fulfillmentType>
           <requestCategory>TransactionalInlineDataOnly</requestCategory>
           <serviceLevelCategory>String</serviceLevelCategory>
           <dataFormat>XML</dataFormat>

@@ -6,12 +6,12 @@
   <ns2:fulfillmentRequest>
     <ns2:requestHeader>
       <ns2:requestID>REQUEST_101</ns2:requestID>
-      <ns2:sourceID>EDMSUI</ns2:sourceID>
+      <ns2:sourceID>automation_EDMSUI</ns2:sourceID>
       <ns2:requestDate>2018-01-05T09:22:16Z</ns2:requestDate>
       <ns2:requestType>ReDelivery</ns2:requestType>
       <ns2:businessSegmentID>EI</ns2:businessSegmentID>
       <ns2:marketSegmentCd>OXF</ns2:marketSegmentCd>
-      <ns2:fulfillmentType>10600</ns2:fulfillmentType>
+      <ns2:fulfillmentType>ba600</ns2:fulfillmentType>
       <ns2:requestCategory>TransactionalExternalPrintReady</ns2:requestCategory>
       <ns2:dataFormat>pdf</ns2:dataFormat>
     </ns2:requestHeader>
@@ -50,7 +50,7 @@
         </ns2:template>
         <ns2:data>
           <ns2:externalFileType>
-            <ns2:filePath>/FFH_LZ/Master/inbound/supplier/redelivery/</ns2:filePath>
+            <ns2:filePath>tmp/FFH_LZ/Master/inbound/supplier/redelivery/</ns2:filePath>
             <ns2:fileName>bulkfile_all_valid.xml</ns2:fileName>
             <ns2:fileSize>167524</ns2:fileSize>
           </ns2:externalFileType>
