@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite thread-count="1" name="Suite">
+<suite thread-count="1" name="Service-Suite">
+    <listeners>
+        <listener class-name="com.shutterfly.missioncontrol.listener.ParentSuiteListener"/>
+    </listeners>
+
   <test name="Services-Test">
     <classes>
       <class name="com.shutterfly.missioncontrol.findfulfillmenthistory.FindFulfillmentHistory"/>
@@ -193,9 +197,9 @@
       <class
         name="com.shutterfly.missioncontrol.validation.postfulfillment.DestinationIdValidation"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"></class>
+        name="com.shutterfly.missioncontrol.validation.processfulfillment.DuplicateProcessFulfillmentTransactionalInlineDataOnlyRequest"/>
       <class
-        name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"></class>
+        name="com.shutterfly.missioncontrol.validation.postfulfillment.RequestWithIdAndWithoutId"/>
       <class
         name="com.shutterfly.missioncontrol.validation.processfulfillment.ArchiveInvalidRequestCode"/>
       <class name="com.shutterfly.missioncontrol.validation.postarchive.PostArchiveInvalidFile"/>
