@@ -49,4 +49,11 @@ public class FederatedControllerTest extends ConfigLoader {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+    @Test
+    public void invalidApiUri() {
+        Response response = given().header("Accept", "application/json").header("Authorization", token).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl") + "/api/services/v1/servers/detailsss");
+        Assert.assertEquals(response.getStatusCode(), 404);
+    }
+
 }
