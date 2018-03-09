@@ -65,5 +65,12 @@ public class FindFulfillmentHistory extends ConfigLoader {
         equalTo("18049"));
   }
 
+  @Test
+  public void verifyNotAccessToken() throws IOException {
+    Response response = RestAssured.given().contentType("application/json").accept("application/json")
+            .body(this.buildPayload()).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 401, "Assertion for Response code!");
+    response.then().body(anything("Non empty response"));
+  }
 
 }
