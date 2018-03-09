@@ -35,7 +35,7 @@ public class AccessToken extends ConfigLoader {
 		Response response = given().contentType("application/x-www-form-urlencoded")
 				.header("saml", config.getProperty("SamlValue")).formParam("userName", "DEV_OPS")
 				.formParam("password", password).when()
-				.post("http://missioncontrolportal-qa.internal.shutterfly.com/login/authentication");
+				.post(config.getProperty("ApplicationUrl") + "login/authentication");
 		assertNotNull(response.getCookie("ACCESS_TOKEN"));
 
 		return response.getCookie("ACCESS_TOKEN");
