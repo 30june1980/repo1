@@ -9,12 +9,16 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static io.restassured.RestAssured.given;
 
 public class DeadLetterControllerTest extends ConfigLoader {
 
     private AccessToken accessToken;
     private String token;
+    List<Object> messageIdentifier1;
 
     @BeforeClass
     public void setup() {
@@ -70,4 +74,28 @@ public class DeadLetterControllerTest extends ConfigLoader {
         Assert.assertEquals(response.getStatusCode(), 200);
     }
 
+    @Test(groups = "GET_DEADLETTER_BY_RECORDS_ID")
+    public void getDeadLetterRecordsByMessageIdentifier1() {
+
+        Response response = given().header("Accept", "application/json").header("Authorization", token)
+                .queryParam("pageNumber", "1").queryParam("pageSize", 20).log().all()
+                .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
+                        + "/api/services/v1/dead-letter").then().body("isEmpty()", Matchers.is(false))
+                .extract().response();
+
+        List<Object> messageIdentifier = response.jsonPath().getList("content.messageIdentifier").stream().filter(x->!x.equals("")).collect(Collectors.toList());
+        messageIdentifier1= messageIdentifier.subList(0,10);
+    }
+
+    @Test(groups = "VALIDTAE_1",dependsOnGroups = "GET_DEADLETTER_BY_RECORDS_ID")
+    public void validate(){
+        messageIdentifier1.forEach(x->{
+            Response res=given().header("Accept", "application/json").header("Authorization", token)
+                    .pathParam("messageIdentifier", String.valueOf(x)).log().all()
+                    .contentType(ContentType.JSON).when().get(config.getProperty("BaseApiUrl")
+                            + "/api/services/v1/dead-letter/{messageIdentifier}");
+            Assert.assertEquals(res.getStatusCode(), 200);
+            Assert.assertEquals(!res.getBody().as(List.class).isEmpty(), true);
+        });
+    }
 }
