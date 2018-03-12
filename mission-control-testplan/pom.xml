@@ -21,7 +21,7 @@
 					<suiteXmlFiles>
 						<suiteXmlFile>testng-fhubservices.xml</suiteXmlFile>
 						<suiteXmlFile>testng-fhubapi.xml</suiteXmlFile>
-						<suiteXmlFile>testng-fhubportal.xml</suiteXmlFile>
+						<!--<suiteXmlFile>testng-fhubportal.xml</suiteXmlFile>-->
 					</suiteXmlFiles>
 				</configuration>
 			</plugin>
@@ -78,5 +78,22 @@
 			<version>1.5.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.jcabi</groupId>
+			<artifactId>jcabi-aspects</artifactId>
+			<version>0.22.6</version>
+		</dependency>
+		<dependency>
+			<groupId>aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.shutterfly.missioncontrol</groupId>
+			<artifactId>mission-control-testplan</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 </project>
