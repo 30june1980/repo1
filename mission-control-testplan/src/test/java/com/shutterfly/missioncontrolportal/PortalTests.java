@@ -17,6 +17,8 @@ public class PortalTests extends ConfigLoaderWeb {
     private String portalUrl;
     private String loginPageUrl;
     private String userName;
+    private String pageTitle = "UHG";
+    private String pageFooter = "UnitedHealth";
     private PortalPage portalPage;
 
     @BeforeClass
@@ -29,7 +31,7 @@ public class PortalTests extends ConfigLoaderWeb {
 
         PageUtils.login(loginPage, config);
 
-        Assert.assertEquals("FulfillmenthubWeb", driver.getTitle()); // login test
+        Assert.assertEquals(pageTitle, driver.getTitle()); // login test
         Assert.assertTrue(portalPage.getUserName().contains(userName.toLowerCase()));
     }
 
@@ -42,7 +44,7 @@ public class PortalTests extends ConfigLoaderWeb {
     @Test
     public void footerTest() {
         driver.get(portalUrl);
-        Assert.assertTrue(portalPage.getFooter().contains("unitedhealth"));
+        Assert.assertTrue(portalPage.getFooter().contains(pageFooter));
     }
 
     @Test
@@ -56,11 +58,6 @@ public class PortalTests extends ConfigLoaderWeb {
         driver.get(portalUrl);
         portalPage.clickOnAdditionalFiltersLbl();
 
-        try {
-            TimeUnit.SECONDS.sleep(2L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         portalPage.clickOnFilterDropdown();
         String[] options = portalPage.getDropDownOptions().split("\n");

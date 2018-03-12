@@ -21,7 +21,7 @@ public class PortalPage {
     private final String searchResultCountLblXpath = "//app-pagination/div/div[2]/span[2]/span";
     private final String activeUserNameLblCss = "a[href='#'][class='pull-right']";
     private final String logoutLblCss = "a[class='cursor-pointer']";
-    private final String dropDownOptionsXpath = "//*[@id=\"additional_fields\"]/div/div/div[1]/div/div/ng2-auto-complete";
+    private final String dropDownOptionsCss = "div[class='ng2-auto-complete']";
     private WebDriver driver;
     private WebDriverWait webDriverWait;
     private Actions actions;
@@ -51,9 +51,9 @@ public class PortalPage {
 
 
     // Search - Dynamic filters
-    @FindBy(how = How.ID, using = "smc_view_additional_details")
+    @FindBy(how = How.CSS, using = "span[id='smc_view_additional_details']")
     private WebElement additionalFiltersLbl;
-    @FindBy(how = How.ID, using = "smc_input_additional_filters")
+    @FindBy(how = How.CSS, using = "input[id='smc_input_additional_filters']")
     private WebElement filterTypeDropdown;
 
     public PortalPage(WebDriver edriver) {
@@ -196,7 +196,7 @@ public class PortalPage {
     }
 
     public String getDropDownOptions() {
-        return driver.findElement(By.xpath(dropDownOptionsXpath)).getText().trim();
+        return driver.findElement(By.cssSelector(dropDownOptionsCss)).getText().trim();
     }
 
 }
