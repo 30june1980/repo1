@@ -1,8 +1,8 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.test;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.test;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
-import com.shutterfly.missioncontrol.fulfillmenthub.util.FileDataProvider;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.util.FileDataProvider;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Test;

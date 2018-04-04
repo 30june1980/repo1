@@ -1,6 +1,6 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.FtpConfiguration.SftpGateway;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.config.FtpConfiguration.SftpGateway;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

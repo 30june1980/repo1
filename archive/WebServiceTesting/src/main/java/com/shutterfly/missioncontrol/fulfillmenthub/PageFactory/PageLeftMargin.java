@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.PageFactory;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.PageFactory;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

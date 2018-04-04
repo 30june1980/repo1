@@ -1,0 +1,112 @@
+/**
+ *
+ */
+package com.shutterfly.missioncontrolservices.cancelfulfillment;
+
+import com.google.common.io.Resources;
+import com.shutterfly.missioncontrolservices.common.ValidationUtilConfig;
+import com.shutterfly.missioncontrolservices.config.ConfigLoader;
+import com.shutterfly.missioncontrolservices.config.CsvReaderWriter;
+import com.shutterfly.missioncontrolservices.util.Util;
+import com.shutterfly.missioncontrolservices.util.AppConstants;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertEquals;
+
+/**
+ * @author dgupta
+ */
+public class CancelTransactionalInlinePrintReadyMultItem_NonBatchableSingleItems extends
+    ConfigLoader {
+
+  /**
+   *
+   */
+  private String uri = "";
+  private String payload = "";
+  private String record = "";
+
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionCancelFulfillment");
+    return uri;
+
+  }
+
+  private String buildPayload() throws IOException {
+    URL file = Resources.getResource(
+        "XMLPayload/CancelFulfillment/CancelTransactionalInlinePrintReadyMultItem.xml");
+    payload = Resources.toString(file, StandardCharsets.UTF_8);
+    record = cwr.getRequestIdByKeys("TIPRMI_NBSI");
+
+    return payload = payload.replaceAll("REQUEST_101", record);
+
+  }
+
+  CsvReaderWriter cwr = new CsvReaderWriter();
+
+  @Test(groups = "Cancel_TIPRMI_NBSI_Response", dependsOnGroups = {"Process_TIPRMI_NBSI_DB"})
+  private void getResponse() throws IOException {
+    basicConfigNonWeb();
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(this.buildPayload()).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+
+  }
+
+  @Test(groups = "Cancel_TIPRMI_NBSI_DB", dependsOnGroups = {"Cancel_TIPRMI_NBSI_Response"})
+  private void validateRecordsInDatabase() throws Exception {
+
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(record, "PutToRequestGeneratorTopic",
+            AppConstants.CANCEL);
+  }
+
+  @Test(dependsOnGroups = {"Cancel_TIPRMI_NBSI_DB"})
+  private void validateSingleItemRecordsInDatabase() throws Exception {
+
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(record + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
+  }
+
+
+  @Test(groups = "Cancel_TIPRMI_For_Children", dependsOnGroups = {"Process_TIPRMI_Cancel_MultiItem"})
+  private void getResponseForCancel() throws IOException {
+    basicConfigNonWeb();
+    String localRecord=cwr.getRequestIdByKeys("Process_TIPRMI_Cancel_MultiItem");
+    Response response = RestAssured.given().header("saml", config.getProperty("SamlValue")).log()
+        .all()
+        .contentType("application/xml").body(Util.replaceExactMatch(this.buildPayload(),record,localRecord)).when().post(this.getProperties());
+    assertEquals(response.getStatusCode(), 200, "Assertion for Response code!");
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+
+  }
+
+  @Test(dependsOnGroups = {"Cancel_TIPRMI_For_Children"})
+  private void validateRecordsInDatabaseForCancel() throws Exception {
+    String localRecord=cwr.getRequestIdByKeys("Process_TIPRMI_Cancel_MultiItem");
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(localRecord + "_1", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
+
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(localRecord + "_2", AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.CANCEL);
+  }
+
+
+}

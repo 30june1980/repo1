@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.dto;
 
 import lombok.Getter;
 import lombok.Setter;

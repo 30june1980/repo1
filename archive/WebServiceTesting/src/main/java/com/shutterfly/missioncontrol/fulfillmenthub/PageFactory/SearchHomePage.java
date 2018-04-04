@@ -1,6 +1,6 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.PageFactory;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.PageFactory;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.util.FileDataProvider;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.util.FileDataProvider;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

@@ -1,7 +1,7 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.service;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.archive.service;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config.SFTPService;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto.FileDto;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.config.SFTPService;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.dto.FileDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;

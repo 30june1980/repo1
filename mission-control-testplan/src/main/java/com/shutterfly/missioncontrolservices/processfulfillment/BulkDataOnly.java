@@ -1,0 +1,165 @@
+package com.shutterfly.missioncontrolservices.processfulfillment;
+
+import com.google.common.io.Resources;
+import com.shutterfly.missioncontrolservices.common.DatabaseValidationUtil;
+import com.shutterfly.missioncontrolservices.common.EcgFileSafeUtil;
+import com.shutterfly.missioncontrolservices.common.ValidationUtilConfig;
+import com.shutterfly.missioncontrolservices.config.ConfigLoader;
+import com.shutterfly.missioncontrolservices.config.CsvReaderWriter;
+import com.shutterfly.missioncontrolservices.util.AppConstants;
+import com.shutterfly.missioncontrolservices.util.TrackingRecordValidationUtil;
+import io.restassured.RestAssured;
+import io.restassured.config.EncoderConfig;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import org.bson.Document;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.testng.Assert.assertNotNull;
+
+/**
+ * @author dgupta
+ */
+public class BulkDataOnly extends ConfigLoader {
+
+  private String uri = "";
+  UUID uuid = UUID.randomUUID();
+  String record = AppConstants.REQUEST_ID_PREFIX + uuid.toString();
+  CsvReaderWriter cwr = new CsvReaderWriter();
+  DatabaseValidationUtil databaseValidationUtil = ValidationUtilConfig.getInstances();
+
+  private String getProperties() {
+    basicConfigNonWeb();
+    uri = config.getProperty("BaseUrl") + config.getProperty("UrlExtensionProcessFulfillment");
+    return uri;
+  }
+
+  private String buildPayload() throws IOException {
+    URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    return payload.replaceAll("REQUEST_101", record).replaceAll("bulkfile_all_valid.xml",
+        (record + ".xml"));
+  }
+
+  @Test(groups = "Process_BDO_Response")
+  private void getResponse() throws IOException, InterruptedException {
+    basicConfigNonWeb();
+    String payload = this.buildPayload();
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), record,
+        AppConstants.BULK_FILE);
+
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(this.buildPayload()).when().post(this.getProperties());
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    cwr.writeToCsv("BDO", record);
+  }
+
+  @Test(groups = "Process_BDO_DB", dependsOnGroups = {"Process_BDO_Response"})
+  private void validateAcceptanceBySupplier() throws Exception {
+    databaseValidationUtil
+        .validateRecordsAvailabilityAndStatusCheck(record, AppConstants.ACCEPTED_BY_SUPPLIER,
+            AppConstants.PROCESS);
+  }
+
+  @Test(groups = "Process_BDO_DB_Fields", dependsOnGroups = {"Process_BDO_Response"})
+  private void validateRecordInDatabase() throws Exception {
+    Document fulfillmentTrackingRecordDoc = databaseValidationUtil.getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateBulkProcessRequestFields(this.buildPayload(), fulfillmentTrackingRecordDoc);
+  }
+
+  @Test(groups = "Process_BDO_Valid_Request_Validation", dependsOnGroups = {
+      "Process_BDO_Response"})
+  private void validateRecordFieldsInDbForValidBDORequest() throws Exception {
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(record);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, record,
+            AppConstants.ACCEPTED);
+    Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
+    Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
+    assertNotNull(requestDetail.get("bulkRequestDetail"));
+  }
+
+  @Test(groups = "Process_BDO_Valid_Request_Validation")
+  private void validateRecordFieldsInDbForInValidBDORequest() throws Exception {
+    String requestId = AppConstants.REQUEST_ID_PREFIX+ UUID.randomUUID().toString();
+
+    //send invalid process request
+    basicConfigNonWeb();
+    URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId)
+        .replaceAll("bulkfile_all_valid.xml", (requestId + ".xml")).replace("BRMS", "");
+
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Rejected"));
+
+    //validate db fields
+    Document fulfillmentTrackingRecordDoc = ValidationUtilConfig.getInstances()
+        .getTrackingRecord(requestId);
+    TrackingRecordValidationUtil
+        .validateTrackingRecordForProcessRequest(fulfillmentTrackingRecordDoc, requestId,
+            AppConstants.REJECTED);
+
+    Document fulfillmentRequest = (Document) fulfillmentTrackingRecordDoc.get("fulfillmentRequest");
+    Document requestDetail = (Document) fulfillmentRequest.get("requestDetail");
+    assertNotNull(requestDetail.get("bulkRequestDetail"));
+  }
+
+  @Test
+  private void validateBulkRequestIsNotGettingBatched() throws Exception {
+    basicConfigNonWeb();
+    String requestId = AppConstants.REQUEST_ID_PREFIX+ UUID.randomUUID().toString();
+
+    URL file = Resources.getResource("XMLPayload/ProcessFulfillment/BulkDataOnly_2.xml");
+    String payload = Resources.toString(file, StandardCharsets.UTF_8);
+
+    payload = payload.replaceAll("REQUEST_101", requestId).replaceAll("bulkfile_all_valid.xml",
+        (requestId + ".xml"));
+    EcgFileSafeUtil.putFileAtSourceLocation(EcgFileSafeUtil.buildInboundFilePath(payload), requestId,
+        AppConstants.BULK_FILE);
+
+    EncoderConfig encoderconfig = new EncoderConfig();
+    Response response = given()
+        .config(RestAssured.config()
+            .encoderConfig(
+                encoderconfig.appendDefaultContentCharsetToContentTypeIfUndefined(false)))
+        .header("saml", config.getProperty("SamlValue")).contentType(ContentType.XML).log().all()
+        .body(payload).when().post(this.getProperties());
+
+    response.then().body(
+        "acknowledgeMsg.acknowledge.validationResults.transactionLevelAck.transaction.transactionStatus",
+        equalTo("Accepted"));
+    ValidationUtilConfig.getInstances()
+        .validateRecordsAvailabilityAndStatusCheck(requestId, AppConstants.NO_REQUESTOR_NOTIFICATION_REQUIRED,
+            AppConstants.PROCESS);
+  }
+
+}
