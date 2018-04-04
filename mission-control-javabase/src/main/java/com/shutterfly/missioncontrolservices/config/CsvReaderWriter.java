@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
@@ -28,12 +27,14 @@ import static org.testng.Assert.assertNotNull;
  */
 public class CsvReaderWriter extends ConfigLoader {
     static boolean alreadyExecuted;
-    static final String REQUEST_ID_CSV_PATH = "RequestIdCsvPath";
+  //  static final String REQUEST_ID_CSV_PATH = "RequestIdCsvPath";
+    static String requestIdCsvFilePath = CsvReaderWriter.class.getResource("/requestId.csv").getPath().replaceFirst("^/(.:/)","$1");
+    static String finalRequestIdCsvFilePath = CsvReaderWriter.class.getResource("/finalRequestId.csv").getPath().replaceFirst("^/(.:/)","$1");
     private static final Logger logger = LoggerFactory.getLogger(CsvReaderWriter.class);
 
     private static void generateCsvFile() {
         if (!alreadyExecuted) {
-            try (FileWriter writer = new FileWriter(config.getProperty(REQUEST_ID_CSV_PATH))) {
+            try (FileWriter writer = new FileWriter(requestIdCsvFilePath)) {
                 alreadyExecuted = true;
             } catch (IOException e) {
                 logger.error("Unable Generate request Id CSV file : " + e);
@@ -43,9 +44,9 @@ public class CsvReaderWriter extends ConfigLoader {
 
     public void writeToCsv(String name, String parameter) {
         generateCsvFile();
-        Path filePath = Paths.get(config.getProperty(REQUEST_ID_CSV_PATH));
 
-        try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8,
+
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(requestIdCsvFilePath), StandardCharsets.UTF_8,
                 StandardOpenOption.APPEND)) {
             writer.write(name + ":" + parameter + ",");
 
@@ -59,7 +60,7 @@ public class CsvReaderWriter extends ConfigLoader {
         String line = "";
         String cvsSplitBy = ",";
         String[] records = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(config.getProperty(filepath)))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             while ((line = br.readLine()) != null) {
                 // use comma as separator
                 records = line.split(cvsSplitBy);
@@ -73,7 +74,7 @@ public class CsvReaderWriter extends ConfigLoader {
     @Test
     public void csvIterator() throws IOException {
         basicConfigNonWeb();
-        Reader in = new FileReader(config.getProperty(REQUEST_ID_CSV_PATH));
+        Reader in = new FileReader(requestIdCsvFilePath);
         Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
         for (CSVRecord record : records) {
             if (record.get(0).equalsIgnoreCase("Done")) {
@@ -84,7 +85,7 @@ public class CsvReaderWriter extends ConfigLoader {
 
     public String getRequestIdByKeys(String key) throws IOException {
         basicConfigNonWeb();
-        String[] requestIds = readCsv(REQUEST_ID_CSV_PATH);
+        String[] requestIds = readCsv(requestIdCsvFilePath);
         if (requestIds == null) {
             logger.error("RequestId CSV is blank");
             requestIds = new String[0];
@@ -98,7 +99,7 @@ public class CsvReaderWriter extends ConfigLoader {
             }
         }
         if (record.isEmpty()) {
-            requestIds = readCsv("FinalRequestIdCsvPath");
+            requestIds = readCsv(finalRequestIdCsvFilePath);
             record = "";
             for (String id : requestIds) {
                 String[] arrKeyValue = id.split(":");
