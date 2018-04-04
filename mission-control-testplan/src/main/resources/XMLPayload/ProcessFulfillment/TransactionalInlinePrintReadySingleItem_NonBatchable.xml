@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processFulfillmentRequest
+  xmlns="http://dms-fsl.uhc.com/fulfillment/schema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:com="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00">
+  <fulfillmentRequest>
+    <requestHeader>
+      <requestID>REQUEST_101</requestID>
+      <sourceID>automation_CIRRUS</sourceID>
+      <destinationID>SBS</destinationID>
+      <requestDate>2017-01-01T12:01:01-06:00</requestDate>
+      <requestType>Process</requestType>
+      <businessSegmentID>EI</businessSegmentID>
+      <marketSegmentCd>LRG</marketSegmentCd>
+      <fulfillmentType>ba000</fulfillmentType>
+      <requestCategory>TransactionalInlinePrintReadySingleItem</requestCategory>
+      <serviceLevelCategory></serviceLevelCategory>
+      <dataFormat>XML</dataFormat>
+      <requestorRefNo></requestorRefNo>
+      <supplierRefNo></supplierRefNo>
+      <bulkRequestHeaderID></bulkRequestHeaderID>
+      <docCompositionEngineID></docCompositionEngineID>
+    </requestHeader>
+    <requestDetail>
+      <transactionalRequestDetail>
+        <recipient>
+          <recipientId>111223333</recipientId>
+          <idQualifier>BrokerIDType</idQualifier>
+          <deliveryMethod1>Emailed</deliveryMethod1>
+          <deliveryMethod2></deliveryMethod2>
+          <recipientType>BrokerType</recipientType>
+          <person>
+            <prefix></prefix>
+            <firstName>SampleFirstName</firstName>
+            <middleName></middleName>
+            <lastName>SampleLastName</lastName>
+            <suffix></suffix>
+          </person>
+          <MailToAddress>
+            <Address1>1001 Main Street</Address1>
+            <Address2></Address2>
+            <Address3></Address3>
+            <City>Main City</City>
+            <State>CA</State>
+            <Zip>99999</Zip>
+          </MailToAddress>
+          <ReturnToAddress>
+            <Address1>1001 Main Street</Address1>
+            <Address2></Address2>
+            <Address3></Address3>
+            <City>Main City</City>
+            <State>CA</State>
+            <Zip>99999</Zip>
+          </ReturnToAddress>
+          <faxNumber></faxNumber>
+          <emailAddress></emailAddress>
+          <carbonCopyInd>false</carbonCopyInd>
+        </recipient>
+        <template>
+          <templateID>N/A</templateID>
+          <templateName></templateName>
+        </template>
+        <data>
+          <embeddedDataType
+            xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+            xmlns:sch="http://dms-fsl.uhc.com/fulfillment/schema">
+            <sch:formData>
+              <sch:formItemID>MRE_001</sch:formItemID>
+              <sch:formItemQuantity>10</sch:formItemQuantity>
+              <sch:formItemUOM>Box</sch:formItemUOM>
+            </sch:formData>
+          </embeddedDataType>
+        </data>
+      </transactionalRequestDetail>
+    </requestDetail>
+    <requestTrailer>
+      <requestItemCount>1</requestItemCount>
+    </requestTrailer>
+  </fulfillmentRequest>
+</processFulfillmentRequest>

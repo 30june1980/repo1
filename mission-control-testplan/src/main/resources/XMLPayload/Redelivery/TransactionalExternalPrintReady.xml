@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:processFulfillmentRequest xmlns:ns2="http://dms-fsl.uhc.com/fulfillment/schema"
+  xmlns:v7="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <ns2:fulfillmentRequest>
+    <ns2:requestHeader>
+      <ns2:requestID>REQUEST_101</ns2:requestID>
+      <ns2:sourceID>automation_EDMSUI</ns2:sourceID>
+      <ns2:requestDate>2018-01-05T09:22:16Z</ns2:requestDate>
+      <ns2:requestType>ReDelivery</ns2:requestType>
+      <ns2:businessSegmentID>EI</ns2:businessSegmentID>
+      <ns2:marketSegmentCd>OXF</ns2:marketSegmentCd>
+      <ns2:fulfillmentType>ba600</ns2:fulfillmentType>
+      <ns2:requestCategory>TransactionalExternalPrintReady</ns2:requestCategory>
+      <ns2:dataFormat>pdf</ns2:dataFormat>
+    </ns2:requestHeader>
+    <ns2:requestDetail>
+      <ns2:transactionalRequestDetail>
+        <ns2:recipient>
+          <ns2:recipientId>749845246671790086</ns2:recipientId>
+          <ns2:idQualifier>ProviderID</ns2:idQualifier>
+          <ns2:deliveryMethod1>Mailed</ns2:deliveryMethod1>
+          <ns2:recipientType>Provider</ns2:recipientType>
+          <ns2:person>
+            <ns2:firstName>STEVEN</ns2:firstName>
+            <ns2:middleName>M</ns2:middleName>
+            <ns2:lastName>RAPOPORT</ns2:lastName>
+            <ns2:suffix>null</ns2:suffix>
+          </ns2:person>
+          <ns2:MailToAddress>
+            <ns2:Address1>25 ROPE FERRY RD</ns2:Address1>
+            <ns2:Address2>null</ns2:Address2>
+            <ns2:City>WATERFORD</ns2:City>
+            <ns2:State>CT</ns2:State>
+            <ns2:Zip>06385</ns2:Zip>
+          </ns2:MailToAddress>
+          <ns2:ReturnToAddress>
+            <ns2:Address1>UnitedHealthcare-Oxford</ns2:Address1>
+            <ns2:Address2>4 Research Drive</ns2:Address2>
+            <ns2:City>Shelton</ns2:City>
+            <ns2:State>CT</ns2:State>
+            <ns2:Zip>06484</ns2:Zip>
+          </ns2:ReturnToAddress>
+          <ns2:carbonCopyInd>false</ns2:carbonCopyInd>
+        </ns2:recipient>
+        <ns2:template>
+          <ns2:templateID>Not Applicable</ns2:templateID>
+          <ns2:templateName>Not Applicable</ns2:templateName>
+        </ns2:template>
+        <ns2:data>
+          <ns2:externalFileType>
+            <ns2:filePath>tmp/FFH_LZ/Master/inbound/supplier/redelivery/</ns2:filePath>
+            <ns2:fileName>bulkfile_all_valid.xml</ns2:fileName>
+            <ns2:fileSize>167524</ns2:fileSize>
+          </ns2:externalFileType>
+        </ns2:data>
+      </ns2:transactionalRequestDetail>
+    </ns2:requestDetail>
+    <ns2:requestTrailer>
+      <ns2:requestItemCount>1</ns2:requestItemCount>
+    </ns2:requestTrailer>
+  </ns2:fulfillmentRequest>
+</ns2:processFulfillmentRequest>

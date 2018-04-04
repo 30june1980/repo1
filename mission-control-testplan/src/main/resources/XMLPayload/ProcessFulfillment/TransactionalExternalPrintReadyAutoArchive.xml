@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processFulfillmentRequest
+        xmlns:ns2="http://enterprise.unitedhealthgroup.com/schema/canonical/base/common/v7_00"
+        xmlns="http://dms-fsl.uhc.com/fulfillment/schema">
+    <fulfillmentRequest>
+        <requestHeader>
+            <requestID>REQUEST_101</requestID>
+            <sourceID>automation_EOACET</sourceID>
+            <requestDate>2018-02-07T06:47:11.682-06:00</requestDate>
+            <requestType>Process</requestType>
+            <businessSegmentID>EI</businessSegmentID>
+            <marketSegmentCd>OXF</marketSegmentCd>
+            <fulfillmentType>ba900</fulfillmentType>
+            <requestCategory>TransactionalExternalPrintReady</requestCategory>
+            <serviceLevelCategory>SLC</serviceLevelCategory>
+            <dataFormat>AFP</dataFormat>
+            <requestorRefNo>Null</requestorRefNo>
+            <supplierRefNo>supplierplaceholder</supplierRefNo>
+            <docCompositionEngineID>ENGONE</docCompositionEngineID>
+        </requestHeader>
+        <requestDetail>
+            <!--You have a CHOICE of the next 2 items at this level -->
+            <transactionalRequestDetail>
+                <!--0 to 20 repetitions: -->
+                <recipient>
+                    <recipientId>020280467</recipientId>
+                    <idQualifier>SocialSecIDType</idQualifier>
+                    <!--Optional: -->
+                    <deliveryMethod1>Emailed</deliveryMethod1>
+                    <!--Optional: -->
+                    <deliveryMethod2></deliveryMethod2>
+                    <recipientType>MemberType</recipientType>
+                    <!--You have a CHOICE of the next 2 items at this level -->
+                    <!--Optional: -->
+                    <!--Optional: -->
+                    <person>
+                        <!--Optional: -->
+                        <prefix>Mr.</prefix>
+                        <!--Optional: -->
+                        <firstName>SampleFirstName</firstName>
+                        <!--Optional: -->
+                        <middleName>String</middleName>
+                        <!--Optional: -->
+                        <lastName>SampleLastName</lastName>
+                        <!--Optional: -->
+                        <suffix>Jr</suffix>
+                    </person>
+                    <!--You have a CHOICE of the next 2 items at this level -->
+                    <!--Optional: -->
+                    <MailToAddress>
+                        <!--Optional: -->
+                        <Address1>1001 Main Street</Address1>
+                        <!--Optional: -->
+                        <Address2>String</Address2>
+                        <!--Optional: -->
+                        <Address3>String</Address3>
+                        <!--Optional: -->
+                        <City>Main City</City>
+                        <!--Optional: -->
+                        <State>CA</State>
+                        <!--Optional: -->
+                        <Zip>999999</Zip>
+                    </MailToAddress>
+                    <!--You have a CHOICE of the next 2 items at this level -->
+                    <!--Optional: -->
+                    <ReturnToAddress>
+                        <!--Optional: -->
+                        <Address1>String</Address1>
+                        <!--Optional: -->
+                        <Address2>String</Address2>
+                        <!--Optional: -->
+                        <Address3>String</Address3>
+                        <!--Optional: -->
+                        <City>String</City>
+                        <!--Optional: -->
+                        <State>String</State>
+                        <!--Optional: -->
+                        <Zip>String</Zip>
+                    </ReturnToAddress>
+                    <!--Optional: -->
+                    <!--Optional: -->
+                    <faxNumber>String</faxNumber>
+                    <!--Optional: -->
+                    <emailAddress>SomeEmailAddress.com</emailAddress>
+                    <carbonCopyInd>false</carbonCopyInd>
+                </recipient>
+                <!--Optional: -->
+                <template>
+                    <!--Optional: -->
+                    <templateID>EOBTemplateC12HD</templateID>
+
+                    <!--Optional: -->
+                    <templateName>EOBTemplateC12HD</templateName>
+                </template>
+                <data>
+                    <!--Optional: -->
+                    <externalFileType>
+                        <!--Optional: -->
+                        <filePath>/FFH_LZ/Master/inbound/supplier/EngageOne/</filePath>
+                        <fileName>bulkfile_all_valid.xml</fileName>
+                        <fileSize>9999</fileSize>
+                    </externalFileType>
+                    <!--Optional: -->
+                    <embeddedDataType></embeddedDataType>
+                    <!--Optional: -->
+                    <contentFormatType>
+                        <!--Optional: -->
+                        <contentStream/>
+                        <documentType/>
+                        <!--Optional: -->
+                        <mimeType/>
+                        <!--0 to 20 repetitions: -->
+                        <documentMetadata>
+                            <!--Optional: -->
+                            <name/>
+                            <!--Optional: -->
+                            <value/>
+                        </documentMetadata>
+                    </contentFormatType>
+                </data>
+            </transactionalRequestDetail>
+        </requestDetail>
+        <requestTrailer>
+            <requestItemCount>1</requestItemCount>
+        </requestTrailer>
+    </fulfillmentRequest>
+</processFulfillmentRequest>
+
