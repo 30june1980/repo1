@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="1" name="Portal-Suite">
-    <listeners>
-        <listener class-name="com.shutterfly.missioncontrol.listener.ParentSuiteListener"/>
-    </listeners>
+    <!--  <listeners>
+          <listener class-name="com.shutterfly.missioncontrol.listener.ParentSuiteListener"/>
+      </listeners>-->
 
     <test name="Portal-Test">
         <parameter name="platform" value="any"/>
@@ -13,16 +13,15 @@
             <class name="com.shutterfly.missioncontrolportal.LoginTest"/>
             <class name="com.shutterfly.missioncontrolportal.PortalTests"/>
             <class name="com.shutterfly.missioncontrolportal.TabTests"/>
-            <!--<class name="com.shutterfly.missioncontrolportal.RequestTests"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.MaterialsTests"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.ParticipantsTests"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.FileTransferTests"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.RulesTests"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.SchedulesTest"/>-->
-            <!--<class name="com.shutterfly.missioncontrolportal.ServersTests"/>-->
+            <class name="com.shutterfly.missioncontrolportal.RequestTests"/>
+            <class name="com.shutterfly.missioncontrolportal.MaterialsTests"/>
+            <class name="com.shutterfly.missioncontrolportal.ParticipantsTests"/>
+            <class name="com.shutterfly.missioncontrolportal.FileTransferTests"/>
+            <class name="com.shutterfly.missioncontrolportal.RulesTests"/>
+            <class name="com.shutterfly.missioncontrolportal.SchedulesTest"/>
+            <class name="com.shutterfly.missioncontrolportal.ServersTests"/>
             <class name="com.shutterfly.missioncontrolportal.SearchTests"/>
-            <!--<class name="com.shutterfly.missioncontrolportal.SegmentsTests"/>-->
+            <class name="com.shutterfly.missioncontrolportal.SegmentsTests"/>
         </classes>
-
     </test> <!-- Portal-Test -->
 </suite> <!-- Suite -->

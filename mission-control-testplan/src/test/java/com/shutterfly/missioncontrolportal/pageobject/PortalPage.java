@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,10 +19,12 @@ public class PortalPage {
     private final String nextLblId = "smc-pagination_next";
     private final String prevLblId = "smc-pagination_prev";
     private final String searchResultCountLblXpath = "//app-pagination/div/div[2]/span[2]/span";
-    private final String activeUserNameLblXpath = "//text()[contains(.,'TestUserFirstName')]//ancestor::a[1]";
-    private final String logoutLblXpath = "//a[text()='Logout']";
-    private final String dropDownOptionsXpath = "//*[@id=\"additional_fields\"]/div/div/div[1]/div/div/ng2-auto-complete";
+    private final String activeUserNameLblCss = "a[href='#'][class='pull-right']";
+    private final String logoutLblCss = "a[class='cursor-pointer']";
+    private final String dropDownOptionsCss = "div[class='ng2-auto-complete']";
     private WebDriver driver;
+    private WebDriverWait webDriverWait;
+    private Actions actions;
 
     @FindBy(how = How.CSS, using = "img[alt='United Health Care logo']")
     private WebElement uhcLogoImg;
@@ -48,20 +51,21 @@ public class PortalPage {
 
 
     // Search - Dynamic filters
-    @FindBy(how = How.ID, using = "smc_view_additional_details")
+    @FindBy(how = How.CSS, using = "span[id='smc_view_additional_details']")
     private WebElement additionalFiltersLbl;
-    @FindBy(how = How.ID, using = "smc_input_additional_filters")
+    @FindBy(how = How.CSS, using = "input[id='smc_input_additional_filters']")
     private WebElement filterTypeDropdown;
 
     public PortalPage(WebDriver edriver) {
         this.driver = edriver;
+        webDriverWait = new WebDriverWait(driver, 10L);
+        actions = new Actions(driver);
     }
 
     // Dynamic web element functions
     private void waitForLoaderAvailability() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
 //        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(loaderXpath))));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(loaderXpath)));
+        webDriverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(loaderXpath)));
     }
 
     private WebElement getPrevLbl() {
@@ -69,7 +73,7 @@ public class PortalPage {
     }
 
     private WebElement getActiveUserNameLbl() {
-        return driver.findElement(By.xpath(activeUserNameLblXpath));
+        return driver.findElement(By.cssSelector(activeUserNameLblCss));
     }
 
     private WebElement getSearchResultCountLbl() {
@@ -81,7 +85,7 @@ public class PortalPage {
     }
 
     private WebElement getLogoutLbl() {
-        return driver.findElement(By.xpath(logoutLblXpath));
+        return driver.findElement(By.cssSelector(logoutLblCss));
     }
 
 
@@ -126,8 +130,8 @@ public class PortalPage {
     }
 
     public void clickOnLogout() {
-        getActiveUserNameLbl().click();
-        getLogoutLbl().click();
+        actions.click(getActiveUserNameLbl());
+        actions.click(getLogoutLbl());
     }
 
     public void clickOnIthResult(int i) {
@@ -192,7 +196,7 @@ public class PortalPage {
     }
 
     public String getDropDownOptions() {
-        return driver.findElement(By.xpath(dropDownOptionsXpath)).getText().trim();
+        return driver.findElement(By.cssSelector(dropDownOptionsCss)).getText().trim();
     }
 
 }

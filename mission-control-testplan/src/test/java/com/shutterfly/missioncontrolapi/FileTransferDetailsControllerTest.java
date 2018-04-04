@@ -51,7 +51,8 @@ public class FileTransferDetailsControllerTest extends ConfigLoader {
        fileTransferDetailsId = messageIdentifier.subList(0,10);
    }
 
-    @Test(groups = "" ,dependsOnGroups = "GET_FILE_TRANSFER")
+    //Refactor needed
+   // @Test(groups = "" ,dependsOnGroups = "GET_FILE_TRANSFER")
     public void verifyFileTransferIdNoTRetorActive(){
         fileTransferDetailsId.forEach(x->{
             Response res=given()

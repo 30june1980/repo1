@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite thread-count="1" name="Service-Suite">
-    <listeners>
+<!--    <listeners>
         <listener class-name="com.shutterfly.missioncontrol.listener.ParentSuiteListener"/>
-    </listeners>
+    </listeners>-->
 
   <test name="Services-Test">
     <classes>
@@ -182,6 +182,9 @@
       <class name="com.shutterfly.missioncontrol.postforcancel.PostBulkDataOnlyForCancel"/>
       <class
         name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady"/>
+
+      <class name="com.shutterfly.missioncontrol.redelivery.RedeliveryTransactionalExternalPrintReady"/>
+
       <class
         name="com.shutterfly.missioncontrol.redelivery.PostTransactionalExternalPrintReady_Fulfilled"/>
       <class

@@ -81,7 +81,7 @@ public class ConfigLoaderWeb {
 
     @SuppressWarnings("deprecation")
     private static void setBrowser(String environment, Platform os, String browser, URL url) {
-        DesiredCapabilities desiredCapabilities = null;
+        DesiredCapabilities desiredCapabilities;
         switch (browser) {
 
             case CHROME:
@@ -120,6 +120,9 @@ public class ConfigLoaderWeb {
                 desiredCapabilities = DesiredCapabilities.internetExplorer();
                 desiredCapabilities.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
                 desiredCapabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+                desiredCapabilities.setCapability(InternetExplorerDriver.NATIVE_EVENTS, false);
+                desiredCapabilities.setCapability(InternetExplorerDriver.UNEXPECTED_ALERT_BEHAVIOR, "accept");
+                desiredCapabilities.setCapability(InternetExplorerDriver.ENABLE_PERSISTENT_HOVERING, true);
                 if (AppConstants.LOCAL.equalsIgnoreCase(environment)) {
                     System.setProperty(AppConstants.IE_DRIVER, System.getProperty(AppConstants.IE_DRIVER));
                     driver = new InternetExplorerDriver(desiredCapabilities);
