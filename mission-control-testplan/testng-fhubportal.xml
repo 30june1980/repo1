@@ -23,6 +23,5 @@
             <class name="com.shutterfly.missioncontrolportal.SearchTests"/>
             <class name="com.shutterfly.missioncontrolportal.SegmentsTests"/>
         </classes>
-
     </test> <!-- Portal-Test -->
 </suite> <!-- Suite -->
