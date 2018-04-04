@@ -17,12 +17,12 @@ public class PortalTests extends ConfigLoaderWeb {
     private String portalUrl;
     private String loginPageUrl;
     private String userName;
-    private String pageTitle = "UHG";
+    private String pageTitle = "FulfillmenthubWeb";
     private String pageFooter = "UnitedHealth";
     private PortalPage portalPage;
 
     @BeforeClass
-    public void setup() {
+    public void setup() throws InterruptedException {
         LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
         portalPage = PageFactory.initElements(driver, PortalPage.class);
         userName = config.getProperty(AppConstants.QA_PORTAL_USERNAME);
@@ -30,8 +30,7 @@ public class PortalTests extends ConfigLoaderWeb {
         loginPageUrl = config.getProperty(AppConstants.QA_PORTAL_LOGIN_URL);
 
         PageUtils.login(loginPage, config);
-
-        Assert.assertEquals(pageTitle, driver.getTitle()); // login test
+Assert.assertEquals(pageTitle, driver.getTitle()); // login test
         Assert.assertTrue(portalPage.getUserName().contains(userName.toLowerCase()));
     }
 
