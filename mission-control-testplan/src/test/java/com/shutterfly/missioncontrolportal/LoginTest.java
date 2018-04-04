@@ -2,6 +2,7 @@ package com.shutterfly.missioncontrolportal;
 
 import com.shutterfly.missioncontrol.excelobjects.ReadDataFromDataSource;
 import com.shutterfly.missioncontrol.config.ConfigLoaderWeb;
+import com.shutterfly.missioncontrol.listener.ListenerTest;
 import com.shutterfly.missioncontrol.util.AppConstants;
 import com.shutterfly.missioncontrolportal.Utils.PageUtils;
 import com.shutterfly.missioncontrolportal.pageobject.LoginPage;
@@ -10,15 +11,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
+@Listeners(ListenerTest.class)
 public class LoginTest extends ConfigLoaderWeb {
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigLoaderWeb.class);
 
-    ReadDataFromDataSource readDataFromDataSource;
+    private ReadDataFromDataSource readDataFromDataSource;
     PortalPage portalPage;
     LoginPage loginPage;
 

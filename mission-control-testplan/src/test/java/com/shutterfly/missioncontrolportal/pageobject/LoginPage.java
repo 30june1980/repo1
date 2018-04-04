@@ -11,13 +11,13 @@ public class LoginPage {
 
     private WebDriver driver;
 
-    @FindBy(how = How.NAME, using = "userName")
+    @FindBy(how = How.CSS, using = "input[name=userName]")
     private WebElement userNameText;
 
-    @FindBy(how = How.NAME, using = "password")
+    @FindBy(how = How.CSS, using = "input[name=password]")
     private WebElement passwordText;
 
-    @FindBy(how = How.ID, using = "login-btn")
+    @FindBy(how = How.CSS, using = "button[id=login-btn]")
     private WebElement loginButton;
 
     public LoginPage(WebDriver edriver) {
@@ -28,7 +28,7 @@ public class LoginPage {
         driver.get(url);
         userNameText.sendKeys(userName);
         passwordText.sendKeys(password);
-        loginButton.click();
+        loginButton.submit();
     }
 
 }

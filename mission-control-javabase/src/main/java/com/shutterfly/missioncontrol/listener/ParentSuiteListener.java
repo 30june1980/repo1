@@ -13,7 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,10 +35,8 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
     private String masterNodeUrl;
 
     private static final String USER = "username";
-    public static final String HOST = "host";
     private static final String FSUSER = "FileServerUsername";
     private static final String FSPASS = "FileServerPassword";
-    private static final String FSURL = "FileServerUrl";
     private static final String PASS = "password";
     private static final String TITLE = "title";
     private static final String ECG = "ECG";
@@ -51,9 +54,17 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
         File file = new File(FILE_PATH);
         logger.info("Backing up existing credentials at: ", file.getAbsolutePath());
         if (file.exists()) {
-            restoreCredentials(file);
+            logger.error("Server credentials already backed up.");
+            throw new RuntimeException("Server credentials are already backed up. Either restore those manually on the " +
+                    "server, or delete the file IF YOU ARE REALLY SURE ABOUT IT.....");
         } else {
-            backupCredentials(file);
+            MongoCollection<Document> serverCollection = getServerCollectionFromServer();
+            Map<String, String> credentialsMap = getCredentialsFromServer(serverCollection);
+            writeCredentialsToFile(file, credentialsMap);
+            credentialsMap.put(USER, config.getProperty(FSUSER));
+            credentialsMap.put(PASS, config.getProperty(FSPASS));
+            setCredentialsOnServer(credentialsMap, serverCollection);
+            mongoClient.close();
         }
     }
 
@@ -67,35 +78,17 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
             logger.error("Credentials file doesn't exist...");
             throw new RuntimeException("Fatal error: Credentials not backed up / there is some permissions related issue. Please try again.....");
         } else {
-            restoreCredentials(file);
-        }
-    }
+            Map<String, String> credentialsMap = readCredentialsFromFile(file);
+            MongoCollection<Document> serverCollection = getServerCollectionFromServer();
+            setCredentialsOnServer(credentialsMap, serverCollection);
+            mongoClient.close();
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                logger.error("Failed to delete the credentials backup file.", e);
+                throw new RuntimeException("Failed to delete credentials backup file. Check for permissions or check if file exists.....");
 
-    private void backupCredentials(File file) {
-        logger.warn("Server credentials already backed up. Restoring.....");
-        MongoCollection<Document> serverCollection = getServerCollectionFromServer();
-        Map<String, String> credentialsMap = getCredentialsFromServer(serverCollection);
-        writeCredentialsToFile(file, credentialsMap);
-        // updating credentials from config file
-        credentialsMap.put(PASS, config.getProperty(FSPASS));
-        credentialsMap.put(USER, config.getProperty(FSUSER));
-        credentialsMap.put(HOST, config.getProperty(FSURL));
-        setCredentialsOnServer(credentialsMap, serverCollection);
-        mongoClient.close();
-    }
-
-    private void restoreCredentials(File file) {
-        logger.warn("Server credentials already backed up. Restoring.....");
-        Map<String, String> credentialsMap = readCredentialsFromFile(file);
-        MongoCollection<Document> serverCollection = getServerCollectionFromServer();
-        setCredentialsOnServer(credentialsMap, serverCollection);
-        mongoClient.close();
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            logger.error("Failed to delete the credentials backup file.", e);
-            throw new RuntimeException("Failed to delete credentials backup file. Check for permissions or check if file exists.....");
-
+            }
         }
     }
 
@@ -124,13 +117,11 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
         if (document == null) {
             throw new RuntimeException("ECG document doesn't exist, please try again");
         }
-        String host = document.getString(HOST);
         Document credentials = (Document) document.get(CREDENTIALS);
-        String username = credentials.getString(USER);
+        String username = (String) credentials.get(USER);
         String password = String.join("", (ArrayList<String>) credentials.get(PASS));
         credentialsMap.put(USER, username);
         credentialsMap.put(PASS, password);
-        credentialsMap.put(HOST, host);
         return credentialsMap;
     }
 
@@ -139,7 +130,6 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
         if (document == null) {
             throw new RuntimeException("ECG document doesn't exist, please try again");
         }
-        document.put(HOST, credentialsMap.get(HOST));
         Document credentials = (Document) document.get(CREDENTIALS);
 
         credentials.put(USER, credentialsMap.get(USER));
@@ -165,7 +155,6 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
         try (PrintStream printStream = new PrintStream(file)) {
             printStream.println(credentialsMap.get(USER));
             printStream.println(credentialsMap.get(PASS));
-            printStream.println(credentialsMap.get(HOST));
         } catch (FileNotFoundException e) {
             logger.error("Failed to write to the file.", e);
             throw new RuntimeException("Failed to write to the file, please check file permissions", e);
@@ -177,22 +166,8 @@ public class ParentSuiteListener extends ConfigLoader implements ISuiteListener 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             int i = 0;
-            while ((line = bufferedReader.readLine()) != null && i < 3) {
-                switch (i) {
-                    case 0:
-                        credentialsMap.put(USER, line.trim());
-                        break;
-                    case 1:
-                        credentialsMap.put(PASS, line.trim());
-                        break;
-                    case 2:
-                        credentialsMap.put(HOST, line.trim());
-                        System.out.println("Restoring host... " + line);
-                        break;
-                    default:
-                        break;
-                }
-                i++;
+            while ((line = bufferedReader.readLine()) != null && i < 2) {
+                credentialsMap.put(i++ == 0 ? USER : PASS, line.trim());
             }
         } catch (IOException e) {
             logger.error("Failed to read from the file.", e);
