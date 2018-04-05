@@ -34,7 +34,7 @@ public class DatabaseValidationUtil extends ConfigLoader {
   public DatabaseValidationUtil() {
     connectToDatabase = new ConnectToDatabase();
     client = connectToDatabase.getMongoConnection();
-    database = client.getDatabase("missioncontrolservices");
+    database = client.getDatabase("missioncontrol");
     fulfillmentTrackingRecord = database.getCollection("fulfillment_tracking_record");
     fulfillmentStatusTracking = database.getCollection("fulfillment_status_tracking");
   }
