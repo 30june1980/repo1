@@ -1,5 +1,6 @@
 package com.shutterfly.missioncontrolservices.common;
 
+import com.google.common.io.Resources;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -32,8 +33,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
   private static final Logger logger = LoggerFactory.getLogger(EcgFileSafeUtil.class);
 
-  private static final String LOCAL_PATH = "src/test/resources/XMLPayload/BulkFiles/";
-
+  private static final String LOCAL_PATH = Resources.getResource("XMLPayload/BulkFiles/").getPath().replaceAll("^/(.:/)","$1");
   public static String buildInboundFilePath(String payload) {
 
         /*
