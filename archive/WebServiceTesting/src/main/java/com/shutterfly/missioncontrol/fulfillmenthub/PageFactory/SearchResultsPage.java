@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.PageFactory;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.PageFactory;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

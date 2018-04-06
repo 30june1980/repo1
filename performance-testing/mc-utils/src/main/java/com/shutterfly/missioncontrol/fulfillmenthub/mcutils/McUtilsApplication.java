@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

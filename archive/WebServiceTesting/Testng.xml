@@ -10,7 +10,7 @@
             <class name="RESTRequestTest"/>
         </classes>-->
         <packages>
-            <package name="com.shutterfly.missioncontrol.fulfillmenthub.test" />
+            <package name="com.shutterfly.missioncontrolservices.fulfillmenthub.test" />
             <!--<package name="SearchHomePage" />-->
 
         </packages>

@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.config;
 
 import com.jcraft.jsch.ChannelSftp.LsEntry;
 import lombok.extern.slf4j.Slf4j;

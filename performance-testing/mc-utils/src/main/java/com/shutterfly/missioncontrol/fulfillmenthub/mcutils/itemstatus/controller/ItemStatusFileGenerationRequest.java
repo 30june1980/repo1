@@ -1,6 +1,6 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.controller;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.RequestDetail;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.domain.RequestDetail;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;

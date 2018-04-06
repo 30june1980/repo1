@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.util;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.util;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -38,7 +38,7 @@ public class FileDataProvider {
         Properties proObject = new Properties();
         String sp = "testsetupdata.properties";
         try{
-            File wsprop = new File(System.getProperty("user.dir")+"/src/main/java/com/shutterfly/missioncontrol/fulfillmenthub/config/"+sp);
+            File wsprop = new File(System.getProperty("user.dir")+"/src/main/java/com/shutterfly/missioncontrolservices/fulfillmenthub/config/"+sp);
             proObject.load(new FileInputStream(wsprop));
         }catch (IOException e){
             System.out.println(e);

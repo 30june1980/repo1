@@ -1,7 +1,7 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.controller;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.archive.controller;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.dto.FileDto;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.archive.service.ProcessArchiveFileGenerationService;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.dto.FileDto;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.archive.service.ProcessArchiveFileGenerationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

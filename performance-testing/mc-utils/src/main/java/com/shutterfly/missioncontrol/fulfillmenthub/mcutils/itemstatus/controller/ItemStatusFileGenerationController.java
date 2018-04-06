@@ -1,11 +1,11 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileLocationDoc;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusFileLocationRepo;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusGenerationRequestTrackingRepo;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.service.ItemStatusFileService;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileLocationDoc;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusFileLocationRepo;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.repo.ItemStatusGenerationRequestTrackingRepo;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.service.ItemStatusFileService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

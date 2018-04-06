@@ -1,6 +1,6 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.controller;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.dto.ItemStatusFileLocationDto;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.dto.ItemStatusFileLocationDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

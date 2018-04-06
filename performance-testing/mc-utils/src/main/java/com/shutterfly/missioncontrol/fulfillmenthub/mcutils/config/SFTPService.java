@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.config;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.config;
 
 import java.io.File;
 import java.net.URI;

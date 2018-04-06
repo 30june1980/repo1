@@ -1,7 +1,7 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.entity;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.domain.ItemStatusFile;
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.dto.ItemStatusFileLocationDto;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.domain.ItemStatusFile;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.dto.ItemStatusFileLocationDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

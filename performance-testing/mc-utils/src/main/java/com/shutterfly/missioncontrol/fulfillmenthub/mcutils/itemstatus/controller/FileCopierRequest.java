@@ -1,4 +1,4 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.controller;
 
 import lombok.Getter;
 import lombok.Setter;

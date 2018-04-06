@@ -1,6 +1,6 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.controller;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.controller;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc.STATUS;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.mcutils.itemstatus.entity.ItemStatusFileGenerationRequestTrackingDoc.STATUS;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,8 +1,8 @@
-package com.shutterfly.missioncontrol.fulfillmenthub.test;
+package com.shutterfly.missioncontrolservices.fulfillmenthub.test;
 
-import com.shutterfly.missioncontrol.fulfillmenthub.PageFactory.SearchHomePage;
-import com.shutterfly.missioncontrol.fulfillmenthub.PageFactory.SearchResultsPage;
-import com.shutterfly.missioncontrol.fulfillmenthub.util.ExcelReadWrite;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.PageFactory.SearchHomePage;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.PageFactory.SearchResultsPage;
+import com.shutterfly.missioncontrolservices.fulfillmenthub.util.ExcelReadWrite;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
