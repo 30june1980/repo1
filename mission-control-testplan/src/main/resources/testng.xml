@@ -7,7 +7,8 @@
 
     <test name="Services-Test">
         <classes>
-            <class name="com.shutterfly.missioncontrolservices.findfulfillmenthistory.FindFulfillmentHistory"/>
+            <class name="com.shutterfly.missioncontrolservices.processfulfillment.BulkDataOnly"/>
+    <!--        <class name="com.shutterfly.missioncontrolservices.findfulfillmenthistory.FindFulfillmentHistory"/>
             <class name="com.shutterfly.missioncontrolservices.processfulfillment.TransactionalExternalDataOnly"/>
             <class
                     name="com.shutterfly.missioncontrolservices.validation.processfulfillment.IdQualifierValidation"/>
@@ -207,9 +208,9 @@
                     name="com.shutterfly.missioncontrolservices.validation.processfulfillment.ArchiveInvalidRequestCode"/>
             <class name="com.shutterfly.missioncontrolservices.validation.postarchive.PostArchiveInvalidFile"/>
             <class name="com.shutterfly.missioncontrolservices.processarchive.ProcessAutoArchiveTransactionalExternalPrintReady"/>
-        </classes>
+    -->    </classes>
     </test> <!-- Test -->
-    <test name="Api-Test">
+<!--    <test name="Api-Test">
         <classes>
             <class name="com.shutterfly.missioncontrolapi.FederatedControllerTest"/>
             <class name="com.shutterfly.missioncontrolapi.SearchFieldMappingDocControllerTest"/>
@@ -229,8 +230,9 @@
             <class name="com.shutterfly.missioncontrolapi.ParticipantControllerTest"/>
             <class name="com.shutterfly.missioncontrolapi.RoutingRuleControllerTest"/>
         </classes>
-    </test>
+    </test>-->
 
+<!--
     <test name="Portal-Test">
         <parameter name="platform" value="any"/>
         <parameter name="browser" value="chrome"/>
@@ -249,5 +251,6 @@
             <class name="com.shutterfly.missioncontrolportal.SearchTests"/>
             <class name="com.shutterfly.missioncontrolportal.SegmentsTests"/>
         </classes>
-    </test> <!-- Portal-Test -->
+    </test> &lt;!&ndash; Portal-Test &ndash;&gt;
+-->
 </suite> <!-- Suite -->
