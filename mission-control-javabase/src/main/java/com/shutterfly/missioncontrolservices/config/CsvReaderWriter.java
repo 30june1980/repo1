@@ -3,18 +3,14 @@
  */
 package com.shutterfly.missioncontrolservices.config;
 
+import com.google.common.io.Resources;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,11 +24,14 @@ import static org.testng.Assert.assertNotNull;
 public class CsvReaderWriter extends ConfigLoader {
     static boolean alreadyExecuted;
   //  static final String REQUEST_ID_CSV_PATH = "RequestIdCsvPath";
-    static String requestIdCsvFilePath = CsvReaderWriter.class.getResource("/requestId.csv").getPath().replaceFirst("^/(.:/)","$1");
-    static String finalRequestIdCsvFilePath = CsvReaderWriter.class.getResource("/finalRequestId.csv").getPath().replaceFirst("^/(.:/)","$1");
+    static String requestIdCsvFilePath = "./mission-control-testplan/src/main/resources/requestId.csv";
+
+    static String finalRequestIdCsvFilePath = "./mission-control-testplan/src/main/resources/finalRequestId.csv";
     private static final Logger logger = LoggerFactory.getLogger(CsvReaderWriter.class);
 
+
     private static void generateCsvFile() {
+        System.out.print(requestIdCsvFilePath);
         if (!alreadyExecuted) {
             try (FileWriter writer = new FileWriter(requestIdCsvFilePath)) {
                 alreadyExecuted = true;
