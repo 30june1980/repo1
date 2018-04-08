@@ -33,7 +33,8 @@ public class EcgFileSafeUtil extends ConfigLoader {
 
   private static final Logger logger = LoggerFactory.getLogger(EcgFileSafeUtil.class);
 
-  private static final String LOCAL_PATH = Resources.getResource("XMLPayload/BulkFiles/").getPath().replaceAll("^/(.:/)","$1");
+  //private static final String LOCAL_PATH = Resources.getResource("XMLPayload/BulkFiles/").getPath().replaceAll("^/(.:/)","$1");
+  private static final String LOCAL_PATH = "src/main/resources/XMLPayload/BulkFiles/";
   public static String buildInboundFilePath(String payload) {
 
         /*
@@ -60,6 +61,7 @@ public class EcgFileSafeUtil extends ConfigLoader {
     sourceEcgPath = fileTransfer
         .getFileTransferPathForProcessRequest(requestType, requestCategory, direction,
             requestorParticipantId, sourceParticipantId, targetParticipantId, materialType);
+    System.out.println(sourceEcgPath);
     assertNotNull(sourceEcgPath);
     return sourceEcgPath;
 
@@ -79,8 +81,9 @@ public class EcgFileSafeUtil extends ConfigLoader {
             /*
              * normalize folder path with regex expression
              */
-      sftpChannel.put((LOCAL_PATH + externalFilename),
+      sftpChannel.put(( LOCAL_PATH + externalFilename),
           ("/" + sourceEcgPath + "/" + record + ".xml").replaceAll("/+", "/"));
+
       sftpChannel.exit();
 
     } catch (JSchException | SftpException e) {
