@@ -24,9 +24,9 @@ import static org.testng.Assert.assertNotNull;
 public class CsvReaderWriter extends ConfigLoader {
     static boolean alreadyExecuted;
   //  static final String REQUEST_ID_CSV_PATH = "RequestIdCsvPath";
-    static String requestIdCsvFilePath = "./mission-control-testplan/src/main/resources/requestId.csv";
+    static String requestIdCsvFilePath = "../mission-control-testplan/src/main/resources/requestId.csv";
 
-    static String finalRequestIdCsvFilePath = "./mission-control-testplan/src/main/resources/finalRequestId.csv";
+    static String finalRequestIdCsvFilePath = "../mission-control-testplan/src/main/resources/finalRequestId.csv";
     private static final Logger logger = LoggerFactory.getLogger(CsvReaderWriter.class);
 
 
