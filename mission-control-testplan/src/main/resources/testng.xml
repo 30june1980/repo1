@@ -5,9 +5,10 @@
             <listener class-name="com.shutterfly.missioncontrolservicesservices.listener.ParentSuiteListener"/>
         </listeners>-->
 
-    <test name="Services-Test">
+   <test name="Services-Test">
         <classes>
-            <class name="com.shutterfly.missioncontrolservices.findfulfillmenthistory.FindFulfillmentHistory"/>
+
+         <class name="com.shutterfly.missioncontrolservices.findfulfillmenthistory.FindFulfillmentHistory"/>
             <class name="com.shutterfly.missioncontrolservices.processfulfillment.TransactionalExternalDataOnly"/>
             <class
                     name="com.shutterfly.missioncontrolservices.validation.processfulfillment.IdQualifierValidation"/>
@@ -207,9 +208,9 @@
                     name="com.shutterfly.missioncontrolservices.validation.processfulfillment.ArchiveInvalidRequestCode"/>
             <class name="com.shutterfly.missioncontrolservices.validation.postarchive.PostArchiveInvalidFile"/>
             <class name="com.shutterfly.missioncontrolservices.processarchive.ProcessAutoArchiveTransactionalExternalPrintReady"/>
-        </classes>
-    </test> <!-- Test -->
-    <test name="Api-Test">
+   </classes>
+    </test>
+   <test name="Api-Test">
         <classes>
             <class name="com.shutterfly.missioncontrolapi.FederatedControllerTest"/>
             <class name="com.shutterfly.missioncontrolapi.SearchFieldMappingDocControllerTest"/>
@@ -231,7 +232,8 @@
         </classes>
     </test>
 
-    <test name="Portal-Test">
+
+   <test name="Portal-Test">
         <parameter name="platform" value="any"/>
         <parameter name="browser" value="chrome"/>
 
@@ -249,5 +251,5 @@
             <class name="com.shutterfly.missioncontrolportal.SearchTests"/>
             <class name="com.shutterfly.missioncontrolportal.SegmentsTests"/>
         </classes>
-    </test> <!-- Portal-Test -->
+    </test>
 </suite> <!-- Suite -->
